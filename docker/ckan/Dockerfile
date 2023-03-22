@@ -228,10 +228,12 @@ RUN pip install --no-index --find-links=/srv/app/wheels -r requirements.txt
 RUN pip install future
 
 # Generate CKAN config
-RUN ckan generate config ${APP_DIR}/production.ini && \
-    python ${SRC_DIR}/plugins/plugins.py && \ 
-    # Configure plugins
-    ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}" && \
+RUN ckan generate config ${APP_DIR}/production.ini
+# Install plugins
+RUN python ${SRC_DIR}/plugins/plugins.py
+
+# Configure plugins
+RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}" && \
     # Create the data directory
     mkdir ${DATA_DIR} && \
     # Webassets can't be loaded from env variables at runtime, it needs to be in the config so that it is created

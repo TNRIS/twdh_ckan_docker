@@ -213,7 +213,7 @@ if __name__ == '__main__':
         print('[prerun] Maintenance mode, skipping setup...')
     else:
         check_db_connection()
-        #check_solr_connection()
+        check_solr_connection()
         init_db()
         if os.environ.get('CKAN_DATASTORE_WRITE_URL'):
             init_datastore()

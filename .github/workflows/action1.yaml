@@ -1,0 +1,9 @@
+name: action1
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [push]
+jobs:
+  list-repo:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - run: ls -la
