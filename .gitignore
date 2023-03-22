@@ -1,0 +1,12 @@
+**/.env
+
+docker/.tmp/*
+*.python-version
+
+**/__pycache__
+
+**node_modules**
+
+*.env
+
+**/*build.log

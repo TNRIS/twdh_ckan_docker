@@ -1,0 +1,1 @@
+# This directory gets mapped to the solr container

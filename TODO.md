@@ -1,0 +1,3 @@
+- db postgis init for ckan db
+- fix redis issues for ckanext security, login, etc
+    - add env vars for ckanext security, beaker
