@@ -205,7 +205,7 @@ RUN pip install wheel
 COPY --from=ckanbuild ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 COPY --from=ckanbuild ${WHEEL_DIR} /srv/app/wheels
 COPY --from=ckanbuild ${CKAN_DIR} ${CKAN_DIR}
-COPY ./ckan/plugins ${SRC_DIR}/plugins
+COPY ./plugins ${SRC_DIR}/plugins
 
 RUN ls ${SRC_DIR}/plugins
 
@@ -259,7 +259,7 @@ ENV GIT_PATCHES_URL=https://github.com/twdbben/twdh-patches
 # Use the patches
 RUN git clone ${GIT_PATCHES_URL} ${SRC_DIR}/ckan/patches
 # COPY ./patches ${SRC_DIR}/patches
-COPY ckan/patches/patches.py ${SRC_DIR}/ckan/patches.py
+COPY patches/patches.py ${SRC_DIR}/ckan/patches.py
 # Apply patches
 RUN git config --global user.email = "test.user@test.email.com"
 RUN git config --global user.name = "test.user@test.email.com"
@@ -270,7 +270,7 @@ RUN cd ${SRC_DIR}/ckan && python ./patches.py
 RUN rm -rf /srv/app/wheels
 
 # Copy necessary scripts
-COPY ckan/setup/app ${APP_DIR}
+COPY setup/app ${APP_DIR}
 
 WORKDIR ${APP_DIR}
 
@@ -281,7 +281,7 @@ ONBUILD RUN mkdir docker-entrypoint.d
 ONBUILD RUN mkdir docker-afterinit.d
 
 # Add harvest afterinit script
-COPY ./ckan/afterinit.d/00_harvest.sh ${APP_DIR}/docker-afterinit.d/00_harvest.sh
+COPY ./afterinit.d/00_harvest.sh ${APP_DIR}/docker-afterinit.d/00_harvest.sh
 
 EXPOSE 5000
 
