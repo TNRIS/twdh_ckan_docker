@@ -282,8 +282,10 @@ ONBUILD RUN mkdir docker-entrypoint.d
 # Create afterinit directory for children image scripts
 ONBUILD RUN mkdir docker-afterinit.d
 
-# Add harvest afterinit script
-COPY ./afterinit.d/00_harvest.sh ${APP_DIR}/docker-afterinit.d/00_harvest.sh
+# Run before prerun.py
+COPY ./entrypoint.d ${APP_DIR}/docker-entrypoint.d
+# Run after prerun.py
+COPY ./afterinit.d ${APP_DIR}/docker-afterinit.d
 
 EXPOSE 5000
 
