@@ -7,3 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: ls -la
+      - run: docker compose version
+      - run: docker-compose version
+      - run: helm version
+      - run: kubectl version

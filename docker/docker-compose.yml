@@ -22,6 +22,8 @@ services:
     env_file:
       - ./.env-ckan.env
       - ./.env-secrets.env
+    environment:
+      - CKAN__BEAKER__SESSION__SECURE=false
     ports:
       - "0.0.0.0:5000:5000"
     volumes:
