@@ -107,7 +107,7 @@ ENV SRC_DIR=/srv/app/src
 ENV CKAN_DIR=${SRC_DIR}/ckan
 ENV DATA_DIR=/srv/app/data
 ENV PIP_SRC=${SRC_DIR}
-ENV CKAN_SITE_URL=http://localhost:5000
+ENV CKAN_SITE_URL=http://0.0.0.0:5000
 # must add geo_view for ckanext-spatial views
 ENV CKAN__MAX_RESOURCE_SIZE 512
 
@@ -259,7 +259,7 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
 ENV GIT_PATCHES_URL=https://github.com/twdbben/twdh-patches
 # Copy patches and apply patches script
 # Use the patches
-RUN git clone ${GIT_PATCHES_URL} ${SRC_DIR}/ckan/patches
+RUN git clone ${GIT_PATCHES_URL} -b v2.9.5 ${SRC_DIR}/ckan/patches
 # COPY ./patches ${SRC_DIR}/patches
 COPY patches/patches.py ${SRC_DIR}/ckan/patches.py
 # Apply patches
@@ -289,7 +289,7 @@ COPY ./afterinit.d ${APP_DIR}/docker-afterinit.d
 
 EXPOSE 5000
 
-HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://localhost:5000/api/3/action/status_show || exit 1
+HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0.0:5000/api/3/action/status_show || exit 1
 
 USER ckan
 

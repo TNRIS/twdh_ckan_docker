@@ -9,21 +9,19 @@ services:
   ckan:
     container_name: ckan
     hostname: ckan
-    build:
-      context: ckan
-      dockerfile: Dockerfile
+    image: 746466009731.dkr.ecr.us-east-1.amazonaws.com/29_ckan:v2.9.5-dev_test
     networks:
       - frontend
       - backend
     depends_on:
       - db
       - solr
-      - redis
     env_file:
       - ./.env-ckan.env
       - ./.env-secrets.env
     environment:
-      - CKAN__BEAKER__SESSION__SECURE=false
+      - CKAN___BEAKER__SESSION__SECURE=false
+      - CKAN_SQLALCHEMY_URL=postgresql://ckan:ckan@db/ckan
     ports:
       - "0.0.0.0:5000:5000"
     volumes:
@@ -36,9 +34,12 @@ services:
     depends_on:
       - db
       - solr
+      - ckan
     networks:
       - frontend
       - backend
+    ports:
+      - "8800:8800"
     env_file:
       - ./.env-ckan.env
       - ./.env-datapusher.env
@@ -77,6 +78,7 @@ services:
     image: redis:6.0.7
     networks:
       - backend
+
 networks:
   frontend:
   backend:

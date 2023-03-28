@@ -1,13 +1,12 @@
-name: action1
-run-name: ${{ github.actor }} is learning GitHub Actions
+name: test-and-push-ecr
+run-name: ${{ github.actor }} created a new release
 on: [push]
 jobs:
-  list-repo:
+  test-image:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - run: ls -la
       - run: docker compose version
       - run: docker-compose version
-      - run: helm version
-      - run: kubectl version
+      - run: . build.sh
