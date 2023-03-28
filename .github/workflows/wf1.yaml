@@ -7,6 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: ls -la
+      - run: make --version
       - run: docker compose version
-      - run: docker-compose version
-      - run: . build.sh
+      - run: make build
+      - run: docker image ls
