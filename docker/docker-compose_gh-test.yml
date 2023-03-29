@@ -1,0 +1,84 @@
+version: "3"
+
+volumes:
+  ckan_data:
+  pg_data:
+  solr_data:
+
+services:
+  ckan:
+    container_name: ckan
+    hostname: ckan
+    image: 29_ckan:default
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - db
+      - solr
+    env_file:
+      - ./.env-ckan.env
+      - ./.env-secrets.env
+    environment:
+      - CKAN___BEAKER__SESSION__SECURE=false
+      - CKAN_SQLALCHEMY_URL=postgresql://ckan:ckan@db/ckan
+    ports:
+      - "0.0.0.0:5000:5000"
+    volumes:
+      - ckan_data:/srv/app/data
+
+  datapusher:
+    container_name: datapusher
+    hostname: datapusher
+    image: 746466009731.dkr.ecr.us-east-1.amazonaws.com/datapusher-plus:0.7.0
+    depends_on:
+      - db
+      - solr
+      - ckan
+    networks:
+      - frontend
+      - backend
+    ports:
+      - "8800:8800"
+    env_file:
+      - ./.env-ckan.env
+      - ./.env-datapusher.env
+
+  db:
+    container_name: db
+    hostname: db
+    build: ./db
+    networks:
+      - backend
+    env_file:
+      - ./.env-database.env
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+
+  solr:
+    container_name: solr
+    hostname: solr
+    image: solr:8.11.1
+    networks:
+      - backend
+    env_file:
+      - ./.env-ckan.env
+      - ./.env-solr8.env
+    volumes:
+      - solr_data:/var/solr
+      - ./solr8/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+
+  redis:
+    container_name: redis
+    hostname: redis
+    env_file:
+      - ./.env-redis.env
+    image: redis:6.0.7
+    networks:
+      - backend
+
+networks:
+  frontend:
+  backend:

@@ -1,13 +1,27 @@
 name: test-and-push-ecr
 run-name: ${{ github.actor }} created a new release
-on: [push]
+on: 
+  push:
+    tags:
+      - v*.*.*-*
 jobs:
   test-image:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - run: ls -la
+      - run: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      - run: unzip awscliv2.zip && \
+      - run: sudo ./aws/install
+      - run: aws --version
+      - run: aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
+      - run: aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
+      - run: aws configure set default.region us-east-1
       - run: make --version
       - run: docker compose version
       - run: make build
       - run: docker image ls
+      - run: cd docker && docker compose --file ./docker-compose_gh-test up
+      - run: waiting 45 seconds for ckan to spin up...
+      - run: sleep 45
+      - run: curl 0.0.0.0:5000/api/3/status_show
