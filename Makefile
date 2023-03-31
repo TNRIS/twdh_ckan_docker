@@ -1,17 +1,21 @@
 .PHONY: ecrLogin
 
+## AWS ACCOUNT VARS
 AWS_REGION := us-east-1
 AWS_ACCOUNT_ID := 746466009731
 
+## ECR VARS
 ECR_URL := ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-
 ECR_PW := $(shell aws ecr get-login-password --region ${AWS_REGION})
 
+## GH TOKEN VARS
+SECRET_ID := ci-cd
+SECRET_PATH := .CKAN_GH_CTREPKA_TOKEN
 GH_TOKEN := $(shell aws secretsmanager get-secret-value \
-	--secret-id ci-cd \
+	--secret-id ${SECRET_ID} \
 	--query SecretString \
 	--output text | \
-	jq .CKAN_GH_CTREPKA_TOKEN | \
+	jq ${SECRET_PATH} | \
 	tr -d '"')
 
 TAG := default
@@ -29,16 +33,3 @@ ecrPush: tag
 	docker push ${ECR_URL}/29_ckan:${TAG}
 
 ecrBuildPush: build tag ecrPush
-
-
-TAG := default
-
-tagTest1:
-	echo ${TAG} test1
-
-tagTest2:
-	echo ${TAG} test2
-	
-tagTest3: tagTest1 tagTest2
-	echo ${TAG} test3
-	

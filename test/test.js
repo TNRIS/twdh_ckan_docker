@@ -4,7 +4,7 @@ import puppeteer from "puppeteer";
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
-  await page.goto("https://dev.txwaterdatahub.org");
+  await page.goto("http://0.0.0.0:5000");
 
   await page.setViewport({ width: 1080, height: 1024 });
 

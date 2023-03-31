@@ -9,7 +9,8 @@ services:
   ckan:
     container_name: ckan
     hostname: ckan
-    image: 29_ckan:default
+    build: 
+      context: ./ckan
     networks:
       - frontend
       - backend
