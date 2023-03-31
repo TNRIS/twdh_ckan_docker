@@ -1,7 +1,7 @@
 {
   "plugins": [
     {
-      "owner": "ctrepka",
+      "owner": "twdbben",
       "repo": "ckanext-twdh_theme",
       "tag": "",
       "branch": "master",
