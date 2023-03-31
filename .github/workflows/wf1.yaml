@@ -29,7 +29,7 @@ jobs:
       - run: make --version
       - run: docker compose version
       - run: make ecrLogin
-      - run: cd docker && docker compose --file ./docker-compose_local.yml up
+      - run: cd docker && docker compose --file ./docker-compose_local.yml up -d --wait
       - run: waiting 45 seconds for ckan to spin up...
       - run: sleep 45
       - run: curl 0.0.0.0:5000/api/3/status_show
