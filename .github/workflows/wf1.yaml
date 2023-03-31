@@ -29,8 +29,7 @@ jobs:
       - run: make --version
       - run: docker compose version
       - run: make ecrLogin
-      - run: cd docker && docker compose --file ./docker-compose_local.yml up -d
-      - run: sleep 7m
+      - run: cd docker && docker compose --file ./docker-compose_local.yml up -d --wait
       - run: cd ./docker && docker compose logs
       - run: cd ./docker && docker ps
       - run: curl 0.0.0.0:5000/api/3/status_show
