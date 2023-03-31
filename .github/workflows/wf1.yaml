@@ -28,8 +28,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - run: make --version
       - run: docker compose version
-      - run: make ecrLogin
-      - run: cd docker && docker compose --file ./docker-compose_local.yml up -d --wait
+      - run: make ecrBuild
+      - run: cd docker && docker compose up -d --wait
       - run: cd ./docker && docker compose logs
       - run: cd ./docker && docker ps
       - run: curl 0.0.0.0:5000/api/3/status_show

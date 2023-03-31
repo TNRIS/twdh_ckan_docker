@@ -20,16 +20,18 @@ GH_TOKEN := $(shell aws secretsmanager get-secret-value \
 
 TAG := default
 
-build:
-	@docker build ./docker/ckan -t 29_ckan:${TAG} --build-arg GH_TOKEN=${GH_TOKEN} --progress plain --no-cache 2>&1 | tee build.log
-
 ecrLogin:
 	@echo ${ECR_PW} | docker login -u AWS --password-stdin ${ECR_URL}
 
-tag: ecrLogin
+build: ecrLogin
+	@docker build ./docker/ckan -t 29_ckan:${TAG} --build-arg GH_TOKEN=${GH_TOKEN} --progress plain --no-cache 2>&1 | tee build.log
+
+tag: build
 	docker tag 29_ckan:${TAG} ${ECR_URL}/29_ckan:${TAG}
 
-ecrPush: tag
+ecrBuild: tag
+
+ecrPush:
 	docker push ${ECR_URL}/29_ckan:${TAG}
 
-ecrBuildPush: build tag ecrPush
+ecrBuildPush: ecrBuild ecrPush
