@@ -30,6 +30,9 @@ RUN update-locale LANG=${LC_ALL}
 RUN apt-get install --no-install-recommends -y \
         apt-utils
 
+RUN apt-get install --reinstall -y \
+        build-essential
+
 # Packages to build CKAN requirements and plugins
 RUN apt-get install --no-install-recommends -y \
         git \
