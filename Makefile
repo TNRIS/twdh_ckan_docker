@@ -24,10 +24,10 @@ ecrLogin:
 	@echo ${ECR_PW} | docker login -u AWS --password-stdin ${ECR_URL}
 
 build: ecrLogin
-	@docker build ./docker/ckan -t 29_ckan:${TAG} --build-arg GH_TOKEN=${GH_TOKEN} --progress plain --no-cache 2>&1 | tee build.log
+	@docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --progress plain --no-cache 2>&1 | tee build.log
 
 tag: build
-	docker tag 29_ckan:${TAG} ${ECR_URL}/29_ckan:${TAG}
+	docker tag 29_ckan:default ${ECR_URL}/29_ckan:${TAG}
 
 ecrBuild: tag
 
