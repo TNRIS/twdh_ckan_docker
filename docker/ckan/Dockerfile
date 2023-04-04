@@ -54,9 +54,6 @@ RUN apt-get install --no-install-recommends -y \
         libxml2-dev \
         libxslt-dev
 
-RUN apt-get install --reinstall -y \
-    build-essential
-
 # Use gcc 10
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10 --slave /usr/bin/gcov gcov /usr/bin/gcov-10 --slave /usr/bin/x86_64-linux-gnu-gcc x86_64-linux-gnu-gcc /usr/bin/x86_64-linux-gnu-gcc-10
 
