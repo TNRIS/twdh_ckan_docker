@@ -30,9 +30,6 @@ RUN update-locale LANG=${LC_ALL}
 RUN apt-get install --no-install-recommends -y \
         apt-utils
 
-RUN apt-get install --reinstall -y \
-        build-essential
-
 # Packages to build CKAN requirements and plugins
 RUN apt-get install --no-install-recommends -y \
         git \
@@ -57,6 +54,9 @@ RUN apt-get install --no-install-recommends -y \
         libxml2-dev \
         libxslt-dev
 
+RUN apt-get install --reinstall -y \
+    build-essential
+
 # Use gcc 10
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10 --slave /usr/bin/gcov gcov /usr/bin/gcov-10 --slave /usr/bin/x86_64-linux-gnu-gcc x86_64-linux-gnu-gcc /usr/bin/x86_64-linux-gnu-gcc-10
 
@@ -80,9 +80,9 @@ RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
 RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 RUN pip wheel --wheel-dir=${WHEEL_DIR} uwsgi==2.0.19.1 gevent==21.1.2 greenlet==1.1.0
 
-############
-### MAIN ###
-############
+#############
+### MAIN ####
+#############
 FROM ubuntu:focal-20210827
 
 ARG GH_TOKEN=default
@@ -192,6 +192,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     # Create SRC_DIR
     mkdir -p ${SRC_DIR}
+
+RUN apt-get install --reinstall -y \
+        build-essential
 
 # SETUP VIRTUAL ENVIRONMENT
 # NOTE: needs to be initialized in each build phase
