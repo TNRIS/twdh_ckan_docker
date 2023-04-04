@@ -19,7 +19,7 @@ jobs:
       - run: aws configure set default.region us-east-1
       - run: touch ./docker/.env-secrets.env
       - name: aws_s3_key_id
-        run: CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} >> ./docker/.env-secrets.env
+        run: echo CKANEXT__S3FILESTORE__AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} >> ./docker/.env-secrets.env
         env: 
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       - name: aws_s3_key
@@ -29,7 +29,7 @@ jobs:
       - run: cat ./docker/.env-secrets.env
       - run: make --version
       - run: docker compose version
-      - run: make build
+      - run: make ecrBuild
       - run: docker image ls
       - run: cd docker && docker compose --file docker-compose_local.yml up -d --wait
       - run: docker compose logs
