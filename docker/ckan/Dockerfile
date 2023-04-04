@@ -39,14 +39,13 @@ RUN apt-get install --no-install-recommends -y \
         python3.8-venv \
         libpq-dev \
         linux-headers-generic \
-        wget \
-	    gcc-10 \
-	    make \
-	    g++-10 \
-        g++ \
-	    autoconf \
-	    automake \
-	    libtool \
+            wget \
+            gcc-10 \
+            make \
+            g++-10 \
+            autoconf \
+            automake \
+            libtool \
         patch \
         libpcre3-dev \
         libpcre3 \
@@ -79,7 +78,7 @@ RUN pip install wheel
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
 
 RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
-RUN pip wheel --wheel-dir=${WHEEL_DIR} uwsgi==2.0.19.1 gevent==21.1.2 greenlet==1.1.0
+RUN pip wheel --wheel-dir=${WHEEL_DIR} uWSGI==2.0.20 gevent==21.12.0 greenlet==1.1.3
 
 #############
 ### MAIN ####
@@ -169,7 +168,6 @@ RUN apt-get update && \
     ca-certificates \
     libpq5 \
     git \
-    g++ \
     g++-10 \
 	postgresql-client \
     python3 \
@@ -219,7 +217,7 @@ COPY ./plugins ${SRC_DIR}/plugins
 RUN ls ${SRC_DIR}/plugins
 
 # Additional install steps for build stages artifacts
-RUN pip install --no-index --find-links=/srv/app/wheels uwsgi==2.0.19.1 gevent==21.1.2
+RUN pip install --no-index --find-links=/srv/app/wheels uWSGI==2.0.20 gevent==21.12.0
 
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
