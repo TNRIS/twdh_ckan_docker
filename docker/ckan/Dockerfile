@@ -43,6 +43,7 @@ RUN apt-get install --no-install-recommends -y \
 	    gcc-10 \
 	    make \
 	    g++-10 \
+        g++ \
 	    autoconf \
 	    automake \
 	    libtool \
@@ -168,6 +169,8 @@ RUN apt-get update && \
     ca-certificates \
     libpq5 \
     git \
+    g++ \
+    g++-10 \
 	postgresql-client \
     python3 \
     python3.8-venv \
