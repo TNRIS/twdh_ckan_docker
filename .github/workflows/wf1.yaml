@@ -9,6 +9,12 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
+      - name: name_branch_tags
+        id: name_branch_tags
+        run: |
+          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
+          echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
       - run: ls -la
       - run: aws --version
       - name: aws_config
@@ -29,9 +35,22 @@ jobs:
       - run: cat ./docker/.env-secrets.env
       - run: make --version
       - run: docker compose version
-      - run: make ecrBuild
+      - name: build
+        run: | 
+          make ecrBuild TAG=${SOURCE_TAG}
+        env:
+          SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
+          SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
+          SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
       - run: docker image ls
       - run: cd docker && docker compose --file docker-compose_local.yml up -d --wait
       - run: cd docker && docker compose logs
       - run: docker ps
-      - run: curl 0.0.0.0:5000/api/3/status_show
+      - run: curl 0.0.0.0:5000/api/3/action/status_show
+      - name: push
+        run: | 
+          make ecrPush TAG=${SOURCE_TAG}
+        env:
+          SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
+          SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
+          SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
