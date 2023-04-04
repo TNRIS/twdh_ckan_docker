@@ -191,9 +191,6 @@ RUN apt-get update && \
     # Create SRC_DIR
     mkdir -p ${SRC_DIR}
 
-RUN apt-get install --reinstall -y \
-        build-essential
-
 # SETUP VIRTUAL ENVIRONMENT
 # NOTE: needs to be initialized in each build phase
 ENV VIRTUAL_ENV=/srv/app/virtualenv
