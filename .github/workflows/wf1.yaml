@@ -26,9 +26,11 @@ jobs:
         run: echo CKANEXT__S3FILESTORE__AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} >> ./docker/.env-secrets.env
         env: 
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - run: cat ./docker/.env-secrets.env
       - run: make --version
       - run: docker compose version
-      - run: make ecrBuild
+      - run: make build
+      - run: docker image ls
       - run: cd docker && docker compose --file docker-compose_local.yml up -d --wait
       - run: docker compose logs
       - run: docker ps
