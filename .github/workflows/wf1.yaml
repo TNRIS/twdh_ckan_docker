@@ -36,8 +36,9 @@ jobs:
       - run: make --version
       - run: docker compose version
       - name: build
-        run: | 
-          make ecrBuild TAG=${SOURCE_TAG}
+        run: |
+          echo $SOURCE_NAME $SOURCE_BRANCH $SOURCE_TAG
+          make ecrBuild TAG=$SOURCE_TAG
         env:
           SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
           SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
@@ -48,8 +49,9 @@ jobs:
       - run: docker ps
       - run: curl 0.0.0.0:5000/api/3/action/status_show
       - name: push
-        run: | 
-          make ecrPush TAG=${SOURCE_TAG}
+        run: |
+          echo $SOURCE_NAME $SOURCE_BRANCH $SOURCE_TAG
+          make ecrPush TAG=$SOURCE_TAG
         env:
           SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
           SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
