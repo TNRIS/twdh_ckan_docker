@@ -40,9 +40,7 @@ RUN apt-get install --no-install-recommends -y \
         libpq-dev \
         linux-headers-generic \
             wget \
-            gcc-10 \
             make \
-            g++-10 \
             autoconf \
             automake \
             libtool \
@@ -52,10 +50,8 @@ RUN apt-get install --no-install-recommends -y \
         python3-dev \
         libffi-dev \
         libxml2-dev \
-        libxslt-dev
-
-# Use gcc 10
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10 --slave /usr/bin/gcov gcov /usr/bin/gcov-10 --slave /usr/bin/x86_64-linux-gnu-gcc x86_64-linux-gnu-gcc /usr/bin/x86_64-linux-gnu-gcc-10
+        libxslt-dev \
+        build-essential
 
 # Create the src directory
 RUN mkdir -p ${SRC_DIR}
@@ -75,8 +71,6 @@ RUN pip install wheel
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
 
 RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
-RUN CPUCOUNT=1 && pip wheel --wheel-dir=${WHEEL_DIR} uWSGI==2.0.20 gevent==21.12.0 greenlet==1.1.3
-RUN unset CPUCOUNT
 
 #############
 ### MAIN ####
@@ -161,6 +155,7 @@ ENV CKANEXT__S3FILESTORE__FILESYSTEM_DOWNLOAD_FALLBACK true
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
     gettext \
+    build-essential \
 	curl \
     patch \
     ca-certificates \
@@ -212,8 +207,7 @@ COPY ./plugins ${SRC_DIR}/plugins
 RUN ls ${SRC_DIR}/plugins
 
 # Additional install steps for build stages artifacts
-RUN CPUCOUNT=1 && pip install --no-index --find-links=/srv/app/wheels uWSGI==2.0.20 gevent==21.12.0
-RUN unset CPUCOUNT
+RUN pip install uWSGI==2.0.20 gevent==21.12.0
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
     useradd -rm -d /srv/app -s /bin/bash -g ckan -u 92 ckan
