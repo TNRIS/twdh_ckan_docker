@@ -75,7 +75,8 @@ RUN pip install wheel
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
 
 RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
-RUN pip wheel --wheel-dir=${WHEEL_DIR} uWSGI==2.0.20 gevent==21.12.0 greenlet==1.1.3
+RUN CPUCOUNT=1 && pip wheel --wheel-dir=${WHEEL_DIR} uWSGI==2.0.20 gevent==21.12.0 greenlet==1.1.3
+RUN unset CPUCOUNT
 
 #############
 ### MAIN ####
