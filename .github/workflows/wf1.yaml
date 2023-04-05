@@ -39,13 +39,19 @@ jobs:
         run: |
           echo $SOURCE_NAME $SOURCE_BRANCH $SOURCE_TAG
           make ecrBuild TAG=$SOURCE_TAG
+          cat build.log
         env:
           SOURCE_NAME: ${{ steps.name_branch_tags.outputs.SOURCE_NAME }}
           SOURCE_BRANCH: ${{ steps.name_branch_tags.outputs.SOURCE_BRANCH }}
           SOURCE_TAG: ${{ steps.name_branch_tags.outputs.SOURCE_TAG }}
       - run: docker image ls
-      - run: cd docker && docker compose --file docker-compose_local.yml up -d --wait
-      - run: cd docker && docker compose logs
+      - run: |
+          cd docker && docker compose --file docker-compose_local.yml up -d --wait
+      - name: docker_log
+        uses: actions/upload-artifact@v3
+        with:
+          name: build_log
+          path: build.log
       - run: docker ps
       - run: curl 0.0.0.0:5000/api/3/action/status_show
       - name: push
