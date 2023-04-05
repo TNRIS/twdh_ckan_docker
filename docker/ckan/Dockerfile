@@ -211,8 +211,8 @@ COPY ./plugins ${SRC_DIR}/plugins
 RUN ls ${SRC_DIR}/plugins
 
 # Additional install steps for build stages artifacts
-RUN pip install --no-index --find-links=/srv/app/wheels uWSGI==2.0.20 gevent==21.12.0
-
+RUN CPUCOUNT=1 && pip install --no-index --find-links=/srv/app/wheels uWSGI==2.0.20 gevent==21.12.0
+RUN unset CPUCOUNT
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
     useradd -rm -d /srv/app -s /bin/bash -g ckan -u 92 ckan
