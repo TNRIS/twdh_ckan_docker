@@ -5,7 +5,7 @@ FROM ubuntu:focal-20210827 as ckanbuild
 
 # Set CKAN version to build
 ENV GIT_URL=https://github.com/ckan/ckan.git
-ENV GIT_BRANCH=ckan-2.9.5
+ENV GIT_BRANCH=ckan-2.9.8
 # Set timezone
 ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -80,7 +80,7 @@ FROM ubuntu:focal-20210827
 ARG GH_TOKEN=default
 
 LABEL maintainer="Texas Natural Resources Information Systems"
-LABEL org.opencontainers.image.source https://github.com/keitaroinc/docker-ckan
+LABEL org.opencontainers.image.source https://github.com/tnris/twdh_ckan_docker
 
 # Set timezone
 ENV TZ=UTC
@@ -257,7 +257,7 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
 ENV GIT_PATCHES_URL=https://github.com/twdbben/twdh-patches
 # Copy patches and apply patches script
 # Use the patches
-RUN git clone ${GIT_PATCHES_URL} -b v2.9.5 ${SRC_DIR}/ckan/patches
+RUN git clone ${GIT_PATCHES_URL} ${SRC_DIR}/ckan/patches
 # COPY ./patches ${SRC_DIR}/patches
 COPY patches/patches.py ${SRC_DIR}/ckan/patches.py
 # Apply patches
