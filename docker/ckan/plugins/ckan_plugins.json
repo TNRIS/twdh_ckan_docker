@@ -86,7 +86,7 @@
       "cmd": ["python setup.py install", "pip install -r requirements.txt"]
     },
     {
-      "owner": "twdbben",
+      "owner": "TNRIS",
       "repo": "ckanext-datatablesview_twdh",
       "tag": "",
       "branch": "master",
@@ -118,14 +118,14 @@
       "cmd": ["python setup.py install", "pip install -r requirements.txt"]
     },
     {
-      "owner": "data-govt-nz",
+      "owner": "TNRIS",
       "repo": "ckanext-security",
       "tag": "",
       "branch": "master",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
-      "owner": "twdbben",
+      "owner": "TNRIS",
       "repo": "ckanext-check-link",
       "tag": "",
       "branch": "master",
