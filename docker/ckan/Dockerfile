@@ -138,7 +138,7 @@ ENV CKAN__PLUGINS stats \
     shp_view \
     ags_fs_view \
     ags_ms_view \
-    datatablesview_twdh \
+    datatablesview_plus \
     datapusher \
     #googleanalytics \
     s3filestore \
