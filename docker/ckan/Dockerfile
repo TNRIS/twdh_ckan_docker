@@ -4,8 +4,10 @@
 FROM ubuntu:focal-20210827 as ckanbuild
 
 # Set CKAN version to build
+
 ENV GIT_URL=https://github.com/ckan/ckan.git
 ENV GIT_BRANCH=ckan-2.9.8
+
 # Set timezone
 ENV TZ=UTC
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -254,7 +256,7 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     # Change ownership to app user
     chown -R ckan:ckan /srv/app
 
-ENV GIT_PATCHES_URL=https://github.com/twdbben/twdh-patches
+ENV GIT_PATCHES_URL=https://github.com/TNRIS/twdh-patches
 # Copy patches and apply patches script
 # Use the patches
 RUN git clone ${GIT_PATCHES_URL} ${SRC_DIR}/ckan/patches
