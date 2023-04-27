@@ -1,7 +1,7 @@
 {
   "plugins": [
     {
-      "owner": "TNRIS",
+      "owner": "twdbben",
       "repo": "ckanext-twdh_theme",
       "tag": "",
       "branch": "master",
@@ -12,7 +12,7 @@
       ]
     },
     {
-      "owner": "TNRIS",
+      "owner": "twdbben",
       "repo": "ckanext-twdh_schema",
       "tag": "",
       "branch": "main",
