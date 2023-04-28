@@ -3,7 +3,7 @@
     {
       "owner": "twdbben",
       "repo": "ckanext-twdh_theme",
-      "tag": "",
+      "tag": "v0.2.1",
       "branch": "master",
       "cmd": [
         "pip install -e .",
@@ -14,7 +14,7 @@
     {
       "owner": "twdbben",
       "repo": "ckanext-twdh_schema",
-      "tag": "",
+      "tag": "v0.2.1",
       "branch": "main",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
@@ -39,7 +39,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-scheming",
-      "tag": "",
+      "tag": "v0.2.1",
       "branch": "master",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
@@ -72,7 +72,7 @@
       "cmd": ["pip install -r requirements.txt", "python setup.py develop"]
     },
     {
-      "owner": "OpenGov-OpenData",
+      "owner": "TNRIS",
       "repo": "ckanext-composite",
       "tag": "",
       "branch": "master",
@@ -88,8 +88,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-datatablesview_plus",
-      "tag": "",
-      "branch": "master",
+      "tag": "v0.2.1",
+      "branch": "dt-1.13-upgrade",
       "cmd": [
         "python setup.py install",
         "pip install botocore==1.27.29",
@@ -127,7 +127,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-check-link",
-      "tag": "",
+      "tag": "v0.2.1",
       "branch": "master",
       "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
     },
