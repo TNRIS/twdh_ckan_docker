@@ -112,7 +112,8 @@ ENV CKAN__DEFAULT_VIEWS image_view \
     text_view \
     geo_view \
     geojson_view \
-    datatablesview_twdh
+    datatablesview_plus \ 
+    ags_fs_view 
 
 ENV CKAN__PLUGINS stats \
     text_view image_view \
