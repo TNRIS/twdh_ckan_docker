@@ -15,7 +15,7 @@ flowchart TD
     E --> PASS_L[true]
     E --> FAIL_L[false]
     FAIL_L --> | return to local dev test | B
-    PASS_L --> | `git tag $TAGNAME && git push $TAGNAME` | F( GitHub Action )
+    PASS_L --> | `git tag $TAGNAME && git push origin $TAGNAME` | F( GitHub Action )
     F --> | check gh action logs | G{Build Succeeded}
     G --> PASS_R[true]
     G --> FAIL_R[false]
