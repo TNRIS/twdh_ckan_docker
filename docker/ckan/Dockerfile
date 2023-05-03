@@ -115,34 +115,35 @@ ENV CKAN__DEFAULT_VIEWS image_view \
     datatablesview_plus \ 
     ags_fs_view 
 
-ENV CKAN__PLUGINS stats \
-    text_view image_view \
-    datastore twdh_theme \
-    security harvest \
-    ckan_harvester \
-    check_link \
+ENV CKAN__PLUGINS \
+    stats \
+    twdh_theme \
+    security \
     report \
+    check_link \
+    text_view \
+    webpage_view \
+    image_view \
+    video_view \
+    datastore \
+    harvest \
+    ckan_harvester \
     spatial_metadata \
     spatial_query \
     twdh_schema \
     scheming_datasets \
     scheming_organizations \
     composite \
-    showcase \
     contact \
     pages \
-    officedocs_view \
-    webpage_view \
-    video_view \
     resource_proxy \
-    geojson_view \
     geo_view \ 
+    geojson_view \
     wmts_view \
     shp_view \
-    ags_fs_view \
-    ags_ms_view \
     datatablesview_plus \
     datapusher \
+    ags_fs_view \
     #googleanalytics \
     s3filestore \
     envvars
