@@ -3,7 +3,7 @@
     {
       "owner": "twdbben",
       "repo": "ckanext-twdh_theme",
-      "tag": "v0.2.3",
+      "tag": "v0.2.4",
       "branch": "master",
       "cmd": [
         "pip install -e .",
