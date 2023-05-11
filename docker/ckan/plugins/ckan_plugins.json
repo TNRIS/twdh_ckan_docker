@@ -3,7 +3,7 @@
     {
       "owner": "twdbben",
       "repo": "ckanext-twdh_theme",
-      "tag": "v0.2.4",
+      "tag": "v0.2.5",
       "branch": "master",
       "cmd": [
         "pip install -e .",
@@ -88,8 +88,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-datatablesview_plus",
-      "tag": "v0.2.1",
-      "branch": "dt-1.13-upgrade",
+      "tag": "v0.2.5",
+      "branch": "BB-search-builder",
       "cmd": [
         "python setup.py install",
         "pip install botocore==1.27.29",
@@ -127,7 +127,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-check-link",
-      "tag": "v0.2.1",
+      "tag": "v0.2.5",
       "branch": "master",
       "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
     },
@@ -139,11 +139,18 @@
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
-      "owner": "TNRIS",
+      "owner": "dathere",
       "repo": "ckanext-agsview",
-      "tag": "v0.2.3",
-      "branch": "BB-experiment",
+      "tag": "",
+      "branch": "bugfixes",
       "cmd": ["pip install -r requirements.txt", "python setup.py install"]
+    },
+    {
+      "owner": "TNRIS",
+      "repo": "ckanext-openapi_viewer",
+      "tag": "",
+      "branch": "",
+      "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     }
   ]
 }
