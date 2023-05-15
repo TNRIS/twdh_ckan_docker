@@ -113,6 +113,7 @@ ENV CKAN__DEFAULT_VIEWS image_view \
     geo_view \
     geojson_view \
     datatablesview_plus \ 
+    openapi_viewer \
     ags_fs_view 
 
 ENV CKAN__PLUGINS \
@@ -144,6 +145,7 @@ ENV CKAN__PLUGINS \
     datatablesview_plus \
     datapusher \
     ags_fs_view \
+    openapi_viewer \
     #googleanalytics \
     s3filestore \
     envvars
