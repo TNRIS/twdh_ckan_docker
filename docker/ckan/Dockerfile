@@ -109,11 +109,11 @@ ENV CKAN_SITE_URL=http://0.0.0.0:5000
 ENV CKAN__MAX_RESOURCE_SIZE 512
 
 ENV CKAN__DEFAULT_VIEWS image_view \
+    openapi_viewer \
     text_view \
     geo_view \
     geojson_view \
     datatablesview_plus \ 
-    openapi_viewer \
     ags_fs_view 
 
 ENV CKAN__PLUGINS \
