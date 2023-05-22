@@ -144,11 +144,11 @@ ENV CKAN__PLUGINS \
     shp_view \
     datatablesview_plus \
     datapusher \
-    ags_fs_view \
     openapi_viewer \
     #googleanalytics \
     s3filestore \
-    envvars
+    envvars \ 
+    ags_fs_view
     
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME twdh-s3filestore
