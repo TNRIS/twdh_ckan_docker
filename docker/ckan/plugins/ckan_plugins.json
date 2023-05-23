@@ -81,7 +81,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-datatablesview_plus",
-      "tag": "TWDHv0.2.10",
+      "tag": "TWDHv0.2.10a",
       "branch": "BB-search-builder",
       "cmd": [
         "python setup.py install",
