@@ -3,7 +3,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_theme",
-      "tag": "TWDHv0.2.10",
+      "tag": "TWDHv0.2.11",
       "branch": "master",
       "cmd": [
         "pip install -e .",
@@ -81,7 +81,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-datatablesview_plus",
-      "tag": "TWDHv0.2.10a",
+      "tag": "TWDHv0.2.11",
       "branch": "BB-search-builder",
       "cmd": [
         "python setup.py install",
@@ -120,7 +120,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-check-link",
-      "tag": "TWDHv0.2.6",
+      "tag": "TWDHv0.2.11",
       "branch": "master",
       "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
     },
@@ -136,7 +136,7 @@
       "repo": "ckanext-agsview",
       "tag": "TWDHv0.2.9a",
       "branch": "BB-experiment",
-      "cmd": ["pip install -r requirements.txt", "python setup.py install"]
+      "cmd": ["pip install -r requirements.txt", "python setup.py develop"]
     },
     {
       "owner": "TNRIS",
