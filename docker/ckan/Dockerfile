@@ -6,7 +6,7 @@ FROM ubuntu:focal-20210827 as ckanbuild
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/ckan/ckan.git
-ENV GIT_BRANCH=ckan-2.9.8
+ENV GIT_BRANCH=ckan-2.9.9
 
 # Set timezone
 ENV TZ=UTC
