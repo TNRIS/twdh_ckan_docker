@@ -9,7 +9,7 @@ services:
   ckan:
     container_name: ckan
     hostname: ckan
-    image: 746466009731.dkr.ecr.us-east-1.amazonaws.com/29_ckan:v2.9.8-dev_test
+    image: 746466009731.dkr.ecr.us-east-1.amazonaws.com/29_ckan:v2.9.9-bb_dev_test-0.2.12
     networks:
       - frontend
       - backend

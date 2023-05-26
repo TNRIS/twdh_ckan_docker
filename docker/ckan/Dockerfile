@@ -6,7 +6,7 @@ FROM ubuntu:focal-20210827 as ckanbuild
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/ckan/ckan.git
-ENV GIT_BRANCH=ckan-2.9.8
+ENV GIT_BRANCH=ckan-2.9.9
 
 # Set timezone
 ENV TZ=UTC
@@ -109,42 +109,46 @@ ENV CKAN_SITE_URL=http://0.0.0.0:5000
 ENV CKAN__MAX_RESOURCE_SIZE 512
 
 ENV CKAN__DEFAULT_VIEWS image_view \
+    openapi_viewer \
     text_view \
     geo_view \
     geojson_view \
-    datatablesview_twdh
+    datatablesview_plus \ 
+    ags_fs_view 
 
-ENV CKAN__PLUGINS stats \
-    text_view image_view \
-    datastore twdh_theme \
-    security harvest \
-    ckan_harvester \
-    check_link \
+ENV CKAN__PLUGINS \
+    stats \
+    twdh_theme \
+    security \
     report \
+    check_link \
+    text_view \
+    webpage_view \
+    image_view \
+    video_view \
+    datastore \
+    harvest \
+    ckan_harvester \
     spatial_metadata \
     spatial_query \
     twdh_schema \
     scheming_datasets \
     scheming_organizations \
     composite \
-    showcase \
     contact \
     pages \
-    officedocs_view \
-    webpage_view \
-    video_view \
     resource_proxy \
-    geojson_view \
     geo_view \ 
+    geojson_view \
     wmts_view \
     shp_view \
-    ags_fs_view \
-    ags_ms_view \
     datatablesview_plus \
     datapusher \
+    openapi_viewer \
     #googleanalytics \
     s3filestore \
-    envvars
+    envvars \ 
+    ags_fs_view
     
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME twdh-s3filestore
