@@ -3,8 +3,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_theme",
-      "tag": "TWDHv0.3.2c",
-      "branch": "master",
+      "tag": "",
+      "branch": "bb-dev",
       "cmd": [
         "pip install -e .",
         "pip install -r requirements.txt",
@@ -81,8 +81,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-datatablesview_plus",
-      "tag": "TWDHv0.3.1",
-      "branch": "BB-search-builder",
+      "tag": "",
+      "branch": "bb-dev",
       "cmd": [
         "python setup.py install",
         "pip install botocore==1.27.29",
