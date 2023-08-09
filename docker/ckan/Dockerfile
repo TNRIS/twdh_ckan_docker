@@ -225,6 +225,8 @@ WORKDIR ${CKAN_DIR}
 RUN pip install -e /srv/app/src/ckan
 # COPY overwrite.who.ini into app dir for ckanext-security required configurations
 COPY ./overwrite.who.ini ${APP_DIR}/who.ini
+COPY ./overwrite.who.dev.ini ${APP_DIR}/devwho.ini
+
 # comment out below if using ckanext-security and use own who.ini
 RUN pip install --no-index --find-links=/srv/app/wheels -r requirements.txt
 RUN pip install future
