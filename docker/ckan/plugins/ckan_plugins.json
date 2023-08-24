@@ -3,8 +3,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_theme",
-      "tag": "",
-      "branch": "bb-dev",
+      "tag": "TWDH-0.4.0.rc1",
+      "branch": "",
       "cmd": [
         "pip install -e .",
         "pip install -r requirements.txt",
@@ -81,8 +81,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-datatablesview_plus",
-      "tag": "",
-      "branch": "bb-dev",
+      "tag": "TWDH-0.4.0.rc1",
+      "branch": "",
       "cmd": [
         "python setup.py install",
         "pip install botocore==1.27.29",
@@ -120,8 +120,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-check-link",
-      "tag": "TWDHv0.2.11",
-      "branch": "master",
+      "tag": "TWDHv0.4.0.rc1",
+      "branch": "",
       "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
     },
     {
@@ -135,7 +135,7 @@
       "owner": "TNRIS",
       "repo": "ckanext-agsview",
       "tag": "TWDHv0.2.9a",
-      "branch": "BB-experiment",
+      "branch": "",
       "cmd": ["pip install -r requirements.txt", "python setup.py develop"]
     },
     {
