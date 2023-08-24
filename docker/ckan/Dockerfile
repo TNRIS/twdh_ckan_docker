@@ -5,8 +5,9 @@ FROM ubuntu:focal-20210827 as ckanbuild
 
 # Set CKAN version to build
 
-ENV GIT_URL=https://github.com/ckan/ckan.git
-ENV GIT_BRANCH=ckan-2.9.9
+ENV GIT_URL=https://github.com/TNRIS/ckan.git
+#ENV GIT_BRANCH=ckan-2.9.9
+ENV GIT_BRANCH=twdh-patches-2.9.9
 
 # Set timezone
 ENV TZ=UTC
@@ -262,17 +263,17 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     # Change ownership to app user
     chown -R ckan:ckan /srv/app
 
-ENV GIT_PATCHES_URL=https://github.com/TNRIS/twdh-patches
-# Copy patches and apply patches script
-# Use the patches
-RUN git clone ${GIT_PATCHES_URL} ${SRC_DIR}/ckan/patches
-# COPY ./patches ${SRC_DIR}/patches
-COPY patches/patches.py ${SRC_DIR}/ckan/patches.py
-# Apply patches
-RUN git config --global user.email = "test.user@test.email.com"
-RUN git config --global user.name = "test.user@test.email.com"
-RUN git config --global --add safe.directory /srv/app/src/ckan
-RUN cd ${SRC_DIR}/ckan && python ./patches.py
+#ENV GIT_PATCHES_URL=https://github.com/TNRIS/twdh-patches
+## Copy patches and apply patches script
+## Use the patches
+#RUN git clone ${GIT_PATCHES_URL} ${SRC_DIR}/ckan/patches
+## COPY ./patches ${SRC_DIR}/patches
+#COPY patches/patches.py ${SRC_DIR}/ckan/patches.py
+## Apply patches
+#RUN git config --global user.email = "test.user@test.email.com"
+#RUN git config --global user.name = "test.user@test.email.com"
+#RUN git config --global --add safe.directory /srv/app/src/ckan
+#RUN cd ${SRC_DIR}/ckan && python ./patches.py
 
 # Remove wheels
 RUN rm -rf /srv/app/wheels
