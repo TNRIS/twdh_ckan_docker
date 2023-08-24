@@ -34,21 +34,21 @@
       "repo": "ckanext-geoview",
       "tag": "TWDHv0.2.6",
       "branch": "master",
-      "cmd": ["python setup.py install", "pip install -r requirements.txt"]
+      "cmd": ["python setup.py install"]
     },
     {
       "owner": "TNRIS",
       "repo": "ckanext-scheming",
       "tag": "TWDHv0.2.6",
       "branch": "master",
-      "cmd": ["pip install -e .", "pip install -r requirements.txt"]
+      "cmd": ["pip install -e ."]
     },
     {
       "owner": "TNRIS",
       "repo": "ckanext-officedocs",
       "tag": "",
       "branch": "master",
-      "cmd": ["python setup.py install", "pip install -r requirements.txt"]
+      "cmd": ["python setup.py install"]
     },
     {
       "owner": "TNRIS",
@@ -108,7 +108,7 @@
       "repo": "ckanext-envvars",
       "tag": "",
       "branch": "master",
-      "cmd": ["python setup.py install", "pip install -r requirements.txt"]
+      "cmd": ["python setup.py install"]
     },
     {
       "owner": "TNRIS",
