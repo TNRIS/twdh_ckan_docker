@@ -3,7 +3,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_theme",
-      "tag": "TWDHv0.4.0.rc9",
+      "tag": "TWDHv0.4.0.rc10",
       "branch": "",
       "cmd": [
         "pip install -e .",
