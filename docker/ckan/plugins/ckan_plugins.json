@@ -23,7 +23,7 @@
       "repo": "ckanext-twdh_gazetteer",
       "tag": "TWDHv0.4.1.rc3",
       "branch": "",
-      "cmd": ["python setup.py install"]
+      "cmd": ["pip install -e ."]
     },
     {
       "owner": "TNRIS",
