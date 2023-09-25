@@ -149,7 +149,8 @@ ENV CKAN__PLUGINS \
     #googleanalytics \
     s3filestore \
     envvars \ 
-    ags_fs_view
+    ags_fs_view \ 
+    twdh_gazetteer
     
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME twdh-s3filestore
