@@ -146,7 +146,7 @@ ENV CKAN__PLUGINS \
     datatablesview_plus \
     datapusher \
     openapi_viewer \
-    #googleanalytics \
+    googleanalytics \
     s3filestore \
     envvars \ 
     ags_fs_view \ 
@@ -258,8 +258,19 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     ckan config-tool ${APP_DIR}/production.ini "ckanext.spatial.search_backend = solr" && \
     # change default logo to tx water logo from cdn.tnris.org
     ckan config-tool ${APP_DIR}/production.ini "ckan.site_logo = https://cdn.tnris.org/images/Hub_NavIcon_dark.png" && \
+
+    # It would be nice to move this into the helm templates so that we can set different codes on different deployments
     # add config option for google analytics download view
-    ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = UA-491601-18" && \
+
+    # deprecated GA3 UA code
+    #ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = UA-491601-18" && \
+
+    # PROD TWDH GA4 account code
+    #ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-SJK5R9G5F5" && \
+
+    # TESTING TWDH GA4 account code
+    ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-CYTPM5673B" && \
+
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
     # Change ownership to app user
     chown -R ckan:ckan /srv/app
