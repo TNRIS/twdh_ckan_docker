@@ -44,9 +44,9 @@
       "cmd": ["python setup.py install"]
     },
     {
-      "owner": "TNRIS",
+      "owner": "ckan",
       "repo": "ckanext-scheming",
-      "tag": "TWDHv0.2.6",
+      "tag": "",
       "branch": "master",
       "cmd": ["pip install -e ."]
     },
