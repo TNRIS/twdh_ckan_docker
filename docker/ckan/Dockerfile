@@ -269,9 +269,10 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     #ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-SJK5R9G5F5" && \
 
     # TESTING TWDH GA4 account code
-    ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-CYTPM5673B" && \
+    #ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-CYTPM5673B" && \
 
-    ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
+    #ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
+
     # Change ownership to app user
     chown -R ckan:ckan /srv/app
 
