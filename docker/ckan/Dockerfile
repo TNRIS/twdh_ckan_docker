@@ -148,10 +148,11 @@ ENV CKAN__PLUGINS \
     openapi_viewer \
     googleanalytics \
     s3filestore \
-    envvars \ 
     ags_fs_view \ 
-    twdh_gazetteer
-    
+    twdh_gazetteer \
+    envvars 
+    # ^ envvars always needs to be last in the CKAN__PLUGINS list
+
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME twdh-s3filestore
 ENV CKANEXT__S3FILESTORE__SIGNATURE_VERSION s3v4
@@ -258,6 +259,9 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     ckan config-tool ${APP_DIR}/production.ini "ckanext.spatial.search_backend = solr" && \
     # change default logo to tx water logo from cdn.tnris.org
     ckan config-tool ${APP_DIR}/production.ini "ckan.site_logo = https://cdn.tnris.org/images/Hub_NavIcon_dark.png" && \
+    # add config option for google analytics download view
+    ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = UA-491601-18" && \
+    ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
     # Change ownership to app user
     chown -R ckan:ckan /srv/app
 
