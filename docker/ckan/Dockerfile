@@ -260,7 +260,7 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     # change default logo to tx water logo from cdn.tnris.org
     ckan config-tool ${APP_DIR}/production.ini "ckan.site_logo = https://cdn.tnris.org/images/Hub_NavIcon_dark.png" && \
     # add config option for google analytics download view
-    ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-CYTPM5673B" && \
+    ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-SJK5R9G5F5" && \
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
     # Change ownership to app user
     chown -R ckan:ckan /srv/app
