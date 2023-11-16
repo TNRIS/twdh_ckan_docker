@@ -146,7 +146,6 @@ ENV CKAN__PLUGINS \
     datatablesview_plus \
     datapusher \
     openapi_viewer \
-    googleanalytics \
     s3filestore \
     ags_fs_view \ 
     twdh_gazetteer \
