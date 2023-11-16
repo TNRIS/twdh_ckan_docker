@@ -147,6 +147,7 @@ ENV CKAN__PLUGINS \
     datapusher \
     openapi_viewer \
     s3filestore \
+    googleanalytics \
     ags_fs_view \ 
     twdh_gazetteer \
     envvars 
