@@ -152,6 +152,7 @@ ENV CKAN__PLUGINS \
     twdh_gazetteer \
     envvars 
     # ^ envvars always needs to be last in the CKAN__PLUGINS list
+    # s3filestore MUST PRECEDE googlealanalytics in the CKAN_PLUGINS list
 
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME twdh-s3filestore
