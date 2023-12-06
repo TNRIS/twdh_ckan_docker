@@ -3,8 +3,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_theme",
-      "tag": "",
-      "branch": "bb-dev",
+      "tag": "TWDHv0.5.0.rc1",
+      "branch": "",
       "cmd": [
         "pip install -e .",
         "pip install -r requirements.txt",
@@ -14,8 +14,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_schema",
-      "tag": "",
-      "branch": "bb-dev",
+      "tag": "TWDHv0.5.0.rc1",
+      "branch": "",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
@@ -28,8 +28,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-spatial",
-      "tag": "",
-      "branch": "bb-dev",
+      "tag": "TWDHv0.5.0.rc1",
+      "branch": "",
       "cmd": [
         "pip install -e .",
         "pip install -r requirements.txt",
@@ -60,15 +60,15 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-pages",
-      "tag": "",
-      "branch": "bb-dev",
+      "tag": "TWDHv0.5.0.rc1",
+      "branch": "",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
       "owner": "TNRIS",
       "repo": "ckanext-contact",
-      "tag": "",
-      "branch": "bb-dev",
+      "tag": "TWDHv0.5.0.rc1",
+      "branch": "",
       "cmd": ["pip install -r requirements.txt", "python setup.py develop"]
     },
     {
@@ -88,8 +88,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-datatablesview_plus",
-      "tag": "",
-      "branch": "bb-dev-shared-search",
+      "tag": "TWDHv0.5.0.rc1",
+      "branch": "",
       "cmd": [
         "python setup.py install",
         "pip install botocore==1.27.29",
@@ -99,8 +99,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-googleanalytics",
-      "tag": "",
-      "branch": "bb-dev",
+      "tag": "TWDHv0.5.0.rc1",
+      "branch": "",
       "cmd": ["python setup.py install", "pip install -r requirements.txt"]
     },
     {
@@ -127,8 +127,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-check-link",
-      "tag": "",
-      "branch": "bb-dev",
+      "tag": "TWDHv0.5.0.rc1",
+      "branch": "",
       "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
     },
     {
