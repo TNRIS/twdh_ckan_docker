@@ -82,7 +82,7 @@ FROM ubuntu:focal-20210827
 
 ARG GH_TOKEN=default
 
-LABEL maintainer="Texas Natural Resources Information Systems"
+LABEL maintainer="Texas Geographic Information Office"
 LABEL org.opencontainers.image.source https://github.com/tnris/twdh_ckan_docker
 
 # Set timezone
@@ -146,11 +146,14 @@ ENV CKAN__PLUGINS \
     datatablesview_plus \
     datapusher \
     openapi_viewer \
-    #googleanalytics \
     s3filestore \
-    envvars \ 
-    ags_fs_view
-    
+    googleanalytics \
+    ags_fs_view \ 
+    twdh_gazetteer \
+    envvars 
+    # ^ envvars always needs to be last in the CKAN__PLUGINS list
+    # s3filestore MUST PRECEDE googlealanalytics in the CKAN_PLUGINS list
+
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME twdh-s3filestore
 ENV CKANEXT__S3FILESTORE__SIGNATURE_VERSION s3v4
@@ -254,11 +257,11 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     ckan config-tool ${APP_DIR}/production.ini "scheming.organization_schemas = ckanext.twdh_schema:schemas/organization.yaml" && \
     ckan config-tool ${APP_DIR}/production.ini "scheming.presets = ckanext.scheming:presets.json ckanext.composite:presets.json ckanext.twdh_schema:schemas/presets.yaml" && \
     # add ckan.spatial.search_backend to enable solr spatial search
-    ckan config-tool ${APP_DIR}/production.ini "ckanext.spatial.search_backend = solr" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.spatial.search_backend = solr-bbox" && \
     # change default logo to tx water logo from cdn.tnris.org
     ckan config-tool ${APP_DIR}/production.ini "ckan.site_logo = https://cdn.tnris.org/images/Hub_NavIcon_dark.png" && \
     # add config option for google analytics download view
-    ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = UA-491601-18" && \
+    ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-SJK5R9G5F5" && \
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
     # Change ownership to app user
     chown -R ckan:ckan /srv/app
