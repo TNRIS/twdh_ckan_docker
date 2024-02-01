@@ -6,7 +6,7 @@ FROM ubuntu:focal-20210827 as ckanbuild
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/TNRIS/ckan.git
-ENV GIT_BRANCH=twdh-patches-2.9.10
+ENV GIT_BRANCH=twdh-patches-2.9.9
 
 # Set timezone
 ENV TZ=UTC
