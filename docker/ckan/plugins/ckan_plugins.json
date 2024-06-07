@@ -3,7 +3,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_theme",
-      "tag": "TWDHv0.5.4.rc0",
+      "tag": "bb-dev",
       "branch": "",
       "cmd": [
         "pip install -e .",
@@ -88,7 +88,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-datatablesview_plus",
-      "tag": "TWDHv0.5.4.rc0",
+      "tag": "bb-dev-datetime-bug",
       "branch": "",
       "cmd": [
         "python setup.py install",
