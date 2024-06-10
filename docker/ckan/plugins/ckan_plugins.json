@@ -67,8 +67,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-contact",
-      "tag": "",
-      "branch": "bb-dev",
+      "tag": "TWDHv0.5.5.rc1",
+      "branch": "",
       "cmd": ["pip install -r requirements.txt", "python setup.py develop"]
     },
     {
