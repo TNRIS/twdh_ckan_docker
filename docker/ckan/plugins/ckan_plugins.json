@@ -2,39 +2,49 @@
   "plugins": [
     {
       "owner": "TNRIS",
-      "repo": "ckanext-twdh_theme",
-      "tag": "TWDHv0.5.3.rc1",
+      "repo": "ckanext-agsview",
+      "tag": "TWDHv0.2.9a",
       "branch": "",
+      "cmd": ["pip install -r requirements.txt", "python setup.py develop"]
+    },
+    {
+      "owner": "TNRIS",
+      "repo": "ckanext-check-link",
+      "tag": "TWDHv0.5.0.rc1",
+      "branch": "ckan-2.10-upgrade",
+      "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
+    },
+    {
+      "owner": "TNRIS",
+      "repo": "ckanext-composite",
+      "tag": "TWDHv0.2.6",
+      "branch": "",
+      "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
+    },
+    {
+      "owner": "TNRIS",
+      "repo": "ckanext-contact",
+      "tag": "",
+      "branch": "ckan-2.10-upgrade",
+      "cmd": ["pip install -r requirements.txt", "python setup.py develop"]
+    },
+    {
+      "owner": "TNRIS",
+      "repo": "ckanext-datatablesview_plus",
+      "tag": "",
+      "branch": "ckan-2.10-upgrade",
       "cmd": [
-        "pip install -e .",
-        "pip install -r requirements.txt",
-        "pip install Pillow"
+        "python setup.py install",
+        "pip install botocore==1.27.29",
+        "pip install -r dev-requirements.txt"
       ]
     },
     {
-      "owner": "TNRIS",
-      "repo": "ckanext-twdh_schema",
+      "owner": "okfn",
+      "repo": "ckanext-envvars",
       "tag": "",
-      "branch": "bb-dev",
-      "cmd": ["pip install -e .", "pip install -r requirements.txt"]
-    },
-    {
-      "owner": "TNRIS",
-      "repo": "ckanext-twdh_gazetteer",
-      "tag": "bb-dev",
-      "branch": "",
-      "cmd": ["pip install -e ."]
-    },
-    {
-      "owner": "TNRIS",
-      "repo": "ckanext-spatial",
-      "tag": "",
-      "branch": "bb-dev",
-      "cmd": [
-        "pip install -e .",
-        "pip install -r requirements.txt",
-        "pip install pika"
-      ]
+      "branch": "master",
+      "cmd": ["python setup.py install"]
     },
     {
       "owner": "TNRIS",
@@ -42,59 +52,6 @@
       "tag": "TWDHv0.2.6",
       "branch": "master",
       "cmd": ["python setup.py install"]
-    },
-    {
-      "owner": "ckan",
-      "repo": "ckanext-scheming",
-      "tag": "",
-      "branch": "master",
-      "cmd": ["pip install -e ."]
-    },
-    {
-      "owner": "TNRIS",
-      "repo": "ckanext-officedocs",
-      "tag": "",
-      "branch": "master",
-      "cmd": ["python setup.py install"]
-    },
-    {
-      "owner": "TNRIS",
-      "repo": "ckanext-pages",
-      "tag": "TWDHv0.5.0.rc1",
-      "branch": "",
-      "cmd": ["pip install -e .", "pip install -r requirements.txt"]
-    },
-    {
-      "owner": "TNRIS",
-      "repo": "ckanext-contact",
-      "tag": "TWDHv0.5.0.rc1",
-      "branch": "",
-      "cmd": ["pip install -r requirements.txt", "python setup.py develop"]
-    },
-    {
-      "owner": "TNRIS",
-      "repo": "ckanext-composite",
-      "tag": "TWDHv0.2.6",
-      "branch": "master",
-      "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
-    },
-    {
-      "owner": "TNRIS",
-      "repo": "ckanext-s3filestore",
-      "tag": "",
-      "branch": "main",
-      "cmd": ["python setup.py install", "pip install -r requirements.txt"]
-    },
-    {
-      "owner": "TNRIS",
-      "repo": "ckanext-datatablesview_plus",
-      "tag": "",
-      "branch": "bb-dev",
-      "cmd": [
-        "python setup.py install",
-        "pip install botocore==1.27.29",
-        "pip install -r dev-requirements.txt"
-      ]
     },
     {
       "owner": "TNRIS",
@@ -111,25 +68,25 @@
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
-      "owner": "okfn",
-      "repo": "ckanext-envvars",
+      "owner": "TNRIS",
+      "repo": "ckanext-officedocs",
       "tag": "",
       "branch": "master",
       "cmd": ["python setup.py install"]
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-security",
-      "tag": "",
-      "branch": "bugs-in-schema.py",
+      "repo": "ckanext-openapi_viewer",
+      "tag": "TWDHv0.2.6",
+      "branch": "",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-check-link",
+      "repo": "ckanext-pages",
       "tag": "TWDHv0.5.0.rc1",
       "branch": "",
-      "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
+      "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
       "owner": "TNRIS",
@@ -140,17 +97,60 @@
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-agsview",
-      "tag": "TWDHv0.2.9a",
+      "repo": "ckanext-s3filestore",
+      "tag": "TWDHv0.5.3",
       "branch": "",
-      "cmd": ["pip install -r requirements.txt", "python setup.py develop"]
+      "cmd": ["python setup.py install", "pip install -r requirements.txt"]
+    },
+    {
+      "owner": "ckan",
+      "repo": "ckanext-scheming",
+      "tag": "",
+      "branch": "master",
+      "cmd": ["pip install -e ."]
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-openapi_viewer",
-      "tag": "TWDHv0.2.6",
-      "branch": "",
+      "repo": "ckanext-security",
+      "tag": "",
+      "branch": "bugs-in-schema.py",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
+    },
+    {
+      "owner": "TNRIS",
+      "repo": "ckanext-spatial",
+      "tag": "",
+      "branch": "bb-dev",
+      "cmd": [
+        "pip install -e .",
+        "pip install -r requirements.txt",
+        "pip install pika"
+      ]
+    },
+    {
+      "owner": "TNRIS",
+      "repo": "ckanext-twdh_gazetteer",
+      "tag": "bb-dev",
+      "branch": "",
+      "cmd": ["pip install -e ."]
+    },
+    {
+      "owner": "TNRIS",
+      "repo": "ckanext-twdh_schema",
+      "tag": "",
+      "branch": "ckan-2.10-upgrade",
+      "cmd": ["pip install -e .", "pip install -r requirements.txt"]
+    },
+    {
+      "owner": "TNRIS",
+      "repo": "ckanext-twdh_theme",
+      "tag": "",
+      "branch": "ckan-2.10-upgrade",
+      "cmd": [
+        "pip install -e .",
+        "pip install -r requirements.txt",
+        "pip install Pillow"
+      ]
     }
   ]
 }
