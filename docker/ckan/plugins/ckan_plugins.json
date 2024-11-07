@@ -10,7 +10,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-check-link",
-      "tag": "TWDHv0.5.0.rc1",
+      "tag": "",
       "branch": "ckan-2.10-upgrade",
       "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
     },
@@ -62,20 +62,6 @@
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-harvest",
-      "tag": "",
-      "branch": "master",
-      "cmd": ["pip install -e .", "pip install -r requirements.txt"]
-    },
-    {
-      "owner": "TNRIS",
-      "repo": "ckanext-officedocs",
-      "tag": "",
-      "branch": "master",
-      "cmd": ["python setup.py install"]
-    },
-    {
-      "owner": "TNRIS",
       "repo": "ckanext-openapi_viewer",
       "tag": "TWDHv0.2.6",
       "branch": "",
@@ -113,7 +99,7 @@
       "owner": "TNRIS",
       "repo": "ckanext-security",
       "tag": "",
-      "branch": "bugs-in-schema.py",
+      "branch": "master",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
