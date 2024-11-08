@@ -119,6 +119,7 @@ ENV CKAN__DEFAULT_VIEWS image_view \
 ENV CKAN__PLUGINS \
     stats \
     twdh_theme \
+    activity \
     security \
     report \
     check_link \
@@ -127,13 +128,10 @@ ENV CKAN__PLUGINS \
     image_view \
     video_view \
     datastore \
-    harvest \
-    ckan_harvester \
     spatial_metadata \
     spatial_query \
     twdh_schema \
     scheming_datasets \
-    scheming_organizations \
     composite \
     contact \
     pages \
@@ -143,7 +141,6 @@ ENV CKAN__PLUGINS \
     wmts_view \
     shp_view \
     datatablesview_plus \
-    datapusher \
     openapi_viewer \
     s3filestore \
     googleanalytics \
@@ -152,6 +149,10 @@ ENV CKAN__PLUGINS \
     envvars 
     # ^ envvars always needs to be last in the CKAN__PLUGINS list
     # s3filestore MUST PRECEDE googlealanalytics in the CKAN_PLUGINS list
+    # harvest \
+    # ckan_harvester \
+    #scheming_organizations \
+    # datapusher \
 
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME twdh-s3filestore
@@ -216,7 +217,7 @@ COPY ./plugins ${SRC_DIR}/plugins
 RUN ls ${SRC_DIR}/plugins
 
 # Additional install steps for build stages artifacts
-RUN pip install uWSGI==2.0.20 gevent==21.12.0
+RUN pip install uWSGI==2.0.20 gevent==22.10.2
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
     useradd -rm -d /srv/app -s /bin/bash -g ckan -u 92 ckan
