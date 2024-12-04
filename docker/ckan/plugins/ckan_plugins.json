@@ -116,8 +116,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_gazetteer",
-      "tag": "bb-dev",
-      "branch": "",
+      "tag": "",
+      "branch": "bb-dev",
       "cmd": ["pip install -e ."]
     },
     {
