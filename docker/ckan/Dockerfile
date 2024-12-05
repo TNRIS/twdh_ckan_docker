@@ -287,8 +287,7 @@ COPY ./afterinit.d ${APP_DIR}/docker-afterinit.d
 
 EXPOSE 5000
 
-#HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0.0:5000/api/3/action/status_show || exit 1
-HEALTHCHECK NONE
+HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0.0:5000/api/3/action/status_show || exit 1
 
 USER ckan
 
