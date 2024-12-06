@@ -30,6 +30,13 @@
     },
     {
       "owner": "TNRIS",
+      "repo": "ckanext-datapusher_plus",
+      "tag": "1.0.3",
+      "branch": "",
+      "cmd": ["pip install -e .", "pip install -r requirements.txt"]
+    },
+    {
+      "owner": "TNRIS",
       "repo": "ckanext-datatablesview_plus",
       "tag": "",
       "branch": "ckan-2.10-upgrade",
