@@ -141,6 +141,7 @@ ENV CKAN__PLUGINS \
     wmts_view \
     shp_view \
     datatablesview_plus \
+    datapusher_plus \
     openapi_viewer \
     s3filestore \
     googleanalytics \
