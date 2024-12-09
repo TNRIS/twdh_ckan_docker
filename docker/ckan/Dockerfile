@@ -268,7 +268,7 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     # Change ownership to app user
     chown -R ckan:ckan /srv/app && \
     # Setup supervisor
-    cp -v /srv/app/src/ckan/ckan/config/supervisor-ckan-worker.conf /etc/supervisor/conf.d/ && \
+    cp -v /srv/app/src/ckan/ckanext-twdh_theme/ckanext/twdh_theme/config/supervisor-ckan-worker.conf /etc/supervisor/conf.d/ && \
     mkdir -v /var/log/ckan
 
 
