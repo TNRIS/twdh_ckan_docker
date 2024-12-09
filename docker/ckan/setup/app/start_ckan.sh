@@ -50,6 +50,8 @@ then
       exit 1
     fi
   else
+    # Start supervisord
+    supervisord --configuration /etc/supervisor/supervisord.conf &
     # Start uwsgi
     uwsgi $UWSGI_OPTS
   fi

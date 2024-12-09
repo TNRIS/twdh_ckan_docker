@@ -189,6 +189,7 @@ RUN apt-get update && \
     libfreetype6 \
     libfreetype6-dev \
     zlib1g-dev \
+    supervisor \
     apache2-utils && \
     rm -rf /var/lib/apt/lists/* && \
     # Create SRC_DIR
@@ -261,7 +262,19 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-SJK5R9G5F5" && \
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
     # Change ownership to app user
-    chown -R ckan:ckan /srv/app
+    chown -R ckan:ckan /srv/app && \
+    # Setup supervisor
+    cp -v /srv/app/src/ckan/ckan/config/supervisor-ckan-worker.conf /etc/supervisor/conf.d/ && \
+    mkdir -v /var/log/ckan
+
+
+# install Rust, then qsvdp
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    # source the cargo env to setup the $PATH for rust
+    . $HOME/.cargo/env && \
+    # install qsvdp from source
+    cargo install qsv --locked --bin qsvdp -F datapusher_plus,luau
+
 
 # Remove wheels
 RUN rm -rf /srv/app/wheels
@@ -286,6 +299,6 @@ EXPOSE 5000
 
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0.0:5000/api/3/action/status_show || exit 1
 
-USER ckan
+# USER ckan
 
 CMD ["/srv/app/start_ckan.sh"]
