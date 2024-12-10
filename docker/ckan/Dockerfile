@@ -263,10 +263,10 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
     # Change ownership to app user
     chown -R ckan:ckan /srv/app && \
-    # Setup supervisor
-    cp -v /srv/app/src/ckan/ckanext-twdh_theme/ckanext/twdh_theme/config/supervisor-ckan-worker.conf /etc/supervisor/conf.d/ && \
     mkdir -v /var/log/ckan
 
+# Setup supervisor
+COPY ./supervisor-ckan-worker.conf /etc/supervisor/conf.d/
 
 # install Rust, then qsvdp
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
