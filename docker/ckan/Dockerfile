@@ -266,6 +266,7 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     mkdir -v /var/log/ckan
 
 # Setup supervisor
+COPY ./supervisord.conf /etc/supervisor/
 COPY ./supervisor-ckan-worker.conf /etc/supervisor/conf.d/
 
 # install Rust, then qsvdp
