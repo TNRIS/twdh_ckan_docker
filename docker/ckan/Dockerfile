@@ -263,6 +263,7 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
     # Change ownership to app user
     chown -R ckan:ckan /srv/app && \
+    # Create log directory for `ckan jobs worker` process
     mkdir -v /var/log/ckan
 
 # Setup supervisor
