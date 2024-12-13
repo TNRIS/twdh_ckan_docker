@@ -276,7 +276,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     . $HOME/.cargo/env && \
     # install qsvdp from source
     cargo install qsv --locked --bin qsvdp -F datapusher_plus,luau && \
-    cp -v /root/.cargo/bin/qsvdp /usr/local/bin/
+    mv -v /root/.cargo/bin/qsvdp /usr/local/bin/
 
 
 # Remove wheels
