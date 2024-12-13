@@ -190,6 +190,7 @@ RUN apt-get update && \
     libfreetype6-dev \
     zlib1g-dev \
     supervisor \
+    file \
     apache2-utils && \
     rm -rf /var/lib/apt/lists/* && \
     # Create SRC_DIR
@@ -276,7 +277,8 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     . $HOME/.cargo/env && \
     # install qsvdp from source
     cargo install qsv --locked --bin qsvdp -F datapusher_plus,luau && \
-    mv -v /root/.cargo/bin/qsvdp /usr/local/bin/
+    # mv the qsvdp binary so that ckan user can run it
+    mv /root/.cargo/bin/qsvdp /usr/local/bin/
 
 
 # Remove wheels
