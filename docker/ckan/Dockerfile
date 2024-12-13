@@ -191,6 +191,7 @@ RUN apt-get update && \
     zlib1g-dev \
     supervisor \
     file \
+    uchardet \
     apache2-utils && \
     rm -rf /var/lib/apt/lists/* && \
     # Create SRC_DIR
