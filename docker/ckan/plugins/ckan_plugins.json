@@ -31,7 +31,7 @@
     {
       "owner": "TNRIS",
       "repo": "datapusher-plus",
-      "tag": "1.0.3",
+      "tag": "dev-v1.0",
       "branch": "",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
