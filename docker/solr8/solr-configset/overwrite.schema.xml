@@ -125,6 +125,7 @@ attribute with the form `ckan-X.Y` -->
     <field name="license" type="string" indexed="true" stored="true" />
     <field name="license_id" type="string" indexed="true" stored="true" />
     <field name="tags" type="string" indexed="true" stored="true" multiValued="true"/>
+    <field name="group" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="groups" type="string" indexed="true" stored="true" multiValued="true"/>
     <field name="organization" type="string" indexed="true" stored="true" multiValued="false"/>
 
@@ -195,6 +196,7 @@ attribute with the form `ckan-X.Y` -->
 <copyField source="license" dest="text"/>
 <copyField source="notes" dest="text"/>
 <copyField source="tags" dest="text"/>
+<copyField source="group" dest="text"/>
 <copyField source="groups" dest="text"/>
 <copyField source="organization" dest="text"/>
 <copyField source="res_name" dest="text"/>
