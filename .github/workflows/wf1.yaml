@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} created a new release
 on: 
   push:
     tags:
-      - v*.*.*-*
+      - twdh-*.*.*
 jobs:
   test-image:
     runs-on: ubuntu-22.04
