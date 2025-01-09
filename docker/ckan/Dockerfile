@@ -132,6 +132,7 @@ ENV CKAN__PLUGINS \
     spatial_query \
     twdh_schema \
     scheming_datasets \
+    scheming_organizations \
     composite \
     contact \
     pages \
