@@ -47,10 +47,10 @@
       ]
     },
     {
-      "owner": "okfn",
+      "owner": "TNRIS",
       "repo": "ckanext-envvars",
-      "tag": "",
-      "branch": "master",
+      "tag": "twdh-0.6.0",
+      "branch": "",
       "cmd": ["python setup.py install"]
     },
     {
@@ -106,14 +106,14 @@
       "owner": "TNRIS",
       "repo": "ckanext-security",
       "tag": "",
-      "branch": "master",
+      "branch": "dp+-conflict",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
       "owner": "TNRIS",
       "repo": "ckanext-spatial",
-      "tag": "",
-      "branch": "bb-dev",
+      "tag": "twdh-0.6.0",
+      "branch": "",
       "cmd": [
         "pip install -e .",
         "pip install -r requirements.txt",
