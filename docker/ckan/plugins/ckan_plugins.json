@@ -33,7 +33,7 @@
       "repo": "datapusher-plus",
       "tag": "",
       "branch": "druf-phase1",
-      "cmd": ["pip install wheel", "pip install -e ."]
+      "cmd": ["pip install -e .", "pip install -r requirements.txt"],
     },
     {
       "owner": "TNRIS",
