@@ -132,6 +132,7 @@ ENV CKAN__PLUGINS \
     spatial_query \
     twdh_schema \
     scheming_datasets \
+    scheming_organizations \
     composite \
     contact \
     pages \
@@ -253,7 +254,7 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     # upgrade ckan_max_resource_size
     ckan config-tool ${APP_DIR}/production.ini "ckan.max_resource_size = ${CKAN__MAX_RESOURCE_SIZE}" && \
     # add scheming config
-    ckan config-tool ${APP_DIR}/production.ini "scheming.dataset_schemas = ckanext.twdh_schema:schemas/dataset-druf.yaml ckanext.twdh_schema:schemas/application.yaml" && \
+    ckan config-tool ${APP_DIR}/production.ini "scheming.dataset_schemas = ckanext.twdh_schema:schemas/dataset.yaml ckanext.twdh_schema:schemas/application.yaml" && \
     ckan config-tool ${APP_DIR}/production.ini "scheming.organization_schemas = ckanext.twdh_schema:schemas/organization.yaml" && \
     ckan config-tool ${APP_DIR}/production.ini "scheming.presets = ckanext.scheming:presets.json ckanext.composite:presets.json ckanext.twdh_schema:schemas/presets.yaml" && \
     # add ckan.spatial.search_backend to enable solr spatial search
@@ -277,10 +278,13 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     # source the cargo env to setup the $PATH for rust
     . $HOME/.cargo/env && \
     # install qsvdp from source
-    cargo install qsv --locked --bin qsvdp -F datapusher_plus,luau && \
+    git clone https://github.com/dathere/qsv.git && \
+    cd qsv && \
+    export CARGO_BUILD_RUSTFLAGS='-C target-cpu=native' && \
+    cargo build --release --locked --bin qsvdp -F datapusher_plus,luau,polars && \
     # mv the qsvdp binary so that ckan user can run it
-    mv /root/.cargo/bin/qsvdp /usr/local/bin/
-
+    mv target/release/qsvdp /usr/local/bin/ && \
+    cargo clean
 
 # Remove wheels
 RUN rm -rf /srv/app/wheels
