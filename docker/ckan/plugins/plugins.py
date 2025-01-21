@@ -22,12 +22,12 @@ class Plugin:
         git = f"git clone"
         if(self.branch != ""):
             git = f"git clone -b {self.branch}"
-            print(git)
         if(self.tag != ""):
             git = f"git clone -b {self.tag}"
-            print(git)
         
         git = git + f" --depth 1 https://{GH_TOKEN}@github.com/{self.owner}/{self.repo} ./{self.repo}"
+
+        print(git)
 
         cmds = " && ".join(self.cmd)
         
