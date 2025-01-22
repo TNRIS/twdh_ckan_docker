@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} created a new release
 on: 
   push:
     tags:
-      - v*.*.*-*
+      - twdh-*.*.*
 jobs:
   test-image:
     runs-on: ubuntu-22.04
@@ -48,7 +48,7 @@ jobs:
       - run: |
           cd docker && docker compose --file docker-compose_local.yml up -d --wait
       - name: docker_log
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build_log
           path: build.log

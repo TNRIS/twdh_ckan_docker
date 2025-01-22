@@ -6,7 +6,7 @@ FROM ubuntu:focal-20210827 as ckanbuild
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/TNRIS/ckan.git
-ENV GIT_BRANCH=twdh-patches-2.9.10
+ENV GIT_BRANCH=twdh-patches-2.10.5
 
 # Set timezone
 ENV TZ=UTC
@@ -119,6 +119,7 @@ ENV CKAN__DEFAULT_VIEWS image_view \
 ENV CKAN__PLUGINS \
     stats \
     twdh_theme \
+    activity \
     security \
     report \
     check_link \
@@ -127,8 +128,6 @@ ENV CKAN__PLUGINS \
     image_view \
     video_view \
     datastore \
-    harvest \
-    ckan_harvester \
     spatial_metadata \
     spatial_query \
     twdh_schema \
@@ -143,7 +142,7 @@ ENV CKAN__PLUGINS \
     wmts_view \
     shp_view \
     datatablesview_plus \
-    datapusher \
+    datapusher_plus \
     openapi_viewer \
     s3filestore \
     googleanalytics \
@@ -191,6 +190,9 @@ RUN apt-get update && \
     libfreetype6 \
     libfreetype6-dev \
     zlib1g-dev \
+    supervisor \
+    file \
+    uchardet \
     apache2-utils && \
     rm -rf /var/lib/apt/lists/* && \
     # Create SRC_DIR
@@ -216,7 +218,7 @@ COPY ./plugins ${SRC_DIR}/plugins
 RUN ls ${SRC_DIR}/plugins
 
 # Additional install steps for build stages artifacts
-RUN pip install uWSGI==2.0.20 gevent==21.12.0
+RUN pip install uWSGI==2.0.20 gevent==22.10.2
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
     useradd -rm -d /srv/app -s /bin/bash -g ckan -u 92 ckan
@@ -263,7 +265,26 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-SJK5R9G5F5" && \
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
     # Change ownership to app user
-    chown -R ckan:ckan /srv/app
+    chown -R ckan:ckan /srv/app && \
+    # Create log directory for `ckan jobs worker` process
+    mkdir -v /var/log/ckan
+
+# Setup supervisor
+COPY ./supervisord.conf /etc/supervisor/
+COPY ./supervisor-ckan-worker.conf /etc/supervisor/conf.d/
+
+# install Rust, then qsvdp
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+    # source the cargo env to setup the $PATH for rust
+    . $HOME/.cargo/env && \
+    # install qsvdp from source
+    git clone https://github.com/dathere/qsv.git && \
+    cd qsv && \
+    export CARGO_BUILD_RUSTFLAGS='-C target-cpu=native' && \
+    cargo build --release --locked --bin qsvdp -F datapusher_plus,luau,polars && \
+    # mv the qsvdp binary so that ckan user can run it
+    mv target/release/qsvdp /usr/local/bin/ && \
+    cargo clean
 
 # Remove wheels
 RUN rm -rf /srv/app/wheels
@@ -288,6 +309,6 @@ EXPOSE 5000
 
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0.0:5000/api/3/action/status_show || exit 1
 
-USER ckan
+#USER ckan
 
 CMD ["/srv/app/start_ckan.sh"]

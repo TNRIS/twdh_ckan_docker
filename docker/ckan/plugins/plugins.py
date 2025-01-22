@@ -27,6 +27,8 @@ class Plugin:
         
         git = git + f" --depth 1 https://{GH_TOKEN}@github.com/{self.owner}/{self.repo} ./{self.repo}"
 
+        print(git)
+
         cmds = " && ".join(self.cmd)
         
         out = run(f'''
