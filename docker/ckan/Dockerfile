@@ -1,7 +1,19 @@
 ##################
 ### Build CKAN ###
 ##################
-FROM ubuntu:focal-20210827 as ckanbuild
+ARG ENV=ckanbuild
+
+FROM ubuntu:focal-20210827 as ubuntu
+
+# ┌─────────────────────────────────────────────────────────────┐
+# │                                                             │
+# │ Base image (Production env)                                 │
+# │ ---------------------------                                 │
+# │ This is always built                                        │
+# │                                                             │
+# └─────────────────────────────────────────────────────────────┘
+
+FROM ubuntu as ckanbuild
 
 # Set CKAN version to build
 
@@ -245,6 +257,8 @@ RUN python ${SRC_DIR}/plugins/plugins.py
 RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}" && \
     # Create the data directory
     mkdir ${DATA_DIR} && \
+    # EXPERIMENT - MOVE THIS!!!!
+    ckan config-tool ${APP_DIR}/production.ini "debug = true" && \
     # Webassets can't be loaded from env variables at runtime, it needs to be in the config so that it is created
     ckan config-tool ${APP_DIR}/production.ini "ckan.webassets.path = ${DATA_DIR}/webassets" && \
     # Set the default level for extensions to INFO
@@ -309,6 +323,24 @@ EXPOSE 5000
 
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0.0:5000/api/3/action/status_show || exit 1
 
-#USER ckan
+CMD ["/srv/app/start_ckan.sh"]
+
+# ┌─────────────────────────────────────────────────────────────┐
+# │                                                             │
+# │ Dev image (Development env)                                 │
+# │ ---------------------------                                 │
+# │ This is only built when ENV=dev                             │
+# │                                                             │
+# └─────────────────────────────────────────────────────────────┘
+
+FROM ckanbuild AS dev
+
+ENV APP_DIR=/srv/app
+
+#RUN ckan config-tool ${APP_DIR}/production.ini -s DEFAULT "debug = true"
 
 CMD ["/srv/app/start_ckan.sh"]
+
+# ──────────────────────────────────────────────────────────────
+
+FROM ${ENV} AS final
