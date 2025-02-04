@@ -1,6 +1,7 @@
 ##################
 ### Build CKAN ###
 ##################
+
 FROM ubuntu:focal-20210827 as ckanbuild
 
 # Set CKAN version to build
@@ -80,6 +81,7 @@ RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 FROM ubuntu:focal-20210827
 
 ARG GH_TOKEN=default
+ARG TWDH_BUILD=prod
 
 LABEL maintainer="Texas Geographic Information Office"
 LABEL org.opencontainers.image.source https://github.com/tnris/twdh_ckan_docker
@@ -215,6 +217,9 @@ COPY --from=ckanbuild ${WHEEL_DIR} /srv/app/wheels
 COPY --from=ckanbuild ${CKAN_DIR} ${CKAN_DIR}
 COPY ./plugins ${SRC_DIR}/plugins
 
+# Copy pre-built binaries into place
+COPY bin/qsvdp /usr/local/bin/qsvdp
+
 RUN ls ${SRC_DIR}/plugins
 
 # Additional install steps for build stages artifacts
@@ -240,6 +245,11 @@ RUN pip install future
 RUN ckan generate config ${APP_DIR}/production.ini
 # Install plugins
 RUN python ${SRC_DIR}/plugins/plugins.py
+
+# LOCAL DEV Setup
+RUN if [ "$TWDH_BUILD" = "dev" ]; then pip install flask-debugtoolbar==0.14.1; fi
+RUN if [ "$TWDH_BUILD" = "dev" ]; then apt-get update && apt-get install --no-install-recommends -y inotify-tools; fi
+RUN if [ "$TWDH_BUILD" = "dev" ]; then ckan config-tool ${APP_DIR}/production.ini "debug = true"; fi
 
 # Configure plugins
 RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}" && \
@@ -273,18 +283,18 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
 COPY ./supervisord.conf /etc/supervisor/
 COPY ./supervisor-ckan-worker.conf /etc/supervisor/conf.d/
 
-# install Rust, then qsvdp
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    # source the cargo env to setup the $PATH for rust
-    . $HOME/.cargo/env && \
-    # install qsvdp from source
-    git clone https://github.com/dathere/qsv.git && \
-    cd qsv && \
-    export CARGO_BUILD_RUSTFLAGS='-C target-cpu=native' && \
-    cargo build --release --locked --bin qsvdp -F datapusher_plus,luau,polars && \
-    # mv the qsvdp binary so that ckan user can run it
-    mv target/release/qsvdp /usr/local/bin/ && \
-    cargo clean
+## install Rust, then qsvdp
+#RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+#   # source the cargo env to setup the $PATH for rust
+#   . $HOME/.cargo/env && \
+#   # install qsvdp from source
+#   git clone https://github.com/dathere/qsv.git && \
+#   cd qsv && \
+#   export CARGO_BUILD_RUSTFLAGS='-C target-cpu=native' && \
+#   cargo build --release --locked --bin qsvdp -F datapusher_plus,luau,polars && \
+#   # mv the qsvdp binary so that ckan user can run it
+#   mv target/release/qsvdp /usr/local/bin/ && \
+#   cargo clean
 
 # Remove wheels
 RUN rm -rf /srv/app/wheels

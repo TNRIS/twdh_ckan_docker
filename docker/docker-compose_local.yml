@@ -26,6 +26,14 @@ services:
       - "0.0.0.0:5000:5000"
     volumes:
       - ckan_data:/srv/app/data
+    develop:
+      watch:
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-twdh_theme
+          target: /srv/app/src/ckan/ckanext-twdh_theme
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckan
+          target: /srv/app/src/ckan
 
   datapusher:
     container_name: datapusher
