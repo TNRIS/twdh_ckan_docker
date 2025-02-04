@@ -1,19 +1,8 @@
 ##################
 ### Build CKAN ###
 ##################
-ARG ENV=ckanbuild
 
-FROM ubuntu:focal-20210827 as ubuntu
-
-# ┌─────────────────────────────────────────────────────────────┐
-# │                                                             │
-# │ Base image (Production env)                                 │
-# │ ---------------------------                                 │
-# │ This is always built                                        │
-# │                                                             │
-# └─────────────────────────────────────────────────────────────┘
-
-FROM ubuntu as ckanbuild
+FROM ubuntu:focal-20210827 as ckanbuild
 
 # Set CKAN version to build
 
@@ -92,6 +81,7 @@ RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 FROM ubuntu:focal-20210827
 
 ARG GH_TOKEN=default
+ARG TWDH_BUILD=prod
 
 LABEL maintainer="Texas Geographic Information Office"
 LABEL org.opencontainers.image.source https://github.com/tnris/twdh_ckan_docker
@@ -227,6 +217,9 @@ COPY --from=ckanbuild ${WHEEL_DIR} /srv/app/wheels
 COPY --from=ckanbuild ${CKAN_DIR} ${CKAN_DIR}
 COPY ./plugins ${SRC_DIR}/plugins
 
+# Copy pre-built binaries into place
+COPY bin/qsvdp /usr/local/bin/qsvdp
+
 RUN ls ${SRC_DIR}/plugins
 
 # Additional install steps for build stages artifacts
@@ -248,17 +241,29 @@ COPY ./overwrite.who.dev.ini ${APP_DIR}/devwho.ini
 RUN pip install --no-index --find-links=/srv/app/wheels -r requirements.txt
 RUN pip install future
 
+
 # Generate CKAN config
 RUN ckan generate config ${APP_DIR}/production.ini
 # Install plugins
 RUN python ${SRC_DIR}/plugins/plugins.py
 
+# LOCAL DEV Setup
+RUN if [ "$TWDH_BUILD" = "dev" ]; then pip install flask-debugtoolbar==0.14.1; fi
+RUN if [ "$TWDH_BUILD" = "dev" ]; then apt-get update && apt-get install --no-install-recommends -y inotify-tools; fi
+RUN if [ "$TWDH_BUILD" = "dev" ]; then ckan config-tool ${APP_DIR}/production.ini "debug = true"; fi
+
+
+# EXPERIMENT - DO NOT COMMIT THIS!!!!
+#RUN pip install flask-debugtoolbar==0.14.1
+#RUN apt-get update && \
+#    apt-get install --no-install-recommends -y inotify-tools
+#RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
+# END EXPERIMENT
+
 # Configure plugins
 RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}" && \
     # Create the data directory
     mkdir ${DATA_DIR} && \
-    # EXPERIMENT - MOVE THIS!!!!
-    ckan config-tool ${APP_DIR}/production.ini "debug = true" && \
     # Webassets can't be loaded from env variables at runtime, it needs to be in the config so that it is created
     ckan config-tool ${APP_DIR}/production.ini "ckan.webassets.path = ${DATA_DIR}/webassets" && \
     # Set the default level for extensions to INFO
@@ -287,18 +292,18 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
 COPY ./supervisord.conf /etc/supervisor/
 COPY ./supervisor-ckan-worker.conf /etc/supervisor/conf.d/
 
-# install Rust, then qsvdp
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    # source the cargo env to setup the $PATH for rust
-    . $HOME/.cargo/env && \
-    # install qsvdp from source
-    git clone https://github.com/dathere/qsv.git && \
-    cd qsv && \
-    export CARGO_BUILD_RUSTFLAGS='-C target-cpu=native' && \
-    cargo build --release --locked --bin qsvdp -F datapusher_plus,luau,polars && \
-    # mv the qsvdp binary so that ckan user can run it
-    mv target/release/qsvdp /usr/local/bin/ && \
-    cargo clean
+## install Rust, then qsvdp
+#RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
+#   # source the cargo env to setup the $PATH for rust
+#   . $HOME/.cargo/env && \
+#   # install qsvdp from source
+#   git clone https://github.com/dathere/qsv.git && \
+#   cd qsv && \
+#   export CARGO_BUILD_RUSTFLAGS='-C target-cpu=native' && \
+#   cargo build --release --locked --bin qsvdp -F datapusher_plus,luau,polars && \
+#   # mv the qsvdp binary so that ckan user can run it
+#   mv target/release/qsvdp /usr/local/bin/ && \
+#   cargo clean
 
 # Remove wheels
 RUN rm -rf /srv/app/wheels
@@ -323,24 +328,6 @@ EXPOSE 5000
 
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0.0:5000/api/3/action/status_show || exit 1
 
-CMD ["/srv/app/start_ckan.sh"]
-
-# ┌─────────────────────────────────────────────────────────────┐
-# │                                                             │
-# │ Dev image (Development env)                                 │
-# │ ---------------------------                                 │
-# │ This is only built when ENV=dev                             │
-# │                                                             │
-# └─────────────────────────────────────────────────────────────┘
-
-FROM ckanbuild AS dev
-
-ENV APP_DIR=/srv/app
-
-#RUN ckan config-tool ${APP_DIR}/production.ini -s DEFAULT "debug = true"
+#USER ckan
 
 CMD ["/srv/app/start_ckan.sh"]
-
-# ──────────────────────────────────────────────────────────────
-
-FROM ${ENV} AS final
