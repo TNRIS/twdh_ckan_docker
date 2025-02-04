@@ -241,7 +241,6 @@ COPY ./overwrite.who.dev.ini ${APP_DIR}/devwho.ini
 RUN pip install --no-index --find-links=/srv/app/wheels -r requirements.txt
 RUN pip install future
 
-
 # Generate CKAN config
 RUN ckan generate config ${APP_DIR}/production.ini
 # Install plugins
@@ -251,14 +250,6 @@ RUN python ${SRC_DIR}/plugins/plugins.py
 RUN if [ "$TWDH_BUILD" = "dev" ]; then pip install flask-debugtoolbar==0.14.1; fi
 RUN if [ "$TWDH_BUILD" = "dev" ]; then apt-get update && apt-get install --no-install-recommends -y inotify-tools; fi
 RUN if [ "$TWDH_BUILD" = "dev" ]; then ckan config-tool ${APP_DIR}/production.ini "debug = true"; fi
-
-
-# EXPERIMENT - DO NOT COMMIT THIS!!!!
-#RUN pip install flask-debugtoolbar==0.14.1
-#RUN apt-get update && \
-#    apt-get install --no-install-recommends -y inotify-tools
-#RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
-# END EXPERIMENT
 
 # Configure plugins
 RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}" && \
