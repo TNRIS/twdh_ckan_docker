@@ -1,3 +1,3 @@
 #!/bin/sh
-echo "@@@@@@ INIT SECURITY @@@@@@"
+echo "@@@@@@ INIT CKANEXT-DATATABLESVIEW-PLUS @@@@@@"
 ckan -c /srv/app/production.ini datatablesview-plus migrate
