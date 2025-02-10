@@ -35,23 +35,6 @@ services:
           path: /usr/lib/ckan/default/src/ckan
           target: /srv/app/src/ckan
 
-  datapusher:
-    container_name: datapusher
-    hostname: datapusher
-    image: 746466009731.dkr.ecr.us-east-1.amazonaws.com/datapusher-plus:0.7.0
-    depends_on:
-      - db
-      - solr
-      - ckan
-    networks:
-      - frontend
-      - backend
-    ports:
-      - "8800:8800"
-    env_file:
-      - ./.env-ckan.env
-      - ./.env-datapusher.env
-
   db:
     container_name: db
     hostname: db
