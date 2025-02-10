@@ -8,5 +8,6 @@ docker/.tmp/*
 **node_modules**
 
 .env-secrets.env
+.env-ckan.override.env
 
 **/*build.log
