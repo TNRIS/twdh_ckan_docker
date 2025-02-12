@@ -16,13 +16,6 @@
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-composite",
-      "tag": "TWDHv0.2.6",
-      "branch": "",
-      "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
-    },
-    {
-      "owner": "TNRIS",
       "repo": "ckanext-contact",
       "tag": "twdh-0.6.0",
       "branch": "",
@@ -38,8 +31,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-datatablesview_plus",
-      "tag": "twdh-0.6.0",
-      "branch": "",
+      "tag": "",
+      "branch": "twdh-0.7.0-dev",
       "cmd": [
         "python setup.py install",
         "pip install botocore==1.27.29",
@@ -96,10 +89,10 @@
       "cmd": ["python setup.py install", "pip install -r requirements.txt"]
     },
     {
-      "owner": "ckan",
+      "owner": "TNRIS",
       "repo": "ckanext-scheming",
       "tag": "",
-      "branch": "master",
+      "branch": "completeness",
       "cmd": ["pip install -e ."]
     },
     {
@@ -112,8 +105,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-spatial",
-      "tag": "twdh-0.6.0",
-      "branch": "",
+      "tag": "",
+      "branch": "twdh-hotfix-numpy",
       "cmd": [
         "pip install -e .",
         "pip install -r requirements.txt",
@@ -130,15 +123,15 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_schema",
-      "tag": "twdh-0.6.0",
-      "branch": "",
+      "tag": "",
+      "branch": "twdh-0.7.0-dev",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_theme",
-      "tag": "twdh-0.6.1",
-      "branch": "",
+      "tag": "",
+      "branch": "twdh-0.7.0-dev",
       "cmd": [
         "pip install -e .",
         "pip install -r requirements.txt",
