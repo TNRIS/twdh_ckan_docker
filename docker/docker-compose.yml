@@ -65,7 +65,7 @@ services:
       - backend
     env_file:
       - ./.env-ckan.env
-      - ./.env-solr8.env
+      - ./.env-solr.env
     volumes:
       - solr_data:/var/solr
       - ./solr8/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d

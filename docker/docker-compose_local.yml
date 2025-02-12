@@ -17,8 +17,12 @@ services:
       - db
       - solr
     env_file:
-      - ./.env-ckan.env
-      - ./.env-secrets.env
+      - path: ./.env-ckan.env
+        required: true
+      - path: ./.env-ckan.override.env
+        required: false
+      - path: ./.env-secrets.env
+        required: true
     environment:
       - CKAN___BEAKER__SESSION__SECURE=false
       - CKAN_SQLALCHEMY_URL=postgresql://ckan:ckan@db/ckan
@@ -53,12 +57,13 @@ services:
   solr:
     container_name: solr
     hostname: solr
-    image: solr:8.11.1
+    #image: solr:8.11.1
+    image: solr:9.8.0
     networks:
       - backend
     env_file:
       - ./.env-ckan.env
-      - ./.env-solr8.env
+      - ./.env-solr.env
     volumes:
       - solr_data:/var/solr
       - ./solr8/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d

@@ -1,12 +1,13 @@
 ##################
 ### Build CKAN ###
 ##################
-FROM ubuntu:focal-20210827 as ckanbuild
+FROM ubuntu:jammy-20250126 as ckanbuild
 
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/TNRIS/ckan.git
-ENV GIT_BRANCH=twdh-patches-2.10.5
+#ENV GIT_BRANCH=twdh-patches-2.10.5
+ENV GIT_BRANCH=bb-dev-test-pr1
 
 # Set timezone
 ENV TZ=UTC
@@ -38,14 +39,14 @@ RUN apt-get install --no-install-recommends -y \
         curl \
         ca-certificates \
         python3 \
-        python3.8-venv \
+        python3.10-venv \
         libpq-dev \
         linux-headers-generic \
-            wget \
-            make \
-            autoconf \
-            automake \
-            libtool \
+        wget \
+        make \
+        autoconf \
+        automake \
+        libtool \
         patch \
         libpcre3-dev \
         libpcre3 \
@@ -64,9 +65,8 @@ ENV VIRTUAL_ENV=/srv/app/virtualenv
 RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
-# Downgrade setuptools so that CKAN requirements can be built
 RUN pip install --upgrade pip
-RUN pip install setuptools==44.1.0
+RUN pip install setuptools
 RUN pip install wheel
 
 # Fetch and build CKAN and requirements
@@ -77,7 +77,7 @@ RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 #############
 ### MAIN ####
 #############
-FROM ubuntu:focal-20210827
+FROM ubuntu:jammy-20250126
 
 ARG GH_TOKEN=default
 ARG TWDH_BUILD=prod
@@ -106,7 +106,6 @@ ENV CKAN_DIR=${SRC_DIR}/ckan
 ENV DATA_DIR=/srv/app/data
 ENV PIP_SRC=${SRC_DIR}
 ENV CKAN_SITE_URL=http://0.0.0.0:5000
-# must add geo_view for ckanext-spatial views
 ENV CKAN__MAX_RESOURCE_SIZE 512
 
 ENV CKAN__DEFAULT_VIEWS image_view \
@@ -134,7 +133,6 @@ ENV CKAN__PLUGINS \
     twdh_schema \
     scheming_datasets \
     scheming_organizations \
-    composite \
     contact \
     pages \
     resource_proxy \
@@ -173,9 +171,9 @@ RUN apt-get update && \
     g++-10 \
 	postgresql-client \
     python3 \
-    python3.8-venv \
+    python3.10-venv \
 	python3-distutils \
-	libpython3.8 \
+	libpython3.10 \
     libmagic1 \
     libpcre3 \
     libxslt1.1 \
@@ -193,6 +191,8 @@ RUN apt-get update && \
     zlib1g-dev \
     supervisor \
     file \
+    # Is proj-bin necessary here, in build phase, or both?
+    proj-bin \
     uchardet \
     apache2-utils && \
     rm -rf /var/lib/apt/lists/* && \
@@ -205,9 +205,8 @@ ENV VIRTUAL_ENV=/srv/app/virtualenv
 RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
-# Downgrade setuptools so that CKAN requirements can be built
 RUN pip install --upgrade pip
-RUN pip install setuptools==44.1.0
+RUN pip install setuptools
 RUN pip install wheel
 
 # Get artifacts from build stages
@@ -219,16 +218,36 @@ COPY ./plugins ${SRC_DIR}/plugins
 # Copy pre-built binaries into place
 COPY bin/qsvdp /usr/local/bin/qsvdp
 
+# Build PROJ generic coordinate transformation software required by ckanext-spatial
+
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
+    cmake \
+    sqlite3 \
+    libsqlite3-dev \
+    libtiff5-dev \
+    libcurl4-openssl-dev && \
+    curl https://download.osgeo.org/proj/proj-9.5.1.tar.gz --output proj-9.5.1.tar.gz && \
+    tar xzvf proj-9.5.1.tar.gz && \
+    cd proj-9.5.1 && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    cmake --build . && \
+    cmake --build . --target install &&  \
+    projsync --system-directory --all
+
 RUN ls ${SRC_DIR}/plugins
 
 # Additional install steps for build stages artifacts
-RUN pip install uWSGI==2.0.20 gevent==22.10.2
+RUN pip install uWSGI
+RUN pip install gevent
+
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
     useradd -rm -d /srv/app -s /bin/bash -g ckan -u 92 ckan
 
 WORKDIR ${CKAN_DIR}
-
 
 # Install CKAN
 RUN pip install -e /srv/app/src/ckan
@@ -263,9 +282,9 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     # upgrade ckan_max_resource_size
     ckan config-tool ${APP_DIR}/production.ini "ckan.max_resource_size = ${CKAN__MAX_RESOURCE_SIZE}" && \
     # add scheming config
-    ckan config-tool ${APP_DIR}/production.ini "scheming.dataset_schemas = ckanext.twdh_schema:schemas/dataset.yaml ckanext.twdh_schema:schemas/application.yaml" && \
+    ckan config-tool ${APP_DIR}/production.ini "scheming.dataset_schemas = ckanext.twdh_schema:schemas/dataset-druf.yaml ckanext.twdh_schema:schemas/application.yaml" && \
     ckan config-tool ${APP_DIR}/production.ini "scheming.organization_schemas = ckanext.twdh_schema:schemas/organization.yaml" && \
-    ckan config-tool ${APP_DIR}/production.ini "scheming.presets = ckanext.scheming:presets.json ckanext.composite:presets.json ckanext.twdh_schema:schemas/presets.yaml" && \
+    ckan config-tool ${APP_DIR}/production.ini "scheming.presets = ckanext.scheming:presets.json ckanext.twdh_schema:schemas/presets.yaml" && \
     # add ckan.spatial.search_backend to enable solr spatial search
     ckan config-tool ${APP_DIR}/production.ini "ckanext.spatial.search_backend = solr-bbox" && \
     # change default logo to tx water logo from cdn.tnris.org
