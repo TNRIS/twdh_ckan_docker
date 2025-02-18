@@ -60,7 +60,8 @@ services:
   solr:
     container_name: solr
     hostname: solr
-    image: solr:8.11.1
+    #image: solr:8.11.1
+    image: solr:9.8.0
     networks:
       - backend
     env_file:
@@ -68,7 +69,7 @@ services:
       - ./.env-solr.env
     volumes:
       - solr_data:/var/solr
-      - ./solr8/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ./solr/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
   redis:
     container_name: redis

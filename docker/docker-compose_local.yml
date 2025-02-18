@@ -28,16 +28,17 @@ services:
       - CKAN_SQLALCHEMY_URL=postgresql://ckan:ckan@db/ckan
     ports:
       - "0.0.0.0:5000:5000"
+      - "0.0.0.0:5678:5678"
+
     volumes:
       - ckan_data:/srv/app/data
     develop:
       watch:
         - action: sync
-          path: /usr/lib/ckan/default/src/ckanext-twdh_theme
-          target: /srv/app/src/ckan/ckanext-twdh_theme
-        - action: sync
-          path: /usr/lib/ckan/default/src/ckan
+          path: /usr/lib/ckan/default/src
           target: /srv/app/src/ckan
+    #stdin_open: true
+    #tty: true
 
   db:
     container_name: db
@@ -66,8 +67,7 @@ services:
       - ./.env-solr.env
     volumes:
       - solr_data:/var/solr
-      - ./solr8/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-
+      - ./solr9/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
   redis:
     container_name: redis
     hostname: redis
