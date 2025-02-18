@@ -1,6 +1,9 @@
 ##################
 ### Build CKAN ###
 ##################
+
+ARG ENV=base
+
 FROM ubuntu:jammy-20250126 as ckanbuild
 
 # Set CKAN version to build
@@ -74,13 +77,19 @@ RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
 
 RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 
-#############
-### MAIN ####
-#############
-FROM ubuntu:jammy-20250126
+
+# ┌─────────────────────────────────────────────────────────────┐
+# │                                                             │
+# │ Base image (Production env)                                 │
+# │ ---------------------------                                 │
+# │ This is always built                                        │
+# │                                                             │
+# └─────────────────────────────────────────────────────────────┘
+
+
+FROM ubuntu:jammy-20250126 as base
 
 ARG GH_TOKEN=default
-ARG TWDH_BUILD=prod
 
 LABEL maintainer="Texas Geographic Information Office"
 LABEL org.opencontainers.image.source https://github.com/tnris/twdh_ckan_docker
@@ -264,10 +273,6 @@ RUN ckan generate config ${APP_DIR}/production.ini
 # Install plugins
 RUN python ${SRC_DIR}/plugins/plugins.py
 
-# LOCAL DEV Setup
-RUN if [ "$TWDH_BUILD" = "dev" ]; then pip install flask-debugtoolbar==0.14.1; fi
-RUN if [ "$TWDH_BUILD" = "dev" ]; then apt-get update && apt-get install --no-install-recommends -y inotify-tools; fi
-RUN if [ "$TWDH_BUILD" = "dev" ]; then ckan config-tool ${APP_DIR}/production.ini "debug = true"; fi
 
 # Configure plugins
 RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}" && \
@@ -310,10 +315,12 @@ COPY setup/app ${APP_DIR}
 WORKDIR ${APP_DIR}
 
 # Create entrypoint directory for children image scripts
-ONBUILD RUN mkdir docker-entrypoint.d
+# Removed ONBUILD - ok?
+RUN mkdir docker-entrypoint.d
 
 # Create afterinit directory for children image scripts
-ONBUILD RUN mkdir docker-afterinit.d
+# Removed ONBUILD - ok?
+RUN mkdir docker-afterinit.d
 
 # Run before prerun.py
 COPY ./entrypoint.d ${APP_DIR}/docker-entrypoint.d
@@ -324,6 +331,25 @@ EXPOSE 5000
 
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0.0:5000/api/3/action/status_show || exit 1
 
-#USER ckan
-
 CMD ["/srv/app/start_ckan.sh"]
+
+
+# ┌─────────────────────────────────────────────────────────────┐
+# │                                                             │
+# │ Dev image (Development env)                                 │
+# │ ---------------------------                                 │
+# │ This is only built when ENV=dev                             │
+# │                                                             │
+# └─────────────────────────────────────────────────────────────┘
+
+
+FROM base as dev
+
+RUN pip install flask-debugtoolbar==0.14.1
+RUN pip install debugpy
+RUN apt-get update && apt-get install --no-install-recommends -y inotify-tools
+RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
+
+CMD ["/srv/app/start_ckan_dev.sh"]
+
+FROM ${ENV} as final
