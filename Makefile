@@ -27,7 +27,7 @@ build: ecrLogin
 	@docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --progress plain --no-cache 2>&1 | tee build.log
 
 build-dev: ecrLogin
-	@docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --build-arg TWDH_BUILD=dev --progress plain --no-cache 2>&1 | tee build.log
+	@docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --build-arg ENV=dev --progress plain --no-cache 2>&1 | tee build.log
 
 tag: build
 	docker tag 29_ckan:default ${ECR_URL}/29_ckan:${TAG}
