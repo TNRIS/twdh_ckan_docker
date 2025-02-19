@@ -47,6 +47,7 @@ jobs:
       - run: docker image ls
       - run: |
           cd docker && docker compose --file docker-compose_local.yml up --watch
+      - run: docker compose logs
       - name: docker_log
         uses: actions/upload-artifact@v4
         with:
