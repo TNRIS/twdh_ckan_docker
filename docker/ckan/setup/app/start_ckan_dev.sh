@@ -1,5 +1,6 @@
 #!/bin/bash
 # Run any startup scripts provided by images extending this one
+
 if [[ -d "${APP_DIR}/docker-entrypoint.d" ]]
 then
     for f in ${APP_DIR}/docker-entrypoint.d/*; do
@@ -39,14 +40,21 @@ if [ $? -eq 0 ]
 then
   # Start supervisord
   supervisord --configuration /etc/supervisor/supervisord.conf &
-  # Start ckan with debugpy
-  while true; do
-    python -m debugpy --listen 0.0.0.0:5678 /srv/app/virtualenv/bin/ckan -c /srv/app/production.ini run -H 0.0.0.0 --disable-reloader
-    echo Exit with status $?. Restarting.
-    sleep 2
-  done
+
+  if [ "$TWDH_MODE" = debug ]; 
+  then 
+    # Start ckan with debugpy so that VSCode debugger will work.
+    # Note that in this mode file syncing will not happen automaticlly
+    while true; do
+      python -m debugpy --listen 0.0.0.0:5678 /srv/app/virtualenv/bin/ckan -c /srv/app/production.ini run -H 0.0.0.0 --disable-reloader
+      echo Exit with status $?. Restarting.
+      sleep 2
+    done
+  else
+    # Start ckan without debugpy. DEV mode will still be on, but the VSCode debugger will not be able to attach.
+    uwsgi $UWSGI_OPTS
+  fi
   
-  # uwsgi $UWSGI_OPTS
 
 else
   echo "[prerun] failed...not starting CKAN."
