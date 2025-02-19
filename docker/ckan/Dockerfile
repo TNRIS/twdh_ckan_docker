@@ -250,7 +250,7 @@ RUN ls ${SRC_DIR}/plugins
 
 # Additional install steps for build stages artifacts
 RUN pip install uWSGI
-RUN pip install gevent
+RUN pip install gevent==22.10.2
 
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
@@ -349,6 +349,7 @@ RUN pip install flask-debugtoolbar==0.14.1
 RUN pip install debugpy
 RUN apt-get update && apt-get install --no-install-recommends -y \
     inotify-tools \
+    psmisc \
     vim
 RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
 
