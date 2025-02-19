@@ -347,7 +347,9 @@ FROM base as dev
 
 RUN pip install flask-debugtoolbar==0.14.1
 RUN pip install debugpy
-RUN apt-get update && apt-get install --no-install-recommends -y inotify-tools
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    inotify-tools \
+    vim
 RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
 
 CMD ["/srv/app/start_ckan_dev.sh"]
