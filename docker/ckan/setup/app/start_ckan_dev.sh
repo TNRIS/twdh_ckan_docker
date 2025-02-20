@@ -38,11 +38,12 @@ fi
 # Start supervisord
 supervisord --configuration /etc/supervisor/supervisord.conf &
 
-if [ "$TWDH_MODE" = debug ]; 
+if [ "$TWDH_MODE" = debug ];
 then 
   # Start ckan with debugpy so that VSCode debugger will work.
   # Note that in this mode file syncing will not happen automaticlly
-  ${APP_DIR}/watch_ckan.sh &
+  ${APP_DIR}/watch_ckan.sh ${CKAN_DIR} &
+  ${APP_DIR}/watch_ckan.sh ${APP_DIR}/production.ini &
 
   while true; do
     python -m debugpy --listen 0.0.0.0:5678 /srv/app/virtualenv/bin/ckan -c /srv/app/production.ini run -H 0.0.0.0 --disable-reloader
