@@ -38,3 +38,9 @@ ecrPush:
 	docker push ${ECR_URL}/29_ckan:${TAG}
 
 ecrBuildPush: ecrBuild ecrPush
+
+clean:
+	# This will purge all images and remove the CKAN and SOLR volumes
+	@docker system prune -a -f
+	@docker volume rm docker_ckan_data
+	@docker volume rm docker_solr_data
