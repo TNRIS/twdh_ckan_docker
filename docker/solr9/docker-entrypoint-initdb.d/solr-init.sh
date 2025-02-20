@@ -4,11 +4,11 @@
 # Arguments are supplied via environment variables: CKAN_CORE_NAME CKAN_VERSION
 # Example:
 #   CKAN_CORE_NAME=ckan
-#   CKAN_VERSION=2.9.9
+#   CKAN_VERSION=2.10.5
 
 set -e
 
-CKAN_SOLR_SCHEMA_URL=https://raw.githubusercontent.com/ckan/ckan/ckan-$CKAN_VERSION/ckan/config/solr/schema.solr8.xml 
+CKAN_SOLR_SCHEMA_URL=https://raw.githubusercontent.com/ckan/ckan/ckan-$CKAN_VERSION/ckan/config/solr/schema.xml 
 
 echo "Check whether managed schema exists for CKAN $CKAN_VERSION"
 if ! curl --output /dev/null --silent --head --fail "$CKAN_SOLR_SCHEMA_URL"; then
@@ -25,10 +25,10 @@ if [ -d "$COREDIR" ]; then
 else
     echo "Initializing SOLR core $CKAN_CORE_NAME for CKAN $CKAN_VERSION"
     # init script for handling an empty /var/solr
-    /opt/docker-solr/scripts/init-var-solr
+    /opt/solr/scripts/init-var-solr
     
     # Precreate CKAN core
-    /opt/docker-solr/scripts/precreate-core $CKAN_CORE_NAME
+    /opt/solr/scripts/precreate-core $CKAN_CORE_NAME
     
     # Replace the managed schema with CKANs schema
     echo "Adding CKAN managed schema"
