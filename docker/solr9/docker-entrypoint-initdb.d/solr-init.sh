@@ -25,10 +25,10 @@ if [ -d "$COREDIR" ]; then
 else
     echo "Initializing SOLR core $CKAN_CORE_NAME for CKAN $CKAN_VERSION"
     # init script for handling an empty /var/solr
-    /opt/solr/scripts/init-var-solr
+    /opt/solr/docker/scripts/init-var-solr
     
     # Precreate CKAN core
-    /opt/solr/scripts/precreate-core $CKAN_CORE_NAME
+    /opt/solr/docker/scripts/precreate-core $CKAN_CORE_NAME
     
     # Replace the managed schema with CKANs schema
     echo "Adding CKAN managed schema"
