@@ -35,27 +35,22 @@ then
     done
 fi
 
-# Check whether http basic auth password protection is enabled and enable basicauth routing on uwsgi respecfully
-if [ $? -eq 0 ]
-then
-  # Start supervisord
-  supervisord --configuration /etc/supervisor/supervisord.conf &
+# Start supervisord
+supervisord --configuration /etc/supervisor/supervisord.conf &
 
-  if [ "$TWDH_MODE" = debug ]; 
-  then 
-    # Start ckan with debugpy so that VSCode debugger will work.
-    # Note that in this mode file syncing will not happen automaticlly
-    while true; do
-      python -m debugpy --listen 0.0.0.0:5678 /srv/app/virtualenv/bin/ckan -c /srv/app/production.ini run -H 0.0.0.0 --disable-reloader
-      echo Exit with status $?. Restarting.
-      sleep 2
-    done
-  else
-    # Start ckan without debugpy. DEV mode will still be on, but the VSCode debugger will not be able to attach.
-    uwsgi $UWSGI_OPTS
-  fi
-  
+if [ "$TWDH_MODE" = debug ]; 
+then 
+  # Start ckan with debugpy so that VSCode debugger will work.
+  # Note that in this mode file syncing will not happen automaticlly
+  ${APP_DIR}/watch_ckan.sh &
 
+  while true; do
+    python -m debugpy --listen 0.0.0.0:5678 /srv/app/virtualenv/bin/ckan -c /srv/app/production.ini run -H 0.0.0.0 --disable-reloader
+    echo Exit with status $?. Restarting.
+    sleep 2
+  done
 else
-  echo "[prerun] failed...not starting CKAN."
+  # Start ckan without debugpy. DEV mode will still be on, but the VSCode debugger will not be able to attach.
+  uwsgi $UWSGI_OPTS
 fi
+  
