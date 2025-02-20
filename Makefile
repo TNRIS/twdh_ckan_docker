@@ -41,6 +41,6 @@ ecrBuildPush: ecrBuild ecrPush
 
 clean:
 	# This will purge all images and remove the CKAN and SOLR volumes
-	@docker system prune -a -f
+	@docker system prune -a -f --volumes
 	@docker volume rm docker_ckan_data
 	@docker volume rm docker_solr_data
