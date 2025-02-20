@@ -4,7 +4,7 @@
 
 ARG ENV=base
 
-FROM ubuntu:jammy-20250126 as ckanbuild
+FROM ubuntu:jammy-20250126 AS ckanbuild
 
 # Set CKAN version to build
 
@@ -87,7 +87,7 @@ RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 # └─────────────────────────────────────────────────────────────┘
 
 
-FROM ubuntu:jammy-20250126 as base
+FROM ubuntu:jammy-20250126 AS base
 
 ARG GH_TOKEN=default
 
@@ -343,7 +343,7 @@ CMD ["/srv/app/start_ckan.sh"]
 # └─────────────────────────────────────────────────────────────┘
 
 
-FROM base as dev
+FROM base AS dev
 
 RUN pip install flask-debugtoolbar==0.14.1
 RUN pip install debugpy
@@ -352,7 +352,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     psmisc \
     vim
 RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
+COPY ./watch-ckan.sh ${APP_DIR}
 
 CMD ["/srv/app/start_ckan_dev.sh"]
 
-FROM ${ENV} as final
+FROM ${ENV} AS final
