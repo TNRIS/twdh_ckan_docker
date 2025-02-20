@@ -47,7 +47,11 @@ jobs:
       - run: docker image ls
       - run: |
           cd docker && docker compose --file docker-compose_local.yml up -d --wait
-      - run: docker compose logs
+      - name: Dump docker logs on failure
+        if: failure()
+        uses: jwalton/gh-docker-logs@v2
+        with:
+          shell: '/bin/sh'
       - name: docker_log
         uses: actions/upload-artifact@v4
         with:
