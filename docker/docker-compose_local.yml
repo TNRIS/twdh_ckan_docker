@@ -37,8 +37,6 @@ services:
         - action: sync
           path: /usr/lib/ckan/default/src
           target: /srv/app/src/ckan
-    #stdin_open: true
-    #tty: true
 
   db:
     container_name: db
@@ -58,13 +56,12 @@ services:
   solr:
     container_name: solr
     hostname: solr
-    #image: solr:8.11.1
     image: solr:9.8.0
     networks:
       - backend
     env_file:
       - ./.env-ckan.env
-      - ./.env-solr.env
+      - ./.env-solr9.env
     volumes:
       - solr_data:/var/solr
       - ./solr9/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
