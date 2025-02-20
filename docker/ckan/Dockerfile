@@ -352,7 +352,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     psmisc \
     vim
 RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
-COPY ./watch-ckan.sh ${APP_DIR}
 
 CMD ["/srv/app/start_ckan_dev.sh"]
 
