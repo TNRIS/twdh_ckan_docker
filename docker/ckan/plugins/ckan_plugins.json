@@ -96,10 +96,10 @@
       "cmd": ["python setup.py install", "pip install -r requirements.txt"]
     },
     {
-      "owner": "ckan",
+      "owner": "TNRIS",
       "repo": "ckanext-scheming",
       "tag": "",
-      "branch": "master",
+      "branch": "completeness",
       "cmd": ["pip install -e ."]
     },
     {
