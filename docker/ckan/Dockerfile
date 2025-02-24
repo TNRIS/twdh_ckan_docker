@@ -65,9 +65,7 @@ RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 # Downgrade setuptools so that CKAN requirements can be built
-RUN pip install --upgrade pip
-RUN pip install setuptools==44.1.0
-RUN pip install wheel
+RUN pip install --upgrade pip setuptools>=61 wheel
 
 # Fetch and build CKAN and requirements
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
@@ -205,15 +203,16 @@ RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 # Downgrade setuptools so that CKAN requirements can be built
-RUN pip install --upgrade pip
-RUN pip install setuptools==44.1.0
-RUN pip install wheel
+RUN pip install --upgrade pip setuptools>=61 wheel
 
 # Get artifacts from build stages
 COPY --from=ckanbuild ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 COPY --from=ckanbuild ${WHEEL_DIR} /srv/app/wheels
 COPY --from=ckanbuild ${CKAN_DIR} ${CKAN_DIR}
 COPY ./plugins ${SRC_DIR}/plugins
+
+# Copy pre-built binaries into place
+COPY bin/qsvdp /usr/local/bin/qsvdp
 
 RUN ls ${SRC_DIR}/plugins
 
