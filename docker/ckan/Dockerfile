@@ -65,8 +65,7 @@ RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 # Downgrade setuptools so that CKAN requirements can be built
-#RUN pip install --upgrade pip setuptools==44.1.0 wheel
-RUN pip install --upgrade pip setuptools>=61 wheel
+RUN pip install --upgrade pip setuptools==44.1.0 wheel
 
 # Fetch and build CKAN and requirements
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
@@ -204,8 +203,7 @@ RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 # Downgrade setuptools so that CKAN requirements can be built
-#RUN pip install --upgrade pip setuptools==44.1.0 wheel
-RUN pip install --upgrade pip setuptools>=61 wheel
+RUN pip install --upgrade pip setuptools==44.1.0 wheel
 
 # Get artifacts from build stages
 COPY --from=ckanbuild ${VIRTUAL_ENV} ${VIRTUAL_ENV}
