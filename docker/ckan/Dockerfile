@@ -68,9 +68,8 @@ ENV VIRTUAL_ENV=/srv/app/virtualenv
 RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
-RUN pip install --upgrade pip
-RUN pip install setuptools
-RUN pip install wheel
+# It is important that all these be in the same `pip install` command for some reason
+RUN pip install --upgrade pip setuptools>=61 wheel
 
 # Fetch and build CKAN and requirements
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
@@ -214,9 +213,7 @@ ENV VIRTUAL_ENV=/srv/app/virtualenv
 RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
-RUN pip install --upgrade pip
-RUN pip install setuptools
-RUN pip install wheel
+RUN pip install --upgrade pip setuptools>=61 wheel
 
 # Get artifacts from build stages
 COPY --from=ckanbuild ${VIRTUAL_ENV} ${VIRTUAL_ENV}
