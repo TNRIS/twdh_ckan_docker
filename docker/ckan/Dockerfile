@@ -65,6 +65,7 @@ RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 # Downgrade setuptools so that CKAN requirements can be built
+#RUN pip install --upgrade pip setuptools==44.1.0 wheel
 RUN pip install --upgrade pip setuptools>=61 wheel
 
 # Fetch and build CKAN and requirements
@@ -203,6 +204,7 @@ RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 # Downgrade setuptools so that CKAN requirements can be built
+#RUN pip install --upgrade pip setuptools==44.1.0 wheel
 RUN pip install --upgrade pip setuptools>=61 wheel
 
 # Get artifacts from build stages
@@ -271,19 +273,6 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
 # Setup supervisor
 COPY ./supervisord.conf /etc/supervisor/
 COPY ./supervisor-ckan-worker.conf /etc/supervisor/conf.d/
-
-# install Rust, then qsvdp
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    # source the cargo env to setup the $PATH for rust
-    . $HOME/.cargo/env && \
-    # install qsvdp from source
-    git clone https://github.com/dathere/qsv.git && \
-    cd qsv && \
-    export CARGO_BUILD_RUSTFLAGS='-C target-cpu=native' && \
-    cargo build --release --locked --bin qsvdp -F datapusher_plus,luau,polars && \
-    # mv the qsvdp binary so that ckan user can run it
-    mv target/release/qsvdp /usr/local/bin/ && \
-    cargo clean
 
 # Remove wheels
 RUN rm -rf /srv/app/wheels
