@@ -68,7 +68,7 @@ ENV VIRTUAL_ENV=/srv/app/virtualenv
 RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
-# It is important that all these be in the same `pip install` command for some reason
+
 RUN pip install --upgrade pip "setuptools-scm<8" setuptools>=44.1.0 wheel
 
 # Fetch and build CKAN and requirements
@@ -76,6 +76,7 @@ RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
 
 RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 
+RUN pip list
 
 # ┌─────────────────────────────────────────────────────────────┐
 # │                                                             │
@@ -144,7 +145,7 @@ ENV CKAN__PLUGINS \
     contact \
     pages \
     resource_proxy \
-    geo_view \ 
+    geo_view \
     geojson_view \
     wmts_view \
     shp_view \
@@ -257,16 +258,20 @@ WORKDIR ${CKAN_DIR}
 
 # Install CKAN
 RUN pip install -e /srv/app/src/ckan
+
+# comment out below if using ckanext-security and use own who.ini
 # COPY overwrite.who.ini into app dir for ckanext-security required configurations
 COPY ./overwrite.who.ini ${APP_DIR}/who.ini
 COPY ./overwrite.who.dev.ini ${APP_DIR}/devwho.ini
 
-# comment out below if using ckanext-security and use own who.ini
 RUN pip install --no-index --find-links=/srv/app/wheels -r requirements.txt
 RUN pip install future
 
 # Generate CKAN config
 RUN ckan generate config ${APP_DIR}/production.ini
+
+RUN pip list
+
 # Install plugins
 RUN python ${SRC_DIR}/plugins/plugins.py
 
@@ -347,6 +352,7 @@ RUN pip install debugpy
 RUN apt-get update && apt-get install --no-install-recommends -y \
     inotify-tools \
     psmisc \
+    lsb-release \
     vim
 RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
 
