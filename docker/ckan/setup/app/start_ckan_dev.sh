@@ -38,20 +38,39 @@ fi
 # Start supervisord
 supervisord --configuration /etc/supervisor/supervisord.conf &
 
-if [ "$TWDH_MODE" = debug ];
+if [ "$TWDH_DEV_MODE" = debug ];
 then 
   # Start ckan with debugpy so that VSCode debugger will work.
-  # Note that in this mode file syncing will not happen automaticlly
+  # Note that in this mode file syncing will not happen automatically
   ${APP_DIR}/watch_ckan.sh ${CKAN_DIR} &
   ${APP_DIR}/watch_ckan.sh ${APP_DIR}/production.ini &
 
   while true; do
+    echo "TWDH_DEV_MODE=debug !! VSCode debugging enabled BUT CKAN will be slow to update on code changes, so watch the logs"
     python -m debugpy --listen 0.0.0.0:5678 /srv/app/virtualenv/bin/ckan -c /srv/app/production.ini run -H 0.0.0.0 --disable-reloader
     echo Exit with status $?. Restarting.
     sleep 2
   done
-else
+
+elif [ "$TWDH_DEV_MODE" = nockan ];
+then 
+  # This mode is for debugging when CKAN is crashing inside the 
+  # Docker image. You will need to `docker exec` into the image 
+  # and start CKAN manually as is appropriate to your debugging 
+  # scenario.
+  while true; do
+    echo "TWDH_DEV_MODE=nockan !! RUNNING AN EMPTY LOOP FOR DEBUG; START uWSGI or CKAN MANUALLY!"
+    sleep 600;
+  done
+
+elif [ "$TWDH_DEV_MODE" = dev ];
+then 
+  echo "TWDH_DEV_MODE=dev ## Local file sync enabled, but VSCode debugger not available"
   # Start ckan without debugpy. DEV mode will still be on, but the VSCode debugger will not be able to attach.
   uwsgi $UWSGI_OPTS
+
+else
+  echo "TWDH_DEV_MODE not valid! Set TWDH_DEV_MODE to dev, debug or nockan"
+  echo "TWDH_DEV_MODE currently set to ${TWDH_DEV_MODE}"
 fi
   
