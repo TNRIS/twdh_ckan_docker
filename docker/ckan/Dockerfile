@@ -247,8 +247,7 @@ RUN apt-get update && \
 RUN ls ${SRC_DIR}/plugins
 
 # Additional install steps for build stages artifacts
-RUN pip install uWSGI
-RUN pip install gevent==22.10.2
+RUN pip install uWSGI gevent
 
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
@@ -332,6 +331,8 @@ COPY ./afterinit.d ${APP_DIR}/docker-afterinit.d
 EXPOSE 5000
 
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0.0:5000/api/3/action/status_show || exit 1
+
+RUN pip list
 
 CMD ["/srv/app/start_ckan.sh"]
 
