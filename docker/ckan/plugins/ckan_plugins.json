@@ -108,6 +108,7 @@
       "tag": "",
       "branch": "twdh-hotfix-numpy",
       "cmd": [
+        "pip install setuptools==44.1.0",
         "pip install -e .",
         "pip install -r requirements.txt",
         "pip install pika"
