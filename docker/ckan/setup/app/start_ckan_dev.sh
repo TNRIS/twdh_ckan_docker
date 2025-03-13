@@ -41,7 +41,7 @@ supervisord --configuration /etc/supervisor/supervisord.conf &
 if [ "$TWDH_DEV_MODE" = debug ];
 then 
   # Start ckan with debugpy so that VSCode debugger will work.
-  # Note that in this mode file syncing will not happen automatically
+  # Note that in this mode file syncing will happen more slowly than normal
   ${APP_DIR}/watch_ckan.sh ${CKAN_DIR} &
   ${APP_DIR}/watch_ckan.sh ${APP_DIR}/production.ini &
 
@@ -58,6 +58,7 @@ then
   # Docker image. You will need to `docker exec` into the image 
   # and start CKAN manually as is appropriate to your debugging 
   # scenario.
+  # This mode is also useful for using Pdb to debug
   while true; do
     echo "TWDH_DEV_MODE=nockan !! RUNNING AN EMPTY LOOP FOR DEBUG; START uWSGI or CKAN MANUALLY!"
     sleep 600;
