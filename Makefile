@@ -26,6 +26,9 @@ ecrLogin:
 build: ecrLogin
 	@docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --progress plain --no-cache 2>&1 | tee build.log
 
+build-dev: ecrLogin
+	@docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --build-arg ENV=dev --progress plain 2>&1 | tee build.log
+
 tag: build
 	docker tag 29_ckan:default ${ECR_URL}/29_ckan:${TAG}
 
@@ -35,3 +38,9 @@ ecrPush:
 	docker push ${ECR_URL}/29_ckan:${TAG}
 
 ecrBuildPush: ecrBuild ecrPush
+
+clean:
+	# This will purge all images and remove the CKAN and SOLR volumes
+	@docker system prune -a -f --volumes
+	@docker volume rm docker_ckan_data
+	@docker volume rm docker_solr_data

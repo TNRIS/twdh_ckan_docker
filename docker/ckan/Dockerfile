@@ -1,12 +1,16 @@
 ##################
 ### Build CKAN ###
 ##################
-FROM ubuntu:focal-20210827 as ckanbuild
+
+ARG ENV=base
+
+FROM ubuntu:jammy-20250126 AS ckanbuild
 
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/TNRIS/ckan.git
-ENV GIT_BRANCH=twdh-patches-2.10.5
+#ENV GIT_BRANCH=twdh-patches-2.10.5
+ENV GIT_BRANCH=bb-dev-test-pr1
 
 # Set timezone
 ENV TZ=UTC
@@ -38,14 +42,14 @@ RUN apt-get install --no-install-recommends -y \
         curl \
         ca-certificates \
         python3 \
-        python3.8-venv \
+        python3.10-venv \
         libpq-dev \
         linux-headers-generic \
-            wget \
-            make \
-            autoconf \
-            automake \
-            libtool \
+        wget \
+        make \
+        autoconf \
+        automake \
+        libtool \
         patch \
         libpcre3-dev \
         libpcre3 \
@@ -64,20 +68,26 @@ ENV VIRTUAL_ENV=/srv/app/virtualenv
 RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
-# Downgrade setuptools so that CKAN requirements can be built
-RUN pip install --upgrade pip
-RUN pip install setuptools==44.1.0
-RUN pip install wheel
+
+RUN pip install --upgrade pip "setuptools-scm<8" setuptools>=44.1.0 wheel
 
 # Fetch and build CKAN and requirements
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
 
 RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 
-#############
-### MAIN ####
-#############
-FROM ubuntu:focal-20210827
+RUN pip list
+
+# ┌─────────────────────────────────────────────────────────────┐
+# │                                                             │
+# │ Base image (Production env)                                 │
+# │ ---------------------------                                 │
+# │ This is always built                                        │
+# │                                                             │
+# └─────────────────────────────────────────────────────────────┘
+
+
+FROM ubuntu:jammy-20250126 AS base
 
 ARG GH_TOKEN=default
 
@@ -105,7 +115,6 @@ ENV CKAN_DIR=${SRC_DIR}/ckan
 ENV DATA_DIR=/srv/app/data
 ENV PIP_SRC=${SRC_DIR}
 ENV CKAN_SITE_URL=http://0.0.0.0:5000
-# must add geo_view for ckanext-spatial views
 ENV CKAN__MAX_RESOURCE_SIZE 512
 
 ENV CKAN__DEFAULT_VIEWS image_view \
@@ -133,11 +142,10 @@ ENV CKAN__PLUGINS \
     twdh_schema \
     scheming_datasets \
     scheming_organizations \
-    composite \
     contact \
     pages \
     resource_proxy \
-    geo_view \ 
+    geo_view \
     geojson_view \
     wmts_view \
     shp_view \
@@ -172,9 +180,9 @@ RUN apt-get update && \
     g++-10 \
 	postgresql-client \
     python3 \
-    python3.8-venv \
+    python3.10-venv \
 	python3-distutils \
-	libpython3.8 \
+	libpython3.10 \
     libmagic1 \
     libpcre3 \
     libxslt1.1 \
@@ -192,6 +200,8 @@ RUN apt-get update && \
     zlib1g-dev \
     supervisor \
     file \
+    # Is proj-bin necessary here, in build phase, or both?
+    proj-bin \
     uchardet \
     apache2-utils && \
     rm -rf /var/lib/apt/lists/* && \
@@ -204,10 +214,7 @@ ENV VIRTUAL_ENV=/srv/app/virtualenv
 RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
-# Downgrade setuptools so that CKAN requirements can be built
-RUN pip install --upgrade pip
-RUN pip install setuptools==44.1.0
-RUN pip install wheel
+RUN pip install --upgrade pip "setuptools-scm<8" setuptools>=44.1.0 wheel
 
 # Get artifacts from build stages
 COPY --from=ckanbuild ${VIRTUAL_ENV} ${VIRTUAL_ENV}
@@ -215,31 +222,61 @@ COPY --from=ckanbuild ${WHEEL_DIR} /srv/app/wheels
 COPY --from=ckanbuild ${CKAN_DIR} ${CKAN_DIR}
 COPY ./plugins ${SRC_DIR}/plugins
 
+# Copy pre-built binaries into place
+COPY bin/qsvdp /usr/local/bin/qsvdp
+
+# Build PROJ generic coordinate transformation software required by ckanext-spatial
+
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
+    cmake \
+    sqlite3 \
+    libsqlite3-dev \
+    libtiff5-dev \
+    libcurl4-openssl-dev && \
+    curl https://download.osgeo.org/proj/proj-9.5.1.tar.gz --output proj-9.5.1.tar.gz && \
+    tar xzvf proj-9.5.1.tar.gz && \
+    cd proj-9.5.1 && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    cmake --build . && \
+    cmake --build . --target install &&  \
+    projsync --system-directory --all
+
 RUN ls ${SRC_DIR}/plugins
 
+# Fix ckanext-googleanalytics dependency issue
+RUN pip install google-api-python-client==1.6.7
+
 # Additional install steps for build stages artifacts
-RUN pip install uWSGI==2.0.20 gevent==22.10.2
+RUN pip install uWSGI gevent
+
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
     useradd -rm -d /srv/app -s /bin/bash -g ckan -u 92 ckan
 
 WORKDIR ${CKAN_DIR}
 
-
 # Install CKAN
 RUN pip install -e /srv/app/src/ckan
+
+# comment out below if using ckanext-security and use own who.ini
 # COPY overwrite.who.ini into app dir for ckanext-security required configurations
 COPY ./overwrite.who.ini ${APP_DIR}/who.ini
 COPY ./overwrite.who.dev.ini ${APP_DIR}/devwho.ini
 
-# comment out below if using ckanext-security and use own who.ini
 RUN pip install --no-index --find-links=/srv/app/wheels -r requirements.txt
 RUN pip install future
 
 # Generate CKAN config
 RUN ckan generate config ${APP_DIR}/production.ini
+
+RUN pip list
+
 # Install plugins
 RUN python ${SRC_DIR}/plugins/plugins.py
+
 
 # Configure plugins
 RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}" && \
@@ -254,9 +291,9 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     # upgrade ckan_max_resource_size
     ckan config-tool ${APP_DIR}/production.ini "ckan.max_resource_size = ${CKAN__MAX_RESOURCE_SIZE}" && \
     # add scheming config
-    ckan config-tool ${APP_DIR}/production.ini "scheming.dataset_schemas = ckanext.twdh_schema:schemas/dataset.yaml ckanext.twdh_schema:schemas/application.yaml" && \
+    ckan config-tool ${APP_DIR}/production.ini "scheming.dataset_schemas = ckanext.twdh_schema:schemas/dataset-druf.yaml ckanext.twdh_schema:schemas/application.yaml" && \
     ckan config-tool ${APP_DIR}/production.ini "scheming.organization_schemas = ckanext.twdh_schema:schemas/organization.yaml" && \
-    ckan config-tool ${APP_DIR}/production.ini "scheming.presets = ckanext.scheming:presets.json ckanext.composite:presets.json ckanext.twdh_schema:schemas/presets.yaml" && \
+    ckan config-tool ${APP_DIR}/production.ini "scheming.presets = ckanext.scheming:presets.json ckanext.twdh_schema:schemas/presets.yaml" && \
     # add ckan.spatial.search_backend to enable solr spatial search
     ckan config-tool ${APP_DIR}/production.ini "ckanext.spatial.search_backend = solr-bbox" && \
     # change default logo to tx water logo from cdn.tnris.org
@@ -273,19 +310,6 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
 COPY ./supervisord.conf /etc/supervisor/
 COPY ./supervisor-ckan-worker.conf /etc/supervisor/conf.d/
 
-# install Rust, then qsvdp
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    # source the cargo env to setup the $PATH for rust
-    . $HOME/.cargo/env && \
-    # install qsvdp from source
-    git clone https://github.com/dathere/qsv.git && \
-    cd qsv && \
-    export CARGO_BUILD_RUSTFLAGS='-C target-cpu=native' && \
-    cargo build --release --locked --bin qsvdp -F datapusher_plus,luau,polars && \
-    # mv the qsvdp binary so that ckan user can run it
-    mv target/release/qsvdp /usr/local/bin/ && \
-    cargo clean
-
 # Remove wheels
 RUN rm -rf /srv/app/wheels
 
@@ -295,10 +319,12 @@ COPY setup/app ${APP_DIR}
 WORKDIR ${APP_DIR}
 
 # Create entrypoint directory for children image scripts
-ONBUILD RUN mkdir docker-entrypoint.d
+# Removed ONBUILD - ok?
+RUN mkdir docker-entrypoint.d
 
 # Create afterinit directory for children image scripts
-ONBUILD RUN mkdir docker-afterinit.d
+# Removed ONBUILD - ok?
+RUN mkdir docker-afterinit.d
 
 # Run before prerun.py
 COPY ./entrypoint.d ${APP_DIR}/docker-entrypoint.d
@@ -309,6 +335,31 @@ EXPOSE 5000
 
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0.0:5000/api/3/action/status_show || exit 1
 
-#USER ckan
+RUN pip list
 
 CMD ["/srv/app/start_ckan.sh"]
+
+
+# ┌─────────────────────────────────────────────────────────────┐
+# │                                                             │
+# │ Dev image (Development env)                                 │
+# │ ---------------------------                                 │
+# │ This is only built when ENV=dev                             │
+# │                                                             │
+# └─────────────────────────────────────────────────────────────┘
+
+
+FROM base AS dev
+
+RUN pip install flask-debugtoolbar==0.14.1
+RUN pip install debugpy
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    inotify-tools \
+    psmisc \
+    lsb-release \
+    vim
+RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
+
+CMD ["/srv/app/start_ckan_dev.sh"]
+
+FROM ${ENV} AS final
