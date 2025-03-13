@@ -246,6 +246,9 @@ RUN apt-get update && \
 
 RUN ls ${SRC_DIR}/plugins
 
+# Fix ckanext-googleanalytics dependency issue
+RUN pip install google-api-python-client==1.6.7
+
 # Additional install steps for build stages artifacts
 RUN pip install uWSGI gevent
 
