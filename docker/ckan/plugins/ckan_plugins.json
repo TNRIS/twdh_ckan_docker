@@ -99,7 +99,7 @@
       "owner": "TNRIS",
       "repo": "ckanext-security",
       "tag": "",
-      "branch": "dp+-conflict",
+      "branch": "twdh-patches",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
