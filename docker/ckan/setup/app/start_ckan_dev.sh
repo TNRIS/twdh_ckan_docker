@@ -1,6 +1,8 @@
 #!/bin/bash
 # Run any startup scripts provided by images extending this one
 
+echo "TWDH_DEV_MODE=${TWDH_DEV_MODE}"
+
 if [[ -d "${APP_DIR}/docker-entrypoint.d" ]]
 then
     for f in ${APP_DIR}/docker-entrypoint.d/*; do
