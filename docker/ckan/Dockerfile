@@ -9,8 +9,8 @@ FROM ubuntu:jammy-20250126 AS ckanbuild
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/TNRIS/ckan.git
-#ENV GIT_BRANCH=twdh-patches-2.10.5
-ENV GIT_BRANCH=bb-dev-test-pr1
+ENV GIT_BRANCH=twdh-patches-2.10.5
+#ENV GIT_BRANCH=bb-dev-test-pr1
 
 # Set timezone
 ENV TZ=UTC
@@ -69,14 +69,17 @@ RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 
-RUN pip install --upgrade pip "setuptools-scm<8" setuptools>=44.1.0 wheel
+RUN pip install --upgrade pip "setuptools-scm<8" "setuptools>=44.1.0" wheel
 
 # Fetch and build CKAN and requirements
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
 
-RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 
+RUN python -V
+RUN pip -V
 RUN pip list
+
+RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 
 # ┌─────────────────────────────────────────────────────────────┐
 # │                                                             │
@@ -214,7 +217,7 @@ ENV VIRTUAL_ENV=/srv/app/virtualenv
 RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
-RUN pip install --upgrade pip "setuptools-scm<8" setuptools>=44.1.0 wheel
+RUN pip install --upgrade pip "setuptools-scm<8" "setuptools>=44.1.0" wheel
 
 # Get artifacts from build stages
 COPY --from=ckanbuild ${VIRTUAL_ENV} ${VIRTUAL_ENV}
@@ -272,6 +275,8 @@ RUN pip install future
 # Generate CKAN config
 RUN ckan generate config ${APP_DIR}/production.ini
 
+RUN python -V
+RUN pip -V
 RUN pip list
 
 # Install plugins
@@ -335,6 +340,8 @@ EXPOSE 5000
 
 HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0.0:5000/api/3/action/status_show || exit 1
 
+RUN python -V
+RUN pip -V
 RUN pip list
 
 CMD ["/srv/app/start_ckan.sh"]
