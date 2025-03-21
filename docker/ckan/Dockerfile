@@ -202,8 +202,8 @@ RUN apt-get update && \
     # Is proj-bin necessary here, in build phase, or both?
     proj-bin \
     uchardet \
+    vim \
     apache2-utils && \
-    vim && \
     rm -rf /var/lib/apt/lists/* && \
     # Create SRC_DIR
     mkdir -p ${SRC_DIR}
