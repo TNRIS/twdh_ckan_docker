@@ -124,12 +124,13 @@ ENV CKAN__DEFAULT_VIEWS image_view \
     openapi_viewer \
     text_view \
     geo_view \
-    geojson_view \
+#geojson_view \
     datatablesview_plus \ 
     ags_fs_view 
 
 ENV CKAN__PLUGINS \
     stats \
+#twdh_theme \
     activity \
     security \
     report \
@@ -139,13 +140,16 @@ ENV CKAN__PLUGINS \
     image_view \
     video_view \
     datastore \
-    spatial_metadata \
-    spatial_query \
+#spatial_metadata \
+#spatial_query \
+#twdh_schema \
+#scheming_datasets \
+#scheming_organizations \
     contact \
     pages \
     resource_proxy \
     geo_view \
-    geojson_view \
+#geojson_view \
     wmts_view \
     shp_view \
     datatablesview_plus \
