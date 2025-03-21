@@ -130,7 +130,6 @@ ENV CKAN__DEFAULT_VIEWS image_view \
 
 ENV CKAN__PLUGINS \
     stats \
-    twdh_theme \
     activity \
     security \
     report \
@@ -142,9 +141,6 @@ ENV CKAN__PLUGINS \
     datastore \
     spatial_metadata \
     spatial_query \
-    twdh_schema \
-    scheming_datasets \
-    scheming_organizations \
     contact \
     pages \
     resource_proxy \
@@ -207,6 +203,7 @@ RUN apt-get update && \
     proj-bin \
     uchardet \
     apache2-utils && \
+    vim && \
     rm -rf /var/lib/apt/lists/* && \
     # Create SRC_DIR
     mkdir -p ${SRC_DIR}
