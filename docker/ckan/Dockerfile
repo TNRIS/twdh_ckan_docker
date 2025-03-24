@@ -69,7 +69,8 @@ RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 
-RUN pip install --upgrade pip "setuptools-scm<8" "setuptools>=44.1.0" wheel
+RUN pip install "setuptools-scm<8" "setuptools>=44.1.0" wheel
+#RUN pip install --upgrade pip "setuptools-scm<8" "setuptools>=44.1.0" wheel
 
 # Fetch and build CKAN and requirements
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
@@ -124,13 +125,13 @@ ENV CKAN__DEFAULT_VIEWS image_view \
     openapi_viewer \
     text_view \
     geo_view \
-#geojson_view \
+    geojson_view \
     datatablesview_plus \ 
     ags_fs_view 
 
 ENV CKAN__PLUGINS \
     stats \
-#twdh_theme \
+    twdh_theme \
     activity \
     security \
     report \
@@ -140,16 +141,16 @@ ENV CKAN__PLUGINS \
     image_view \
     video_view \
     datastore \
-#spatial_metadata \
-#spatial_query \
-#twdh_schema \
-#scheming_datasets \
-#scheming_organizations \
+    spatial_metadata \
+    spatial_query \
+    twdh_schema \
+    scheming_datasets \
+    scheming_organizations \
     contact \
     pages \
     resource_proxy \
     geo_view \
-#geojson_view \
+    geojson_view \
     wmts_view \
     shp_view \
     datatablesview_plus \
@@ -218,7 +219,8 @@ ENV VIRTUAL_ENV=/srv/app/virtualenv
 RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
-RUN pip install --upgrade pip "setuptools-scm<8" "setuptools>=44.1.0" wheel
+RUN pip install "setuptools-scm<8" "setuptools>=44.1.0" wheel
+#RUN pip install --upgrade pip "setuptools-scm<8" "setuptools>=44.1.0" wheel
 
 # Get artifacts from build stages
 COPY --from=ckanbuild ${VIRTUAL_ENV} ${VIRTUAL_ENV}
@@ -249,6 +251,9 @@ RUN apt-get update && \
     projsync --system-directory --all
 
 RUN ls ${SRC_DIR}/plugins
+
+# Fix ckanext-spatial dependency issue
+RUN pip install geojson shapely
 
 # Fix ckanext-googleanalytics dependency issue
 RUN pip install google-api-python-client==1.6.7
