@@ -70,7 +70,7 @@ services:
     hostname: redis
     env_file:
       - ./.env-redis.env
-    image: redis:6.0.7
+    image: redis:7.2.0
     networks:
       - backend
 
