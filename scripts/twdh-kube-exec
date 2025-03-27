@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cid=`kubectl get pods | grep ckan-dev- | grep -v solr | grep -v zookeeper | grep Running` 
+#| sed 's/ / /' | awk '{print $1}' 
+
+echo $cid
+
+#kubectl exec -it -- /bin/bash
+
+
