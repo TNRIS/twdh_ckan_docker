@@ -16,6 +16,17 @@
     },
     {
       "owner": "TNRIS",
+      "repo": "ckanext-composite",
+      "tag": "TWDHv0.2.6",
+      "branch": "master",
+      "cmd": [
+        "python setup.py install", 
+        "pip install -r dev-requirements.txt",
+        "pip install pytz==2021.3"
+      ]
+    },
+    {
+      "owner": "TNRIS",
       "repo": "ckanext-contact",
       "tag": "twdh-0.6.0",
       "branch": "",
