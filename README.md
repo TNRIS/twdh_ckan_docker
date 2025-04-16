@@ -30,8 +30,8 @@ flowchart TD
 - Review the [Makefile](https://github.com/TNRIS/twdh_ckan_docker/blob/main/Makefile) for details
 - Primary make targets:
   - `make build`: Build the image for PROD or DEV deployment. This build does not user Docker caching.
-    - `make build-dev`: Build the image for local development. This version allows Docker's cache system to work, which makes for a much speedier build most of the time, but sometimes it doesn't pick up the changes you've made and you'll need to build without the cache turned on using `make build-dev-no-cache`. See Docker docs for deatils on how caching works.
-    - `make build-dev-no-cache`: Build the image for local development without allowing Docker's cache.
+  - `make build-dev`: Build the image for local development. This version allows Docker's cache system to work, which makes for a much speedier build most of the time, but sometimes it doesn't pick up the changes you've made and you'll need to build without the cache turned on using `make build-dev-no-cache`. See Docker docs for deatils on how caching works.
+  - `make build-dev-no-cache`: Build the image for local development without allowing Docker's cache.
 
 ## Development Use
 
@@ -41,7 +41,7 @@ flowchart TD
 
 - twdh_ckan_docker offers 3 development modes
   - `dev` runs the container normally, the way it will run on DEV/PROD
-  - `nockan` starts the container and all of the services but does not start CKAN. In this mode, in order to start CKAN you need to exec into the Docker container and start CKAN using `ckan -c production.ini run -H 0.0.0.0`. [See below] for instructions on execing into the container.
+  - `nockan` starts the container and all of the services but does not start CKAN. In this mode, in order to start CKAN you need to exec into the Docker container and start CKAN using `ckan -c production.ini run -H 0.0.0.0`. [See below](#running-the-docker-image-locally) for instructions on execing into the container.
   - `debug` starts the container in a way that allows you to attach the VS Code debugger (INSTRUCTIONS NEEDED)
   - see [docker/ckan/setup/app/start_ckan_dev.sh](https://github.com/TNRIS/twdh_ckan_docker/blob/main/docker/ckan/setup/app/start_ckan_dev.sh) for more details
 
