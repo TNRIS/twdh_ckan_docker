@@ -52,7 +52,6 @@ services:
       test: ["CMD", "pg_isready", "-U", "postgres"]
     ports: 
       - "9000:5432"
-
   solr:
     container_name: solr
     hostname: solr
@@ -65,8 +64,6 @@ services:
     volumes:
       - solr_data:/var/solr
       - ./solr9/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-    ports: 
-      - "8983:8983"
   redis:
     container_name: redis
     hostname: redis

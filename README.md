@@ -30,7 +30,7 @@ flowchart TD
 - Review the [Makefile](https://github.com/TNRIS/twdh_ckan_docker/blob/main/Makefile) for details
 - Primary make targets:
   - `make build`: Build the image for PROD or DEV deployment. This build does not user Docker caching.
-  - `make build-dev`: Build the image for local development. This version allows Docker's cache system to work, which makes for a much speedier build most of the time, but sometimes it doesn't pick up the changes you've made and you'll need to build without the cache turned on using `make build-dev-no-cache`. See Docker docs for deatils on how caching works.
+  - `make build-dev`: Build the image for local development. This version allows Docker's cache system to work, which makes for a much speedier build most of the time, but sometimes it doesn't pick up the changes you've made and you'll need to build without the cache turned on using `make build-dev-no-cache`. See Docker docs for details on how caching works.
   - `make build-dev-no-cache`: Build the image for local development without allowing Docker's cache.
 
 ## Development Use
@@ -47,7 +47,7 @@ flowchart TD
 
 - If you need to override environment variables, create a file called `docker/.env-ckan.override.env`. This is useful for switching the DEV MODE or for experimenting with CKAN Config changes. For example:
   ```
-  # Set dev mode so that you can use pdg debugging
+  # Set dev mode so that you can use pdb debugging
   TWDH_DEV_MODE=nockan
 
   # Change twdh.version
