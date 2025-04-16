@@ -46,19 +46,19 @@ flowchart TD
   - see [docker/ckan/setup/app/start_ckan_dev.sh](https://github.com/TNRIS/twdh_ckan_docker/blob/main/docker/ckan/setup/app/start_ckan_dev.sh) for more details
 
 - If you need to override environment variables, create a file called `docker/.env-ckan.override.env`. This is useful for switching the DEV MODE or for experimenting with CKAN Config changes. For example:
-```
-# Set dev mode so that you can use pdg debugging
-TWDH_DEV_MODE=nockan
+  ```
+  # Set dev mode so that you can use pdg debugging
+  TWDH_DEV_MODE=nockan
 
-# Change twdh.version
-CKAN___TWDH__VERSION=1.0.0
+  # Change twdh.version
+  CKAN___TWDH__VERSION=1.0.0
 
-# Set a static IP address if needed (not usually needed)
-CKAN_SITE_URL=http://192.168.7.236:5000
-CKAN___BEAKER__SESSION__COOKIE_DOMAIN=192.168.7.236
-CKANEXT__SECURITY__DOMAIN=192.168.7.236
-CKANEXT__SECURITY__MFA_HELP_LINK=http://192.168.7.236:5000/pages/mfa
-```
+  # Set a static IP address if needed (not usually needed)
+  CKAN_SITE_URL=http://192.168.7.236:5000
+  CKAN___BEAKER__SESSION__COOKIE_DOMAIN=192.168.7.236
+  CKANEXT__SECURITY__DOMAIN=192.168.7.236
+  CKANEXT__SECURITY__MFA_HELP_LINK=http://192.168.7.236:5000/pages/mfa
+  ```
 
 - Run `docker compose --file docker/docker-compose_local.yml up`
 
