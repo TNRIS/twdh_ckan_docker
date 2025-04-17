@@ -16,6 +16,13 @@
     },
     {
       "owner": "TNRIS",
+      "repo": "ckanext-collection",
+      "tag": "twdh-0.7.0",
+      "branch": "",
+      "cmd": ["pip install -e .", "pip install -r requirements.txt"]
+    },
+    {
+      "owner": "TNRIS",
       "repo": "ckanext-composite",
       "tag": "TWDHv0.2.6",
       "branch": "master",
@@ -55,7 +62,7 @@
       "repo": "ckanext-envvars",
       "tag": "twdh-0.6.0",
       "branch": "",
-      "cmd": ["python setup.py install"]
+      "cmd": ["pip install -e ."]
     },
     {
       "owner": "TNRIS",
@@ -117,7 +124,7 @@
       "owner": "TNRIS",
       "repo": "ckanext-spatial",
       "tag": "",
-      "branch": "twdh-hotfix-numpy",
+      "branch": "twdh-0.8.0-dev",
       "cmd": [
         "pip install setuptools==44.1.0",
         "pip install -e .",
@@ -131,6 +138,13 @@
       "tag": "",
       "branch": "bb-dev",
       "cmd": ["pip install -e ."]
+    },
+    {
+      "owner": "TNRIS",
+      "repo": "ckanext-twdh_reports",
+      "tag": "",
+      "branch": "922-reports-extension",
+      "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
       "owner": "TNRIS",
