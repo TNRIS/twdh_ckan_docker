@@ -143,7 +143,7 @@
       "owner": "TNRIS",
       "repo": "ckanext-twdh_reports",
       "tag": "",
-      "branch": "922-reports-extension",
+      "branch": "twdh-0.7.2-dev",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
