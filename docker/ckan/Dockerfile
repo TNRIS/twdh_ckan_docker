@@ -132,6 +132,8 @@ ENV CKAN__DEFAULT_VIEWS image_view \
 ENV CKAN__PLUGINS \
     stats \
     twdh_theme \
+    collection \
+    twdh_reports \
     activity \
     security \
     report \

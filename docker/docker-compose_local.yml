@@ -52,7 +52,6 @@ services:
       test: ["CMD", "pg_isready", "-U", "postgres"]
     ports: 
       - "9000:5432"
-
   solr:
     container_name: solr
     hostname: solr
