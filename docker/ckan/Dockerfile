@@ -131,9 +131,9 @@ ENV CKAN__DEFAULT_VIEWS image_view \
 
 ENV CKAN__PLUGINS \
     stats \
+    twdh_reports \
     twdh_theme \
     collection \
-    twdh_reports \
     activity \
     security \
     report \
@@ -148,7 +148,6 @@ ENV CKAN__PLUGINS \
     twdh_schema \
     scheming_datasets \
     scheming_organizations \
-    composite \
     contact \
     pages \
     resource_proxy \
