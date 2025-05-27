@@ -161,7 +161,6 @@ ENV CKAN__PLUGINS \
     s3filestore \
     googleanalytics \
     ags_fs_view \ 
-    twdh_gazetteer \
     envvars 
     # ^ envvars always needs to be last in the CKAN__PLUGINS list
     # s3filestore MUST PRECEDE googlealanalytics in the CKAN_PLUGINS list
@@ -314,6 +313,9 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     # add config option for google analytics download view
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-SJK5R9G5F5" && \
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
+    # DP+ settings
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.qsv_bin = /usr/local/bin/qsvdp" && \
+
     # Change ownership to app user
     chown -R ckan:ckan /srv/app && \
     # Create log directory for `ckan jobs worker` process
