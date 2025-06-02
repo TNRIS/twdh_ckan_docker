@@ -234,27 +234,27 @@ COPY bin/qsvdp /usr/local/bin/qsvdp
 
 # Build PROJ generic coordinate transformation software required by ckanext-spatial
 
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y \
-    cmake \
-    sqlite3 \
-    libsqlite3-dev \
-    libtiff5-dev \
-    libcurl4-openssl-dev && \
-    curl https://download.osgeo.org/proj/proj-9.5.1.tar.gz --output proj-9.5.1.tar.gz && \
-    tar xzvf proj-9.5.1.tar.gz && \
-    cd proj-9.5.1 && \
-    mkdir build && \
-    cd build && \
-    cmake .. && \
-    cmake --build . && \
-    cmake --build . --target install &&  \
-    projsync --system-directory --all
+# RUN apt-get update && \
+#    apt-get install --no-install-recommends -y \
+#    cmake \
+#    sqlite3 \
+#    libsqlite3-dev \
+#    libtiff5-dev \
+#    libcurl4-openssl-dev && \
+#    curl https://download.osgeo.org/proj/proj-9.5.1.tar.gz --output proj-9.5.1.tar.gz && \
+#    tar xzvf proj-9.5.1.tar.gz && \
+#    cd proj-9.5.1 && \
+#    mkdir build && \
+#    cd build && \
+#    cmake .. && \
+#    cmake --build . && \
+#    cmake --build . --target install &&  \
+#    projsync --system-directory --all
 
 RUN ls ${SRC_DIR}/plugins
 
 # Fix ckanext-spatial dependency issue
-RUN pip install geojson shapely
+# RUN pip install geojson shapely
 
 # Fix ckanext-googleanalytics dependency issue
 RUN pip install google-api-python-client==1.6.7
@@ -305,7 +305,7 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     # add scheming config
     ckan config-tool ${APP_DIR}/production.ini "scheming.dataset_schemas = ckanext.twdh_schema:schemas/dataset-druf.yaml ckanext.twdh_schema:schemas/application.yaml" && \
     ckan config-tool ${APP_DIR}/production.ini "scheming.organization_schemas = ckanext.twdh_schema:schemas/organization.yaml" && \
-    ckan config-tool ${APP_DIR}/production.ini "scheming.presets = ckanext.scheming:presets.json ckanext.composite:presets.json ckanext.twdh_schema:schemas/presets.yaml" && \
+    ckan config-tool ${APP_DIR}/production.ini "scheming.presets = ckanext.scheming:presets.json ckanext.twdh_schema:schemas/presets.yaml" && \
     # add ckan.spatial.search_backend to enable solr spatial search
     ckan config-tool ${APP_DIR}/production.ini "ckanext.spatial.search_backend = solr-spatial-field" && \
     # change default logo to tx water logo from cdn.tnris.org
@@ -314,8 +314,49 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.id = G-SJK5R9G5F5" && \
     ckan config-tool ${APP_DIR}/production.ini "googleanalytics.download_handler = ckanext.s3filestore.views:resource_download" && \
     # DP+ settings
+    # These settings should be configured in .env-ckan.env but DP+ is not picking them up correctly, so we're setting them here until we can resolve that
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.use_proxy = false" && \
+    # ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.download_proxy = " && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.ssl_verify = false" && \
+    # supports INFO, DEBUG, TRACE - use DEBUG or TRACE when debugging scheming Formulas
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.upload_log_level = INFO" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.formats = csv tsv tab ssv xls xlsx xlsxb xlsm ods geojson shp qgis zip" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.pii_screening = false" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.pii_found_abort = false" && \
+    # ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.pii_regex_resource_id_or_alias =" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.pii_show_candidates = false" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.pii_quick_screen = false" && \
     ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.qsv_bin = /usr/local/bin/qsvdp" && \
-
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.preview_rows = 1000" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.download_timeout = 300" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.max_content_length = 1256000000000" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.chunk_size = 16384" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.default_excel_sheet = 0" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.sort_and_dupe_check = true" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.dedup = false" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.unsafe_prefix = unsafe_" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.reserved_colnames = _id" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.prefer_dmy = false" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.ignore_file_hash = true" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.auto_index_threshold = 3" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.auto_index_dates = true" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.auto_unique_index = true" && \
+    # ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.summary_stats_options =" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.add_summary_stats_resource = false" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.summary_stats_with_preview = false" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.qsv_stats_string_max_length = 32767" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.qsv_dates_whitelist = date,time,due,open,close,created" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.qsv_freq_limit = 10" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.auto_alias = true" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.auto_alias_unique = false" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.copy_readbuffer_size = 1048576" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.type_mapping = {\"String\": \"text\", \"Integer\": \"numeric\",\"Float\": \"numeric\",\"DateTime\": \"timestamp\",\"Date\": \"date\",\"NULL\": \"text\"}" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.auto_spatial_simplication = true" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.spatial_simplication_relative_tolerance = 0.1" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.latitude_fields = latitude,lat" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.longitude_fields = longitude,long,lon" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.jinja2_bytecode_cache_dir = /tmp/jinja2_bytecode_cache" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.auto_unzip_one_file = true" && \
     # Change ownership to app user
     chown -R ckan:ckan /srv/app && \
     # Create log directory for `ckan jobs worker` process
@@ -368,14 +409,22 @@ CMD ["/srv/app/start_ckan.sh"]
 
 FROM base AS dev
 
+# Install dev tools
 RUN pip install flask-debugtoolbar==0.14.1
 RUN pip install debugpy
 RUN apt-get update && apt-get install --no-install-recommends -y \
     inotify-tools \
     psmisc \
     lsb-release \
-    vim
+    vim \
+    nano \
+    less
+
+# Set DEBUG mode
 RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
+
+# Set DP+ log level to DEBUG or TRACE as appropriate
+RUN ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.upload_log_level = TRACE"
 
 CMD ["/srv/app/start_ckan_dev.sh"]
 

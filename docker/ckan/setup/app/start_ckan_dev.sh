@@ -40,6 +40,9 @@ then
   fi
 fi
 
+# Create DP+ API key
+ckan config-tool production.ini "ckanext.datapusher_plus.api_token = `ckan -c production.ini user token add sysadmin dp+ -q`"
+
 # Start supervisord
 supervisord --configuration /etc/supervisor/supervisord.conf &
 
