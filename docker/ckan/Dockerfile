@@ -260,7 +260,7 @@ RUN ls ${SRC_DIR}/plugins
 RUN pip install google-api-python-client==1.6.7
 
 # Additional install steps for build stages artifacts
-RUN pip install uWSGI gevent
+RUN pip install uWSGI gevent==22.10.2
 
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
