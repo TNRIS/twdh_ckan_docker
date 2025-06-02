@@ -10,8 +10,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-check-link",
-      "tag": "twdh-0.6.0",
-      "branch": "",
+      "tag": "",
+      "branch": "twdh-0.8.0-dev",
       "cmd": ["python setup.py install", "pip install -r dev-requirements.txt"]
     },
     {
