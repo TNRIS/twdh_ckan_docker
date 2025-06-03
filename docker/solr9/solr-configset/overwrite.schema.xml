@@ -96,6 +96,7 @@ attribute with the form `ckan-X.Y` -->
       </analyzer>
     </fieldType>
 
+    <!--
     <fieldType 
         name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
         spatialContextFactory="JTS"
@@ -105,6 +106,7 @@ attribute with the form `ckan-X.Y` -->
         maxDistErr="0.001"  
         distanceUnits="kilometers">
     </fieldType>
+    -->
 
 </types>
 
@@ -172,12 +174,14 @@ attribute with the form `ckan-X.Y` -->
     <field name="maxy" type="float" indexed="true" stored="true" />
     <field name="minx" type="float" indexed="true" stored="true" />
     <field name="miny" type="float" indexed="true" stored="true" />
-     <!-- Allow ckanext-spatial and other extensions to index geometries -->
+    <!-- Allow ckanext-spatial and other extensions to index geometries -->
+    <!--
     <field name="spatial_geom"  type="location_rpt" indexed="true" stored="true" multiValued="true" />
     <field name="spatial_geom_*"  type="location_rpt" indexed="true" stored="true" multiValued="true" />
 
     <field name="spatial_simp" type="location_rpt" indexed="true" stored="true" multiValued="true"/>
     <field name="place_keywords" type="text_general" indexed="true" stored="true" multiValued="true"/>
+    -->
 
     <field name="indexed_ts" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
 
