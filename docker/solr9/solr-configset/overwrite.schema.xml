@@ -6,7 +6,9 @@
  The ASF licenses this file to You under the Apache License, Version 2.0
  (the "License"); you may not use this file except in compliance with
  the License.  You may obtain a copy of the License at
+
      http://www.apache.org/licenses/LICENSE-2.0
+
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +25,8 @@
 schema. We used to use the `version` attribute for this but this is an internal
 attribute that should not be used so starting from CKAN 2.10 we use the `name`
 attribute with the form `ckan-X.Y` -->
-<schema name="ckan" version="2.9">
+<schema name="ckan-2.10" version="1.6">
+
 <types>
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
@@ -93,15 +96,20 @@ attribute with the form `ckan-X.Y` -->
       </analyzer>
     </fieldType>
 
+    <fieldType 
+        name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
+        spatialContextFactory="JTS"
+        autoIndex="true"
+        validationRule="repairBuffer0"
+        distErrPct="0.025" 
+        maxDistErr="0.001"  
+        distanceUnits="kilometers">
+    </fieldType>
+
 </types>
 
 
 <fields>
-    <field name="bbox_area" type="float" indexed="true" stored="true" />
-    <field name="maxx" type="float" indexed="true" stored="true" />
-    <field name="maxy" type="float" indexed="true" stored="true" />
-    <field name="minx" type="float" indexed="true" stored="true" />
-    <field name="miny" type="float" indexed="true" stored="true" />
     <field name="index_id" type="string" indexed="true" stored="true" required="true" />
     <field name="id" type="string" indexed="true" stored="true" required="true" />
     <field name="site_id" type="string" indexed="true" stored="true" required="true" />
@@ -159,6 +167,18 @@ attribute with the form `ckan-X.Y` -->
     <field name="metadata_created" type="date" indexed="true" stored="true" multiValued="false"/>
     <field name="metadata_modified" type="date" indexed="true" stored="true" multiValued="false"/>
 
+    <field name="bbox_area" type="float" indexed="true" stored="true" />
+    <field name="maxx" type="float" indexed="true" stored="true" />
+    <field name="maxy" type="float" indexed="true" stored="true" />
+    <field name="minx" type="float" indexed="true" stored="true" />
+    <field name="miny" type="float" indexed="true" stored="true" />
+     <!-- Allow ckanext-spatial and other extensions to index geometries -->
+    <field name="spatial_geom"  type="location_rpt" indexed="true" stored="true" multiValued="true" />
+    <field name="spatial_geom_*"  type="location_rpt" indexed="true" stored="true" multiValued="true" />
+
+    <field name="spatial_simp" type="location_rpt" indexed="true" stored="true" multiValued="true"/>
+    <field name="place_keywords" type="text_general" indexed="true" stored="true" multiValued="true"/>
+
     <field name="indexed_ts" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
 
     <!-- Copy the title field into titleString, and treat as a string
@@ -166,7 +186,7 @@ attribute with the form `ckan-X.Y` -->
     <field name="title_string" type="string" indexed="true" stored="false" />
 
     <field name="data_dict" type="string" indexed="false" stored="true" />
-    <field name="validated_data_dict" type="string" indexed="false" stored="true" />
+    <field name="validated_data_dict" type="text" indexed="false" stored="true" />
 
     <field name="_version_" type="string" indexed="true" stored="true"/>
 
@@ -203,5 +223,6 @@ attribute with the form `ckan-X.Y` -->
 <copyField source="res_description" dest="text"/>
 <copyField source="maintainer" dest="text"/>
 <copyField source="author" dest="text"/>
+<copyField source="place_keywords" dest="text" />
 
 </schema>
