@@ -8,7 +8,7 @@
 
 set -e
 
-CKAN_SOLR_SCHEMA_URL=https://raw.githubusercontent.com/ckan/ckan/ckan-$CKAN_VERSION/ckan/config/solr/schema.xml 
+CKAN_SOLR_SCHEMA_URL=https://raw.githubusercontent.com/TNRIS/twdh_ckan_docker/refs/heads/twdh-0.8.0-dev/docker/solr9/solr-configset/overwrite.schema.xml
 
 echo "Check whether managed schema exists for CKAN $CKAN_VERSION"
 if ! curl --output /dev/null --silent --head --fail "$CKAN_SOLR_SCHEMA_URL"; then
@@ -36,3 +36,4 @@ else
     
     echo "SOLR initialized"
 fi
+
