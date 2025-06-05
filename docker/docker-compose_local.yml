@@ -52,10 +52,11 @@ services:
       test: ["CMD", "pg_isready", "-U", "postgres"]
     ports: 
       - "9000:5432"
+
   solr:
     container_name: solr
     hostname: solr
-    image: solr:9.8.0
+    image: ckan/ckan-solr:2.10-solr9.8-spatial
     networks:
       - backend
     env_file:
@@ -64,9 +65,9 @@ services:
     volumes:
       - solr_data:/var/solr
       - ./solr9/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-      - ./solr9/jts-core-1.17.1.jar:/opt/solr/server/solr-webapp/webapp/WEB-INF/lib/jts-core-1.17.1.jar
     ports: 
       - "8983:8983"
+
   redis:
     container_name: redis
     hostname: redis
