@@ -9,8 +9,7 @@ FROM ubuntu:jammy-20250126 AS ckanbuild
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/TNRIS/ckan.git
-#ENV GIT_BRANCH=twdh-patches-2.10.5
-ENV GIT_BRANCH=twdh-patches-2.10.5-iformredirect
+ENV GIT_BRANCH=twdh-patches-2.10.5
 
 # Set timezone
 ENV TZ=UTC
