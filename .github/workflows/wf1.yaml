@@ -47,11 +47,15 @@ jobs:
       - run: docker image ls
       - run: |
           cd docker && docker compose --file docker-compose_local.yml up -d --wait
-      - name: docker_log
-        uses: actions/upload-artifact@v4
-        with:
-          name: build_log
-          path: build.log
+      - name: Wait for services to be ready (optional, but recommended)
+        run: sleep 240 # Adjust sleep duration as needed
+      - name: Show Docker Compose logs
+        run: docker compose logs
+      #- name: docker_log
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: build_log
+      #    path: build.log
       - run: docker ps
       - run: curl 0.0.0.0:5000/api/3/action/status_show
       - name: push
