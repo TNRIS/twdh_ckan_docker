@@ -95,7 +95,7 @@ FROM ubuntu:jammy-20250126 AS base
 ARG GH_TOKEN=default
 
 LABEL maintainer="Texas Geographic Information Office"
-LABEL org.opencontainers.image.source https://github.com/tnris/twdh_ckan_docker
+LABEL org.opencontainers.image.source=https://github.com/tnris/twdh_ckan_docker
 
 # Set timezone
 ENV TZ=UTC
@@ -118,18 +118,17 @@ ENV CKAN_DIR=${SRC_DIR}/ckan
 ENV DATA_DIR=/srv/app/data
 ENV PIP_SRC=${SRC_DIR}
 ENV CKAN_SITE_URL=http://0.0.0.0:5000
-ENV CKAN__MAX_RESOURCE_SIZE 512
+ENV CKAN__MAX_RESOURCE_SIZE=512
 
-ENV CKAN__DEFAULT_VIEWS image_view \
+ENV CKAN__DEFAULT_VIEWS="image_view \
     openapi_viewer \
     text_view \
     geo_view \
     geojson_view \
     datatablesview_plus \ 
-    ags_fs_view 
+    ags_fs_view" 
 
-ENV CKAN__PLUGINS \
-    stats \
+ENV CKAN__PLUGINS="stats \
     twdh_reports \
     twdh_theme \
     collection \
@@ -160,16 +159,16 @@ ENV CKAN__PLUGINS \
     s3filestore \
     googleanalytics \
     ags_fs_view \ 
-    envvars 
+    envvars" 
     # ^ envvars always needs to be last in the CKAN__PLUGINS list
     # s3filestore MUST PRECEDE googlealanalytics in the CKAN_PLUGINS list
 
 # s3filestore env variables
-ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME twdh-s3filestore
-ENV CKANEXT__S3FILESTORE__SIGNATURE_VERSION s3v4
-ENV CKANEXT__S3FILESTORE__REGION_NAME us-east-1
-ENV CKANEXT__S3FILESTORE__AWS_STORAGE_PATH docker-twdh-local
-ENV CKANEXT__S3FILESTORE__FILESYSTEM_DOWNLOAD_FALLBACK true
+ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=twdh-s3filestore
+ENV CKANEXT__S3FILESTORE__SIGNATURE_VERSION=s3v4
+ENV CKANEXT__S3FILESTORE__REGION_NAME=us-east-1
+ENV CKANEXT__S3FILESTORE__AWS_STORAGE_PATH=docker-twdh-local
+ENV CKANEXT__S3FILESTORE__FILESYSTEM_DOWNLOAD_FALLBACK=true
 
 # Install necessary packages to run CKAN
 RUN apt-get update && \
