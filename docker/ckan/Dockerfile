@@ -417,7 +417,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     lsb-release \
     vim \
     nano \
-    less
+    less \
+    lsof
 
 # Set DEBUG mode
 RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
