@@ -16,6 +16,7 @@ services:
     depends_on:
       - db
       - solr
+      - redis
     env_file:
       - path: ./.env-ckan.env
         required: true
@@ -31,6 +32,12 @@ services:
       - "0.0.0.0:5678:5678"
     volumes:
       - ckan_data:/srv/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5000:/api/action/status_show || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
     develop:
       watch:
         - action: sync
