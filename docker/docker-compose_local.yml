@@ -65,10 +65,10 @@ services:
       - solr_data:/var/solr
       - ./solr9/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8983/solr/ckan/admin/ping?action=status || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8983/solr/ckan/admin/ping || exit 1"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
       start_period: 60s
     ports: 
       - "8983:8983"
