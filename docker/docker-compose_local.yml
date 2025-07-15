@@ -81,6 +81,12 @@ services:
     image: redis:7.2.0
     networks:
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
 
 networks:
   frontend:
