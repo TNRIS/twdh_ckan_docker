@@ -373,11 +373,9 @@ COPY setup/app ${APP_DIR}
 WORKDIR ${APP_DIR}
 
 # Create entrypoint directory for children image scripts
-# Removed ONBUILD - ok?
 RUN mkdir docker-entrypoint.d
 
 # Create afterinit directory for children image scripts
-# Removed ONBUILD - ok?
 RUN mkdir docker-afterinit.d
 
 # Run before prerun.py
