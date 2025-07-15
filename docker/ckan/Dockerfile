@@ -92,7 +92,7 @@ RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 
 FROM ubuntu:jammy-20250126 AS base
 
-ARG GH_TOKEN=default
+# ARG GH_TOKEN=default
 
 LABEL maintainer="Texas Geographic Information Office"
 LABEL org.opencontainers.image.source=https://github.com/tnris/twdh_ckan_docker
