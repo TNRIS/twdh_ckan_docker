@@ -373,11 +373,9 @@ COPY setup/app ${APP_DIR}
 WORKDIR ${APP_DIR}
 
 # Create entrypoint directory for children image scripts
-# Removed ONBUILD - ok?
 RUN mkdir docker-entrypoint.d
 
 # Create afterinit directory for children image scripts
-# Removed ONBUILD - ok?
 RUN mkdir docker-afterinit.d
 
 # Run before prerun.py
@@ -419,7 +417,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     lsb-release \
     vim \
     nano \
-    less
+    less \
+    lsof
 
 # Set DEBUG mode
 RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"

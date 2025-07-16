@@ -16,6 +16,7 @@ services:
     depends_on:
       - db
       - solr
+      - redis
     env_file:
       - path: ./.env-ckan.env
         required: true
@@ -29,9 +30,14 @@ services:
     ports:
       - "0.0.0.0:5000:5000"
       - "0.0.0.0:5678:5678"
-
     volumes:
       - ckan_data:/srv/app/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/api/action/status_show || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
     develop:
       watch:
         - action: sync
@@ -65,6 +71,12 @@ services:
     volumes:
       - solr_data:/var/solr
       - ./solr9/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8983/solr/ckan/admin/ping || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
     ports: 
       - "8983:8983"
 
@@ -76,6 +88,12 @@ services:
     image: redis:7.2.0
     networks:
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
 
 networks:
   frontend:
