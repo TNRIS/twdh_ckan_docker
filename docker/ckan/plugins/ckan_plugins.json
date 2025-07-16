@@ -91,8 +91,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-scheming",
-      "tag": "",
-      "branch": "twdh-0.8.1-dev",
+      "tag": "twdh-main",
+      "branch": "",
       "cmd": ["pip install -e ."]
     },
     {
@@ -105,8 +105,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-spatial",
-      "tag": "",
-      "branch": "twdh-0.8.1-dev",
+      "tag": "twdh-0.8.1",
+      "branch": "",
       "cmd": [
         "pip install setuptools==44.1.0",
         "pip install -e .",
@@ -124,8 +124,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_schema",
-      "tag": "",
-      "branch": "twdh-0.8.1-dev",
+      "tag": "twdh-0.8.1",
+      "branch": "",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
