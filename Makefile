@@ -24,16 +24,16 @@ ecrLogin:
 	@echo ${ECR_PW} | docker login -u AWS --password-stdin ${ECR_URL}
 
 build: ecrLogin
-	@/usr/bin/time --format="build took %E" docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --progress plain --no-cache 2>&1 | tee build.log
+	@/usr/bin/time --format="Build time: %E" docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --progress plain --no-cache 2>&1 | tee build.log
 
 build-dev: ecrLogin
-	@/usr/bin/time --format="build took %E" docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --build-arg ENV=dev --progress plain 2>&1 | tee build.log
+	@/usr/bin/time --format="Build time: %E" docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --build-arg ENV=dev --progress plain 2>&1 | tee build.log
 
 build-dev-no-cache: ecrLogin
-	@/usr/bin/time --format="build took %E" docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --build-arg ENV=dev --progress plain --no-cache 2>&1 | tee build.log
+	@/usr/bin/time --format="Build time: %E" docker build ./docker/ckan -t 29_ckan:default --build-arg GH_TOKEN=${GH_TOKEN} --build-arg ENV=dev --progress plain --no-cache 2>&1 | tee build.log
 
 tag: build
-	/usr/bin/time --format="build took %E" docker tag 29_ckan:default ${ECR_URL}/29_ckan:${TAG}
+	/usr/bin/time --format="Build time: %E" docker tag 29_ckan:default ${ECR_URL}/29_ckan:${TAG}
 
 ecrBuild: tag
 
