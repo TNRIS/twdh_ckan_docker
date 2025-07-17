@@ -182,6 +182,7 @@ attribute with the form `ckan-X.Y` -->
     <field name="secondary_tags" type="text" indexed="true" stored="true" multiValued="true"/>
     <field name="linked_datasets" type="text" indexed="true" stored="true" multiValued="true"/>
     <field name="related_resources" type="text" indexed="true" stored="true" multiValued="true"/>
+    <field name="supporting_url" type="text" indexed="true" stored="true" multiValued="true"/>
     
     <field name="indexed_ts" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
 
