@@ -130,7 +130,7 @@
       "owner": "TNRIS",
       "repo": "ckanext-twdh_schema",
       "tag": "",
-      "branch": "twdh-0.9.0-dev",
+      "branch": "druf-resource-management-move",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
