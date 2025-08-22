@@ -32,7 +32,7 @@ services:
       - ckan_data:/srv/app/data
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:5000/api/action/status_show || exit 1"]
-      interval: 10s
+      interval: 60s
       timeout: 5s
       retries: 10
       start_period: 60s
