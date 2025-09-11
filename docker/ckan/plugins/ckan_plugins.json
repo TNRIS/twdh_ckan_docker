@@ -68,8 +68,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-openapi_viewer",
-      "tag": "TWDHv0.2.6",
-      "branch": "",
+      "tag": "",
+      "branch": "twdh-main",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
