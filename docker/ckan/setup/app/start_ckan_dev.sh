@@ -48,6 +48,9 @@ supervisord --configuration /etc/supervisor/supervisord.conf &
 
 if [ "$TWDH_DEV_MODE" = debug ];
 then 
+  # make sure the .vscode directory is in the source tree
+  cp -R ${APP_DIR}/.vscode /srv
+
   # Start ckan with debugpy so that VSCode debugger will work.
   # Note that in this mode file syncing will happen more slowly than normal
   ${APP_DIR}/watch_ckan.sh ${CKAN_DIR} &

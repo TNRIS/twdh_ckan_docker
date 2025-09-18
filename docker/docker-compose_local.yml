@@ -1,5 +1,3 @@
-version: "3"
-
 volumes:
   ckan_data:
   pg_data:
@@ -34,15 +32,76 @@ services:
       - ckan_data:/srv/app/data
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:5000/api/action/status_show || exit 1"]
-      interval: 10s
+      interval: 60s
       timeout: 5s
       retries: 10
       start_period: 60s
     develop:
       watch:
         - action: sync
-          path: /usr/lib/ckan/default/src
-          target: /srv/app/src/ckan
+          path: /usr/lib/ckan/default/src/ckan/ckan
+          target: /srv/app/src/ckan/ckan
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckan/ckanext
+          target: /srv/app/src/ckan/ckanext
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-agsview
+          target: /srv/app/src/ckan/ckanext-agsview
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-check-link
+          target: /srv/app/src/ckan/ckanext-check-link
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-collection
+          target: /srv/app/src/ckan/ckanext-collection
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-contact
+          target: /srv/app/src/ckan/ckanext-contact
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-datatablesview_plus
+          target: /srv/app/src/ckan/ckanext-datatablesview_plus
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-envvars
+          target: /srv/app/src/ckan/ckanext-envvars
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-geoview
+          target: /srv/app/src/ckan/ckanext-geoview
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-googleanalytics
+          target: /srv/app/src/ckan/ckanext-googleanalytics
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-openapi_viewer
+          target: /srv/app/src/ckan/ckanext-openapi_viewer
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-pages
+          target: /srv/app/src/ckan/ckanext-pages
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-report
+          target: /srv/app/src/ckan/ckanext-report
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-s3filestore
+          target: /srv/app/src/ckan/ckanext-s3filestore
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-scheming
+          target: /srv/app/src/ckan/ckanext-scheming
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-security
+          target: /srv/app/src/ckan/ckanext-security
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-spatial
+          target: /srv/app/src/ckan/ckanext-spatial
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-twdh_reports
+          target: /srv/app/src/ckan/ckanext-twdh_reports
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-twdh_schema
+          target: /srv/app/src/ckan/ckanext-twdh_schema
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-twdh_theme
+          target: /srv/app/src/ckan/ckanext-twdh_theme
+        - action: sync
+          path: /usr/lib/ckan/default/src/datapusher-plus
+          target: /srv/app/src/ckan/datapusher-plus
+
 
   db:
     container_name: db
@@ -94,6 +153,8 @@ services:
       timeout: 5s
       retries: 10
       start_period: 60s
+    ports: 
+      - "6379:6379"
 
 networks:
   frontend:
