@@ -91,7 +91,7 @@
       "repo": "ckanext-s3filestore",
       "tag": "TWDHv0.5.3",
       "branch": "",
-      "cmd": ["python setup.py install", "pip install -r requirements.txt"]
+      "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
       "owner": "TNRIS",
