@@ -56,7 +56,7 @@
       "repo": "ckanext-geoview",
       "tag": "twdh-0.6.0",
       "branch": "",
-      "cmd": ["python setup.py install"]
+      "cmd": ["pip install -e ."]
     },
     {
       "owner": "TNRIS",
