@@ -390,6 +390,9 @@ HEALTHCHECK --interval=10s --timeout=5s --retries=5 CMD curl --fail http://0.0.0
 # Zope 5.1 causes a uwsgi error so make sure we're still on 5.0 until this can be resolved
 RUN pip install zope.event==5.0
 
+# arrow 1.4.0 causes a dependency error so we're still on 1.3.0 until this can be resolved
+RUN pip install arrow==1.3.0
+
 RUN python -V
 RUN pip -V
 RUN pip list
