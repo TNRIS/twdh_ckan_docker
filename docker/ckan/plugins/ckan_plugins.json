@@ -13,12 +13,11 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-check-link",
-      "tag": "twdh-0.8.0",
+      "tag": "twdh-0.10.0",
       "branch": "",
       "cmd": [
-        "pip install check-link~=0.0.11",
-        "pip install ckanext-toolbelt",
         "python setup.py install",
+        "pip install -r requirements.txt",
         "pip install -r dev-requirements.txt"
       ]
     },
