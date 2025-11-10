@@ -89,8 +89,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-s3filestore",
-      "tag": "TWDHv0.5.3",
-      "branch": "",
+      "tag": "",
+      "branch": "twdh-main",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     },
     {
