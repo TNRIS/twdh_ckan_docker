@@ -148,7 +148,7 @@
       "owner": "TNRIS",
       "repo": "datapusher-plus",
       "tag": "",
-      "branch": "dpp_suggestions_check",
+      "branch": "twdh-0.10.0-dev",
       "cmd": ["pip install -e .", "pip install -r requirements.txt"]
     }
   ]
