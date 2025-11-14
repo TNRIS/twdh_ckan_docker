@@ -9,7 +9,7 @@ FROM ubuntu:jammy-20250126 AS ckanbuild
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/TNRIS/ckan.git
-ENV GIT_BRANCH=twdh-patches-2.10.5
+ENV GIT_BRANCH=twdh-patches-2.11.4
 
 # Set timezone
 ENV TZ=UTC
@@ -69,7 +69,6 @@ ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 
 RUN pip install "setuptools-scm<8" "setuptools>=44.1.0" wheel
-#RUN pip install --upgrade pip "setuptools-scm<8" "setuptools>=44.1.0" wheel
 
 # Fetch and build CKAN and requirements
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
@@ -219,7 +218,6 @@ RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 RUN pip install "setuptools-scm<8" "setuptools>=44.1.0" wheel
-#RUN pip install --upgrade pip "setuptools-scm<8" "setuptools>=44.1.0" wheel
 
 # Get artifacts from build stages
 COPY --from=ckanbuild ${VIRTUAL_ENV} ${VIRTUAL_ENV}
@@ -251,9 +249,6 @@ COPY bin/qsvdp /usr/local/bin/qsvdp
 
 RUN ls ${SRC_DIR}/plugins
 
-# Fix ckanext-spatial dependency issue
-# RUN pip install geojson shapely
-
 # Fix ckanext-googleanalytics dependency issue
 RUN pip install google-api-python-client==1.6.7
 
@@ -276,6 +271,8 @@ COPY ./overwrite.who.dev.ini ${APP_DIR}/devwho.ini
 
 RUN pip install --no-index --find-links=/srv/app/wheels -r requirements.txt
 RUN pip install future
+
+RUN pip install pyutilib==6.0.0
 
 # Generate CKAN config
 RUN ckan generate config ${APP_DIR}/production.ini
