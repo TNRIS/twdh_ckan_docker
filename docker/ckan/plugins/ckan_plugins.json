@@ -16,7 +16,7 @@
       "tag": "",
       "branch": "twdh-0.10.0-dev",
       "cmd": [
-        "python setup.py install",
+        "pip install -e .",
         "pip install -r requirements.txt",
         "pip install -r dev-requirements.txt"
       ]
@@ -111,7 +111,7 @@
       "owner": "TNRIS",
       "repo": "ckanext-s3filestore",
       "tag": "",
-      "branch": "twdh-main",
+      "branch": "twdh-0.10.0-dev",
       "cmd": [
         "pip install -e .", 
         "pip install -r requirements.txt"
