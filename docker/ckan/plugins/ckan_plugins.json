@@ -101,7 +101,7 @@
       "owner": "TNRIS",
       "repo": "ckanext-report",
       "tag": "TWDHv0.2.6",
-      "branch": "master",
+      "branch": "",
       "cmd": [
         "pip install -e .", 
         "pip install -r requirements.txt"
