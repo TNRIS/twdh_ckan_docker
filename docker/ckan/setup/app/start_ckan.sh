@@ -51,9 +51,11 @@ then
     fi
   else
     # Start supervisord
-    supervisord --configuration /etc/supervisor/supervisord.conf &
+    #supervisord --configuration /etc/supervisor/supervisord.conf &
     # Start uwsgi
-    uwsgi $UWSGI_OPTS
+    #uwsgi $UWSGI_OPTS
+    # Turning off CKAN for upgrade deployment
+    while true; do sleep 300; done;
   fi
 else
   echo "[prerun] failed...not starting CKAN."
