@@ -47,8 +47,7 @@ jobs:
       - run: docker image ls
       - run: |
           cd docker && docker compose --file docker-compose_local.yml up -d --wait
-      - name: Get Docker Compose logs on failure
-        if: failure()
+      - name: Get Docker Compose logs
         run: cd docker && docker compose --file docker-compose_local.yml logs
       - run: docker ps
       - run: curl 0.0.0.0:5000/api/3/action/status_show
