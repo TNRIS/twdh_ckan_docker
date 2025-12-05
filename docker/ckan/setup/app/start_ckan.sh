@@ -55,11 +55,12 @@ then
   else
     echo "Starting without basicauth ..."
     # Start supervisord
-    echo "Starting supervisord"
-    supervisord --configuration /etc/supervisor/supervisord.conf &
+    #echo "Starting supervisord"
+    #supervisord --configuration /etc/supervisor/supervisord.conf &
     # Start uwsgi
     #echo "Starting uwsgi"
     #uwsgi $UWSGI_OPTS
+    echo "Sleeping for 5 minutes"
     sleep 300
     /srv/app/virtualenv/bin/ckan -c /srv/app/production.ini run -H 0.0.0.0
     #echo "Sleeping ... "
