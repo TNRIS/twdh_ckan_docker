@@ -46,7 +46,7 @@ jobs:
           SOURCE_TAG: ${{ steps.name_branch_tags.outputs.SOURCE_TAG }}
       - run: docker image ls
       - run: |
-          cd docker && docker compose --file docker-compose_local.yml up -d --wait
+          cd docker && docker compose --file docker-compose_local.yml up -d
       - name: Get Docker Compose logs on Failure
         if: failure()
         run: cd docker && docker compose --file docker-compose_local.yml logs
