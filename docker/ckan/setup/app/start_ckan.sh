@@ -62,7 +62,7 @@ then
     #uwsgi $UWSGI_OPTS
     #/srv/app/virtualenv/bin/ckan -c /srv/app/production.ini run -H 0.0.0.0
     #echo "Sleeping ... "
-    /srv/app/infinite-loop.sh
+    /srv/app/infinite_loop.sh
   fi
 else
   echo "[prerun] failed...not starting CKAN."
