@@ -47,9 +47,7 @@ then
       # Generate htpasswd file for basicauth
       htpasswd -d -b -c /srv/app/.htpasswd $HTPASSWD_USER $HTPASSWD_PASSWORD
       # Start uwsgi with basicauth
-      #uwsgi --ini /srv/app/uwsgi.conf --pcre-jit $UWSGI_OPTS
-      echo "Sleeping ... "
-      sleep 300000
+      uwsgi --ini /srv/app/uwsgi.conf --pcre-jit $UWSGI_OPTS
     else
       echo "Missing HTPASSWD_USER or HTPASSWD_PASSWORD environment variables. Exiting..."
       exit 1
@@ -62,8 +60,9 @@ then
     # Start uwsgi
     #echo "Starting uwsgi"
     #uwsgi $UWSGI_OPTS
-    echo "Sleeping ... "
-    sleep 300000
+    /srv/app/virtualenv/bin/ckan -c /srv/app/production.ini run -H 0.0.0.0
+    #echo "Sleeping ... "
+    #sleep 300000
   fi
 else
   echo "[prerun] failed...not starting CKAN."
