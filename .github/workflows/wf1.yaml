@@ -53,7 +53,7 @@ jobs:
       - name: Get Docker Compose logs on Success
         run: cd docker && docker compose --file docker-compose_local.yml logs
       - run: docker ps
-      - run: curl 0.0.0.0:5000/api/3/action/status_show
+      #- run: curl 0.0.0.0:5000/api/3/action/status_show
       - name: push
         run: |
           echo $SOURCE_NAME $SOURCE_BRANCH $SOURCE_TAG
