@@ -60,9 +60,10 @@ then
     # Start uwsgi
     #echo "Starting uwsgi"
     #uwsgi $UWSGI_OPTS
-    #/srv/app/virtualenv/bin/ckan -c /srv/app/production.ini run -H 0.0.0.0
+    sleep 300
+    /srv/app/virtualenv/bin/ckan -c /srv/app/production.ini run -H 0.0.0.0
     #echo "Sleeping ... "
-    /srv/app/infinite_loop.sh
+    #/srv/app/infinite_loop.sh
   fi
 else
   echo "[prerun] failed...not starting CKAN."
