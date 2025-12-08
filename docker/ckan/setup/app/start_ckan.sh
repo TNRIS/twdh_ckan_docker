@@ -59,11 +59,11 @@ then
     supervisord --configuration /etc/supervisor/supervisord.conf &
     # Start uwsgi
     echo "Starting uwsgi"
-    #uwsgi $UWSGI_OPTS
+    uwsgi $UWSGI_OPTS
 
     # FOR DEBUG ONLY!
-    echo "Entering infinite loop ... "
-    /srv/app/infinite_loop.sh
+    #echo "Entering infinite loop ... "
+    #/srv/app/infinite_loop.sh
 
   fi
 else
