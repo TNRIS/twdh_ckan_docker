@@ -60,8 +60,11 @@ then
     # Start uwsgi
     echo "Starting uwsgi"
     uwsgi $UWSGI_OPTS
+
+    # FOR DEBUG ONLY!
     #echo "Entering infinite loop ... "
     #/srv/app/infinite_loop.sh
+
   fi
 else
   echo "[prerun] failed...not starting CKAN."
