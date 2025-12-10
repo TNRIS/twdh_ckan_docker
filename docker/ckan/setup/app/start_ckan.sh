@@ -34,6 +34,8 @@ then
     done
 fi
 
+echo "Prerun complete"
+
 # Check whether http basic auth password protection is enabled and enable basicauth routing on uwsgi respecfully
 if [ $? -eq 0 ]
 then
@@ -41,6 +43,7 @@ then
   then
     if [ "$HTPASSWD_USER" ] || [ "$HTPASSWD_PASSWORD" ]
     then
+      echo "Starting with basicauth ..."
       # Generate htpasswd file for basicauth
       htpasswd -d -b -c /srv/app/.htpasswd $HTPASSWD_USER $HTPASSWD_PASSWORD
       # Start uwsgi with basicauth
@@ -50,10 +53,18 @@ then
       exit 1
     fi
   else
+    echo "Starting without basicauth ..."
     # Start supervisord
+    echo "Starting supervisord"
     supervisord --configuration /etc/supervisor/supervisord.conf &
     # Start uwsgi
+    echo "Starting uwsgi"
     uwsgi $UWSGI_OPTS
+
+    # FOR DEBUG ONLY!
+    #echo "Entering infinite loop ... "
+    #/srv/app/infinite_loop.sh
+
   fi
 else
   echo "[prerun] failed...not starting CKAN."
