@@ -9,7 +9,8 @@ FROM ubuntu:jammy-20250126 AS ckanbuild
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/TNRIS/ckan.git
-ENV GIT_BRANCH=twdh-patches-2.10.5
+ENV GIT_BRANCH=twdh-patches-2.11.4
+#ENV GIT_BRANCH=twdh-patches-2.10.5
 
 # Set timezone
 ENV TZ=UTC
@@ -69,7 +70,6 @@ ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 
 RUN pip install "setuptools-scm<8" "setuptools>=44.1.0" wheel
-#RUN pip install --upgrade pip "setuptools-scm<8" "setuptools>=44.1.0" wheel
 
 # Fetch and build CKAN and requirements
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
@@ -133,6 +133,7 @@ ENV CKAN__PLUGINS="stats \
     twdh_theme \
     collection \
     activity \
+    tracking \
     security \
     report \
     check_link \
@@ -175,17 +176,18 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y \
     gettext \
     build-essential \
-	curl \
+    curl \
     patch \
     ca-certificates \
     libpq5 \
     git \
     g++-10 \
-	postgresql-client \
+    gpg \
+    postgresql-client \
     python3 \
     python3.10-venv \
-	python3-distutils \
-	libpython3.10 \
+    python3-distutils \
+    libpython3.10 \
     libmagic1 \
     libpcre3 \
     libxslt1.1 \
@@ -219,7 +221,6 @@ RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 RUN pip install "setuptools-scm<8" "setuptools>=44.1.0" wheel
-#RUN pip install --upgrade pip "setuptools-scm<8" "setuptools>=44.1.0" wheel
 
 # Get artifacts from build stages
 COPY --from=ckanbuild ${VIRTUAL_ENV} ${VIRTUAL_ENV}
@@ -227,32 +228,13 @@ COPY --from=ckanbuild ${WHEEL_DIR} /srv/app/wheels
 COPY --from=ckanbuild ${CKAN_DIR} ${CKAN_DIR}
 COPY ./plugins ${SRC_DIR}/plugins
 
-# Copy pre-built binaries into place
-COPY bin/qsvdp /usr/local/bin/qsvdp
-
-# Build PROJ generic coordinate transformation software required by ckanext-spatial
-
-# RUN apt-get update && \
-#    apt-get install --no-install-recommends -y \
-#    cmake \
-#    sqlite3 \
-#    libsqlite3-dev \
-#    libtiff5-dev \
-#    libcurl4-openssl-dev && \
-#    curl https://download.osgeo.org/proj/proj-9.5.1.tar.gz --output proj-9.5.1.tar.gz && \
-#    tar xzvf proj-9.5.1.tar.gz && \
-#    cd proj-9.5.1 && \
-#    mkdir build && \
-#    cd build && \
-#    cmake .. && \
-#    cmake --build . && \
-#    cmake --build . --target install &&  \
-#    projsync --system-directory --all
+# Install QSV https://github.com/dathere/qsv?tab=readme-ov-file#debian-package
+RUN curl -o - https://dathere.github.io/qsv-deb-releases/qsv-deb.gpg | gpg --dearmor -o /usr/share/keyrings/qsv-deb.gpg
+RUN echo "deb [signed-by=/usr/share/keyrings/qsv-deb.gpg] https://dathere.github.io/qsv-deb-releases ./" | tee /etc/apt/sources.list.d/qsv.list
+RUN apt-get update
+RUN apt-get install qsv
 
 RUN ls ${SRC_DIR}/plugins
-
-# Fix ckanext-spatial dependency issue
-# RUN pip install geojson shapely
 
 # Fix ckanext-googleanalytics dependency issue
 RUN pip install google-api-python-client==1.6.7
@@ -276,6 +258,8 @@ COPY ./overwrite.who.dev.ini ${APP_DIR}/devwho.ini
 
 RUN pip install --no-index --find-links=/srv/app/wheels -r requirements.txt
 RUN pip install future
+
+RUN pip install pyutilib==6.0.0
 
 # Generate CKAN config
 RUN ckan generate config ${APP_DIR}/production.ini
@@ -324,7 +308,7 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     # ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.pii_regex_resource_id_or_alias =" && \
     ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.pii_show_candidates = false" && \
     ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.pii_quick_screen = false" && \
-    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.qsv_bin = /usr/local/bin/qsvdp" && \
+    ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.qsv_bin = /usr/local/bin/qsv" && \
     ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.preview_rows = 1000" && \
     ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.download_timeout = 300" && \
     ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.max_content_length = 1256000000000" && \
