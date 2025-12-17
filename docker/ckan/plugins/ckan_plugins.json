@@ -171,7 +171,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-twdh_theme",
-      "tag": "twdh-0.10.0",
+      "tag": "twdh-0.10.1",
       "branch": "",
       "cmd": [
         "pip install -e .",
