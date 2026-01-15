@@ -242,6 +242,9 @@ RUN pip install google-api-python-client==1.6.7
 # Additional install steps for build stages artifacts
 RUN pip install uWSGI gevent==22.10.2
 
+# uswgitop is for monitoring uwsgi stats
+RUN pip install uwsgitop
+
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
     useradd -rm -d /srv/app -s /bin/bash -g ckan -u 92 ckan
