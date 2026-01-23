@@ -47,7 +47,7 @@
       "tag": "twdh-0.6.0",
       "branch": "",
       "cmd": [
-        "python setup.py install",
+        "pip install -e .",
         "pip install botocore==1.27.29",
         "pip install -r dev-requirements.txt"
       ]
@@ -139,8 +139,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-spatial",
-      "tag": "twdh-0.10.0",
-      "branch": "",
+      "tag": "",
+      "branch": "twdh-0.11.0-dev",
       "cmd": [
         "pip install setuptools==44.1.0",
         "pip install -e .",
