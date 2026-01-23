@@ -14,6 +14,11 @@ SRC="/usr/lib/ckan/default/src"
 if [ -d "$SRC" ]; then
   echo "Syncing files from ${SRC} into docker container"
   cd $SRC
+  # exclude ./ckan/cypress/screenshots because it 
+  # contains irrelevant files that have spaces in 
+  # the filenames and this causes havoc with xargs
+  # exclude ./.venv and ./.vscode because
+  # they are not relevant to the Docker container 
   find . \( -path ./ckan/cypress/screenshots -o -path ./.venv -o -path ./.vscode \) -prune -o  -print | xargs touch
   cd -
 
