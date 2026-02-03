@@ -245,6 +245,10 @@ RUN pip install uWSGI gevent==22.10.2
 # uswgitop is for monitoring uwsgi stats
 RUN pip install uwsgitop
 
+# install minification tools
+RUN pip install jsmin
+RUN pip install cssmin
+
 # Create a local user and group to run the app
 RUN groupadd -g 92 ckan && \
     useradd -rm -d /srv/app -s /bin/bash -g ckan -u 92 ckan
@@ -411,7 +415,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     lsof
 
 # Set DEBUG mode
-RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
+#RUN ckan config-tool ${APP_DIR}/production.ini "debug = true"
 
 # Set DP+ log level to DEBUG or TRACE as appropriate
 RUN ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.upload_log_level = TRACE"
