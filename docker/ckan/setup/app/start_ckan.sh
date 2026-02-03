@@ -26,10 +26,10 @@ fi
 if [[ -z "${UWSGI_USE_CUSTOM_THREADS}" || "${UWSGI_USE_CUSTOM_THREADS}" != true ]]; then
   UWSGI_OPTS+="--enable-threads "
 else
-  UWSGI_OPTS+="--workers ${UWSGI_WORKERS} --threads ${UWSGI_THREADS} --thread-stacksize ${UWSGI_THREAD_STACKSIZE} "
+  UWSGI_OPTS+="--threads ${UWSGI_THREADS} --thread-stacksize ${UWSGI_THREAD_STACKSIZE} "
 fi
 
-if [[ "${UWSGI_USE_GEVENT}" == "true" ]]; then
+if [[ "${UWSGI_USE_CUSTOM_GEVENT}" == "true" ]]; then
   UWSGI_OPTS+="--gevent 2000 --gevent-early-monkey-patch "
 fi
 
