@@ -6,8 +6,8 @@
       "tag": "twdh-0.6.0",
       "branch": "",
       "cmd": [
-        "pip install -r requirements.txt", 
-        "python setup.py develop"
+        "pip install -e .",
+        "pip install -r requirements.txt"
       ]
     },
     {
@@ -37,8 +37,8 @@
       "tag": "twdh-0.6.0",
       "branch": "",
       "cmd": [
-        "pip install -r requirements.txt", 
-        "python setup.py develop"
+        "pip install -e .",
+        "pip install -r requirements.txt"
       ]
     },
     {
@@ -66,7 +66,9 @@
       "repo": "ckanext-geoview",
       "tag": "twdh-0.10.0",
       "branch": "",
-      "cmd": ["pip install -e ."]
+      "cmd": [
+        "pip install -e ."
+      ]
     },
     {
       "owner": "TNRIS",
@@ -74,7 +76,7 @@
       "tag": "twdh-0.6.0",
       "branch": "",
       "cmd": [
-        "python setup.py install", 
+        "pip install -e .", 
         "pip install -r requirements.txt"
       ]
     },
