@@ -9,7 +9,7 @@ FROM ubuntu:jammy-20250126 AS ckanbuild
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/TNRIS/ckan.git
-ENV GIT_BRANCH=twdh-patches-2.11.4
+ENV GIT_BRANCH=twdh-patches-2.11.4-experimental
 #ENV GIT_BRANCH=twdh-patches-2.10.5
 
 # Set timezone
@@ -246,7 +246,7 @@ RUN pip install uWSGI gevent==22.10.2
 RUN pip install uwsgitop
 
 # install minification tools
-RUN pip install jsmin
+RUN pip install rjsmin
 RUN pip install cssmin
 
 # Create a local user and group to run the app
