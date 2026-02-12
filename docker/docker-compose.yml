@@ -7,7 +7,7 @@ services:
   ckan:
     container_name: ckan
     hostname: ckan
-    image: 746466009731.dkr.ecr.us-east-1.amazonaws.com/29_ckan:v2.9.9-dev-twdh-0.4.2.20231023
+    image: 746466009731.dkr.ecr.us-east-1.amazonaws.com/29_ckan:twdh-0.11.0-20260210c
     networks:
       - frontend
       - backend
@@ -22,26 +22,80 @@ services:
       - CKAN_SQLALCHEMY_URL=postgresql://ckan:ckan@db/ckan
     ports:
       - "0.0.0.0:5000:5000"
+      - "0.0.0.0:5678:5678"
     volumes:
       - ckan_data:/srv/app/data
-
-  datapusher:
-    container_name: datapusher
-    hostname: datapusher
-    image: 746466009731.dkr.ecr.us-east-1.amazonaws.com/datapusher-plus:0.7.0
-    depends_on:
-      - db
-      - solr
-      - ckan
-    networks:
-      - frontend
-      - backend
-    ports:
-      - "8800:8800"
-    env_file:
-      - ./.env-ckan.env
-      - ./.env-datapusher.env
-
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5000/api/action/status_show || exit 1"]
+      interval: 60s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    develop:
+      watch:
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckan/ckan
+          target: /srv/app/src/ckan/ckan
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckan/ckanext
+          target: /srv/app/src/ckan/ckanext
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-agsview
+          target: /srv/app/src/ckan/ckanext-agsview
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-check-link
+          target: /srv/app/src/ckan/ckanext-check-link
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-collection
+          target: /srv/app/src/ckan/ckanext-collection
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-contact
+          target: /srv/app/src/ckan/ckanext-contact
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-datatablesview_plus
+          target: /srv/app/src/ckan/ckanext-datatablesview_plus
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-envvars
+          target: /srv/app/src/ckan/ckanext-envvars
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-geoview
+          target: /srv/app/src/ckan/ckanext-geoview
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-googleanalytics
+          target: /srv/app/src/ckan/ckanext-googleanalytics
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-openapi_viewer
+          target: /srv/app/src/ckan/ckanext-openapi_viewer
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-pages
+          target: /srv/app/src/ckan/ckanext-pages
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-report
+          target: /srv/app/src/ckan/ckanext-report
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-s3filestore
+          target: /srv/app/src/ckan/ckanext-s3filestore
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-scheming
+          target: /srv/app/src/ckan/ckanext-scheming
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-security
+          target: /srv/app/src/ckan/ckanext-security
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-spatial
+          target: /srv/app/src/ckan/ckanext-spatial
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-twdh_reports
+          target: /srv/app/src/ckan/ckanext-twdh_reports
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-twdh_schema
+          target: /srv/app/src/ckan/ckanext-twdh_schema
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-twdh_theme
+          target: /srv/app/src/ckan/ckanext-twdh_theme
+        - action: sync
+          path: /usr/lib/ckan/default/src/datapusher-plus
+          target: /srv/app/src/ckan/datapusher-plus
   db:
     container_name: db
     hostname: db
@@ -54,28 +108,46 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
+    ports: 
+      - "9000:5432"
 
   solr:
     container_name: solr
     hostname: solr
-    image: solr:9.8.0
+    image: 746466009731.dkr.ecr.us-east-1.amazonaws.com/twdh_solr:latest
     networks:
       - backend
     env_file:
       - ./.env-ckan.env
-      - ./.env-solr.env
+      - ./.env-solr9.env
     volumes:
       - solr_data:/var/solr
       - ./solr/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8983/solr/ckan/admin/ping || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    ports: 
+      - "8983:8984"
 
   redis:
     container_name: redis
     hostname: redis
     env_file:
       - ./.env-redis.env
-    image: redis:6.0.7
+    image: redis:7.2.0
     networks:
       - backend
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+    ports: 
+      - "6379:6379"
 
 networks:
   frontend:
