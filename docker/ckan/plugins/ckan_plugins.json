@@ -177,8 +177,7 @@
       "branch": "twdh-0.11.0-dev-dipak-prs",
       "cmd": [
         "pip install -e .",
-        "pip install -r requirements.txt",
-        "pip install Pillow"
+        "pip install -r requirements.txt"
       ]
     },
     {
