@@ -44,8 +44,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-datatablesview_plus",
-      "tag": "twdh-0.11.0",
-      "branch": "",
+      "tag": "",
+      "branch": "twdh-0.11.0-dev",
       "cmd": [
         "pip install -e .",
         "pip install botocore==1.27.29",
