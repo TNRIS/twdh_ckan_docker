@@ -133,7 +133,6 @@ ENV CKAN__PLUGINS="stats \
     twdh_theme \
     collection \
     activity \
-    tracking \
     security \
     report \
     check_link \
