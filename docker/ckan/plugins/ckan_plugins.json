@@ -131,8 +131,8 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-security",
-      "tag": "twdh-0.10.0",
-      "branch": "",
+      "tag": "",
+      "branch": "twdh-0.12.0-dev-alembic_migration",
       "cmd": [
         "pip install -e .", 
         "pip install -r requirements.txt"
