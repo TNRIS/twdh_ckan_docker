@@ -8,7 +8,7 @@ jobs:
   twdh-image:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: name_branch_tags
         id: name_branch_tags
         run: |
