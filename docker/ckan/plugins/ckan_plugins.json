@@ -131,7 +131,7 @@
     {
       "owner": "TNRIS",
       "repo": "ckanext-security",
-      "tag": "twdh-0.10.0",
+      "tag": "twdh-0.11.2",
       "branch": "",
       "cmd": [
         "pip install -e .", 
