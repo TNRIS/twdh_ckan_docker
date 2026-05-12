@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Backup Docker data volume
+
+export VOLUME_NAME=docker_ckan_data
+export TARGET=/srv/app/data
+export BACKUP_NAME=docker_ckan_data_210
+export DISTRO=ubuntu
+
+docker run --rm \
+  --mount src=${VOLUME_NAME},target=${TARGET} \
+  -v $(pwd):/backup ${DISTRO} \
+  tar -czvf /backup/${BACKUP_NAME}.tar.gz ${TARGET}

@@ -13,7 +13,31 @@ then
 fi
 
 # Set the common uwsgi options
-UWSGI_OPTS="--socket /tmp/uwsgi.sock --pidfile=/tmp/uwsgi.pid --uid ckan --gid ckan --http :5000 --master --enable-threads --wsgi-file /srv/app/wsgi.py --module wsgi:application --lazy-apps --gevent 2000 -p 2 -L --gevent-early-monkey-patch --vacuum --harakiri 50 --callable application --single-interpreter --need-app --disable-logging --log-4xx --log-5xx --log-slow 5000"
+# Set the common uwsgi options
+UWSGI_OPTS="--socket /tmp/uwsgi.sock --pidfile=/tmp/uwsgi.pid --uid ckan --gid ckan --http :5000 --master --enable-threads --wsgi-file /srv/app/wsgi.py --module wsgi:application --lazy-apps "
+
+if [[ -z "${UWSGI_WORKERS}" ]]; then
+  #UWSGI_WORKERS not set
+  UWSGI_OPTS+="--workers 2 "
+else
+  UWSGI_OPTS+="--workers ${UWSGI_WORKERS} "
+fi
+
+if [[ -z "${UWSGI_USE_CUSTOM_THREADS}" || "${UWSGI_USE_CUSTOM_THREADS}" != true ]]; then
+  UWSGI_OPTS+="--enable-threads "
+else
+  UWSGI_OPTS+="--threads ${UWSGI_THREADS} --thread-stacksize ${UWSGI_THREAD_STACKSIZE} "
+fi
+
+if [[ "${UWSGI_USE_CUSTOM_GEVENT}" == "true" ]]; then
+  UWSGI_OPTS+="--gevent 2000 --gevent-early-monkey-patch "
+fi
+
+UWSGI_OPTS+="--vacuum --harakiri 50 --callable application --single-interpreter --need-app --disable-logging --log-4xx --log-5xx --log-slow 5000 "
+
+if [[ "$UWSGI_STATS" == "true" ]]; then
+  UWSGI_OPTS+="--stats 127.0.0.1:${UWSGI_STATS_PORT} --stats-http"
+fi
 
 # Run the prerun script to init CKAN and create the default admin user
 python prerun.py || { echo '[CKAN prerun] FAILED. Exiting...' ; exit 1; }
@@ -34,6 +58,8 @@ then
     done
 fi
 
+echo "Prerun complete"
+
 # Check whether http basic auth password protection is enabled and enable basicauth routing on uwsgi respecfully
 if [ $? -eq 0 ]
 then
@@ -41,6 +67,7 @@ then
   then
     if [ "$HTPASSWD_USER" ] || [ "$HTPASSWD_PASSWORD" ]
     then
+      echo "Starting with basicauth ..."
       # Generate htpasswd file for basicauth
       htpasswd -d -b -c /srv/app/.htpasswd $HTPASSWD_USER $HTPASSWD_PASSWORD
       # Start uwsgi with basicauth
@@ -50,10 +77,18 @@ then
       exit 1
     fi
   else
+    echo "Starting without basicauth ..."
     # Start supervisord
+    echo "Starting supervisord"
     supervisord --configuration /etc/supervisor/supervisord.conf &
     # Start uwsgi
+    echo "Starting uwsgi"
     uwsgi $UWSGI_OPTS
+
+    # FOR DEBUG ONLY!
+    #echo "Entering infinite loop ... "
+    #/srv/app/infinite_loop.sh
+
   fi
 else
   echo "[prerun] failed...not starting CKAN."

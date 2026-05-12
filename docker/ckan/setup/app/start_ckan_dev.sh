@@ -16,7 +16,30 @@ then
 fi
 
 # Set the common uwsgi options
-UWSGI_OPTS="--socket /tmp/uwsgi.sock --pidfile=/tmp/uwsgi.pid --uid ckan --gid ckan --http :5000 --master --enable-threads --wsgi-file /srv/app/wsgi.py --module wsgi:application --lazy-apps --gevent 2000 -p 2 -L --gevent-early-monkey-patch --vacuum --harakiri 50 --callable application --single-interpreter --need-app --disable-logging --log-4xx --log-5xx --log-slow 5000"
+UWSGI_OPTS="--socket /tmp/uwsgi.sock --pidfile=/tmp/uwsgi.pid --uid ckan --gid ckan --http :5000 --master --enable-threads --wsgi-file /srv/app/wsgi.py --module wsgi:application --lazy-apps "
+
+if [[ -z "${UWSGI_WORKERS}" ]]; then
+  #UWSGI_WORKERS not set
+  UWSGI_OPTS+="--workers 2 "
+else
+  UWSGI_OPTS+="--workers ${UWSGI_WORKERS} "
+fi
+
+if [[ -z "${UWSGI_USE_CUSTOM_THREADS}" || "${UWSGI_USE_CUSTOM_THREADS}" != true ]]; then
+  UWSGI_OPTS+="--enable-threads "
+else
+  UWSGI_OPTS+="--threads ${UWSGI_THREADS} --thread-stacksize ${UWSGI_THREAD_STACKSIZE} "
+fi
+
+if [[ "${UWSGI_USE_CUSTOM_GEVENT}" == "true" ]]; then
+  UWSGI_OPTS+="--gevent 2000 --gevent-early-monkey-patch "
+fi
+
+UWSGI_OPTS+="--vacuum --harakiri 50 --callable application --single-interpreter --need-app --disable-logging --log-4xx --log-5xx --log-slow 5000 "
+
+if [[ "$UWSGI_STATS" == "true" ]]; then
+  UWSGI_OPTS+="--stats 127.0.0.1:${UWSGI_STATS_PORT} --stats-http"
+fi
 
 if [ "$TWDH_DEV_MODE" != nockan ];
 then 
@@ -40,11 +63,17 @@ then
   fi
 fi
 
+# Create DP+ API key
+ckan config-tool production.ini "ckanext.datapusher_plus.api_token = `ckan -c production.ini user token add sysadmin dp+ -q`"
+
 # Start supervisord
 supervisord --configuration /etc/supervisor/supervisord.conf &
 
 if [ "$TWDH_DEV_MODE" = debug ];
 then 
+  # make sure the .vscode directory is in the source tree
+  cp -R ${APP_DIR}/.vscode /srv
+
   # Start ckan with debugpy so that VSCode debugger will work.
   # Note that in this mode file syncing will happen more slowly than normal
   ${APP_DIR}/watch_ckan.sh ${CKAN_DIR} &

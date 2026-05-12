@@ -1,4 +1,4 @@
-FROM postgis/postgis:12-3.3
+FROM postgres:17-trixie
 
 COPY ./docker-entrypoint-initdb.d /docker-entrypoint-initdb.d
 

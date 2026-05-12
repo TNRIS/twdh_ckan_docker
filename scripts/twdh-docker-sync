@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# This script syncs all of the files in your 
+# local CKAN source tree into the CKAN Docker 
+# container.
+#
+# It works by touching all of the relevant files, 
+# which then triggers the Docker system to sync 
+# the touched files based on the appropriate 'watch' 
+# actions being configured in docker/docker-compose_local.yml
+
+SRC="/usr/lib/ckan/default/src"
+
+if [ -d "$SRC" ]; then
+  echo "Syncing files from ${SRC} into docker container"
+  cd $SRC
+  # exclude ./ckan/cypress/screenshots because it 
+  # contains irrelevant files that have spaces in 
+  # the filenames and this causes havoc with xargs
+  # exclude ./.venv and ./.vscode because
+  # they are not relevant to the Docker container 
+  find . \( -path ./ckan/cypress/screenshots -o -path ./.venv -o -path ./.vscode \) -prune -o  -print | xargs touch
+  cd -
+
+else
+  echo "Directory $DIRECTORY does not exist. Sync failed"
+fi

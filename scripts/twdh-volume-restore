@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export NEW_VOLUME_NAME=docker_ckan_data_211
+export TARGET=/srv/app/data
+export BACKUP_NAME=docker_ckan_data_210
+export DISTRO=ubuntu
+
+docker volume create ${NEW_VOLUME_NAME}
+
+docker run --rm \
+  --mount src=${NEW_VOLUME_NAME},target=${TARGET} \
+  -v $(pwd):/backup ${DISTRO} \
+  tar -xzvf /backup/${BACKUP_NAME}.tar.gz -C /
