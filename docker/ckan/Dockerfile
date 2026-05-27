@@ -128,14 +128,15 @@ ENV CKAN__DEFAULT_VIEWS="image_view \
     datatablesview_plus \ 
     ags_fs_view" 
 
+    # check_link, twdh_reports MUST PRECEDE twdh_theme in the CKAN_PLUGINS list as it extends Admin_report
 ENV CKAN__PLUGINS="stats \
+    check_link \
     twdh_reports \
     twdh_theme \
     collection \
     activity \
     security \
     report \
-    check_link \
     text_view \
     webpage_view \
     image_view \
