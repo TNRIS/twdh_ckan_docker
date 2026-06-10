@@ -130,23 +130,20 @@ ENV CKAN__DEFAULT_VIEWS="image_view \
 
     # check_link, twdh_reports MUST PRECEDE twdh_theme in the CKAN_PLUGINS list as it extends Admin_report
 ENV CKAN__PLUGINS="stats \
+    twdh_theme \
+    twdh_schema \
+    scheming_datasets \
+    scheming_organizations \
     check_link \
     twdh_reports \
-    twdh_theme \
     collection \
     activity \
     security \
     report \
     text_view \
-    webpage_view \
-    image_view \
-    video_view \
-    datastore \
     spatial_metadata \
     spatial_query \
-    twdh_schema \
-    scheming_datasets \
-    scheming_organizations \
+    datastore \
     contact \
     pages \
     resource_proxy \
