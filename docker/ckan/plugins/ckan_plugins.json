@@ -184,7 +184,7 @@
       "owner": "TNRIS",
       "repo": "datapusher-plus",
       "tag": "",
-      "branch": "twdh-0.12.0-dev-all_resource_button",
+      "branch": "twdh-0.12.0-dev",
       "cmd": [
         "pip install -e .", 
         "pip install -r requirements.txt"
