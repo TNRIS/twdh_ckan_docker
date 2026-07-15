@@ -1,9 +1,7 @@
-FROM bitnami/solr:9.8.0
+FROM ckan/ckan-solr:2.10-solr9.9-spatial
 
 USER root
 
-ADD https://repo1.maven.org/maven2/org/locationtech/jts/jts-core/1.17.1/jts-core-1.17.1.jar /opt/bitnami/solr/server/solr-webapp/webapp/WEB-INF/lib/jts-core-1.17.1.jar
-
-RUN chmod 644 /opt/bitnami/solr/server/solr-webapp/webapp/WEB-INF/lib/jts-core-1.17.1.jar
+COPY ./docker-entrypoint-initdb.d/overwrite.schema.xml /opt/solr-9.9.0/server/solr/configsets/ckan/conf/managed-schema
 
 USER 1001
