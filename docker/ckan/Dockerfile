@@ -136,6 +136,7 @@ ENV CKAN__PLUGINS="stats \
     scheming_organizations \
     check_link \
     twdh_reports \
+    better_stats \
     collection \
     activity \
     security \

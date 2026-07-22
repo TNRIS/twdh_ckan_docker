@@ -12,6 +12,17 @@
     },
     {
       "owner": "TNRIS",
+      "repo": "ckanext-better-stats",
+      "tag": "",
+      "branch": "master",
+      "cmd": [
+        "pip install -e .",
+        "pip install -r requirements.txt",
+        "pip install -r dev-requirements.txt"
+      ]
+    },
+    {
+      "owner": "TNRIS",
       "repo": "ckanext-check-link",
       "tag": "",
       "branch": "twdh-0.12.0-dev",
