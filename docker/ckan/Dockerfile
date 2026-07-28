@@ -403,6 +403,9 @@ FROM base AS dev
 # Install dev tools
 RUN pip install flask-debugtoolbar==0.14.1
 RUN pip install debugpy
+# install sampling profiler
+RUN pip install py-spy
+
 RUN apt-get update && apt-get install --no-install-recommends -y \
     inotify-tools \
     psmisc \
