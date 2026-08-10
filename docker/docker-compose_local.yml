@@ -103,6 +103,9 @@ services:
         - action: sync
           path: /usr/lib/ckan/default/src/datapusher-plus
           target: /srv/app/src/ckan/datapusher-plus
+        - action: sync
+          path: /usr/lib/ckan/default/src/ckanext-better-stats
+          target: /srv/app/src/ckan/ckanext-better-stats
 
 
   db:
