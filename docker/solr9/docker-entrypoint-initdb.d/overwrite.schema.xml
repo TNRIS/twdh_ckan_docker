@@ -96,6 +96,22 @@ attribute with the form `ckan-X.Y` -->
       </analyzer>
     </fieldType>
 
+    <fieldType name="text_ngram2" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <!--
+        <tokenizer class="solr.NGramTokenizerFactory" minGramSize="5" maxGramSize="10"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        -->
+        <tokenizer name="whitespace" rule="java"/>
+        <filter name="lowercase"/>
+        <filter name="nGram" minGramSize="4" maxGramSize="20"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer name="whitespace" rule="java"/>
+        <filter name="lowercase"/>
+      </analyzer>
+    </fieldType>
+
     <fieldType 
         name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
         spatialContextFactory="JTS"
@@ -114,18 +130,19 @@ attribute with the form `ckan-X.Y` -->
     <field name="id" type="string" indexed="true" stored="true" required="true" />
     <field name="site_id" type="string" indexed="true" stored="true" required="true" />
     <field name="title" type="text" indexed="true" stored="true" />
-    <field name="title_ngram" type="text_ngram" indexed="true" stored="true" />
+    <field name="title_ngram2" type="text_ngram2" indexed="true" stored="true" />
     <field name="entity_type" type="string" indexed="true" stored="true" omitNorms="true" />
     <field name="dataset_type" type="string" indexed="true" stored="true" />
     <field name="state" type="string" indexed="true" stored="true" omitNorms="true" />
     <field name="name" type="string" indexed="true" stored="true" omitNorms="true" />
-    <field name="name_ngram" type="text_ngram" indexed="true" stored="true" />
+    <field name="name_ngram2" type="text_ngram2" indexed="true" stored="true" />
     <field name="revision_id" type="string" indexed="true" stored="true" omitNorms="true" />
     <field name="version" type="string" indexed="true" stored="true" />
     <field name="url" type="string" indexed="true" stored="true" omitNorms="true" />
     <field name="ckan_url" type="string" indexed="true" stored="true" omitNorms="true" />
     <field name="download_url" type="string" indexed="true" stored="true" omitNorms="true" />
     <field name="notes" type="text" indexed="true" stored="true"/>
+    <field name="notes_ngram2" type="text_ngram2" indexed="true" stored="true" />
     <field name="author" type="text_general" indexed="true" stored="true" />
     <field name="author_email" type="text_general" indexed="true" stored="true" />
     <field name="maintainer" type="text_general" indexed="true" stored="true" />
@@ -206,8 +223,8 @@ attribute with the form `ckan-X.Y` -->
 <uniqueKey>index_id</uniqueKey>
 
 <copyField source="url" dest="urls"/>
-<copyField source="title" dest="title_ngram"/>
-<copyField source="name" dest="name_ngram"/>
+<copyField source="title" dest="title_ngram2"/>
+<copyField source="name" dest="name_ngram2"/>
 <copyField source="ckan_url" dest="urls"/>
 <copyField source="download_url" dest="urls"/>
 <copyField source="res_url" dest="urls"/>
@@ -219,7 +236,7 @@ attribute with the form `ckan-X.Y` -->
 <copyField source="title" dest="text"/>
 <copyField source="text" dest="text"/>
 <copyField source="license" dest="text"/>
-<copyField source="notes" dest="text"/>
+<copyField source="notes" dest="notes_ngram2"/>
 <copyField source="tags" dest="text"/>
 <copyField source="group" dest="text"/>
 <copyField source="groups" dest="text"/>
