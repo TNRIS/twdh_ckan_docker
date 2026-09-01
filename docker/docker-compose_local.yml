@@ -126,7 +126,7 @@ services:
   solr:
     container_name: solr
     hostname: solr
-    image: ckan/ckan-solr:2.10-solr9.8-spatial
+    image: twdh_solr:twdh_schema_20260901
     networks:
       - backend
     env_file:
