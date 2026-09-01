@@ -269,6 +269,8 @@ RUN pip install pyutilib==6.0.0
 # Generate CKAN config
 RUN ckan generate config ${APP_DIR}/production.ini
 
+RUN sed -i 's|^[[:space:]]*format[[:space:]]*=.*|format = %(asctime)s %(levelname)-5.5s [%(name)s] [%(filename)s:%(lineno)d:%(funcName)s] %(message)s|' ${APP_DIR}/production.ini
+
 RUN python -V
 RUN pip -V
 RUN pip list
