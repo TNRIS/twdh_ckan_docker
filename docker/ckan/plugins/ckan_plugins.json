@@ -2,7 +2,7 @@
   "plugins": [
     {
       "owner": "TNRIS",
-      "repo": "ckanext-agsview",
+      "repo": "ckanext-agsview-dev-markercluster",
       "tag": "twdh-0.6.0",
       "branch": "twdh-main",
       "cmd": [
@@ -54,7 +54,7 @@
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-datatablesview_plus",
+      "repo": "ckanext-datatablesview_plus-tablecss",
       "tag": "",
       "branch": "twdh-0.12.0-dev",
       "cmd": [
@@ -74,7 +74,7 @@
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-geoview",
+      "repo": "ckanext-geoview-markercluster",
       "tag": "",
       "branch": "twdh-0.12.0-dev",
       "cmd": [
