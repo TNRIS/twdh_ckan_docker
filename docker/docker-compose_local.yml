@@ -126,7 +126,9 @@ services:
   solr:
     container_name: solr
     hostname: solr
-    image: twdh_solr:twdh_schema_20260901
+    #image: twdh_solr:twdh_schema_20260901
+    #image: 746466009731.dkr.ecr.us-east-1.amazonaws.com/twdh_solr:twdh_schema_20260909
+    image: ckan/ckan-solr:2.10-solr9.8-spatial
     networks:
       - backend
     env_file:
@@ -134,7 +136,7 @@ services:
       - ./.env-solr9.env
     volumes:
       - solr_data:/var/solr
-      - ./solr9/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      #- ./solr9/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8983/solr/ckan/admin/ping || exit 1"]
       interval: 10s
