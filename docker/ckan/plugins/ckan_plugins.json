@@ -2,9 +2,9 @@
   "plugins": [
     {
       "owner": "TNRIS",
-      "repo": "ckanext-agsview-dev-markercluster",
-      "tag": "twdh-0.6.0",
-      "branch": "twdh-main",
+      "repo": "ckanext-agsview",
+      "tag": "",
+      "branch": "twdh-0.12.0-dev-markercluster",
       "cmd": [
         "pip install -e .",
         "pip install -r requirements.txt"
@@ -54,9 +54,9 @@
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-datatablesview_plus-tablecss",
+      "repo": "ckanext-datatablesview_plus",
       "tag": "",
-      "branch": "twdh-0.12.0-dev",
+      "branch": "twdh-0.12.0-dev-tablecss",
       "cmd": [
         "pip install -e .",
         "pip install botocore==1.27.29",
@@ -74,9 +74,9 @@
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-geoview-dev-markercluster",
+      "repo": "ckanext-geoview",
       "tag": "",
-      "branch": "twdh-0.12.0-dev",
+      "branch": "twdh-0.12.0-dev-markercluster",
       "cmd": [
         "pip install -e ."
       ]
