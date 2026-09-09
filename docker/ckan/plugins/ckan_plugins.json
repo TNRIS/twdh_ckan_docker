@@ -74,7 +74,7 @@
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-geoview-markercluster",
+      "repo": "ckanext-geoview-dev-markercluster",
       "tag": "",
       "branch": "twdh-0.12.0-dev",
       "cmd": [
