@@ -98,10 +98,6 @@ attribute with the form `ckan-X.Y` -->
 
     <fieldType name="text_ngram2" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
-        <!--
-        <tokenizer class="solr.NGramTokenizerFactory" minGramSize="5" maxGramSize="10"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-        -->
         <tokenizer name="whitespace" rule="java"/>
         <filter name="lowercase"/>
         <filter name="nGram" minGramSize="4" maxGramSize="20"/>
