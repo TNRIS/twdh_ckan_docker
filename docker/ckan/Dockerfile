@@ -346,6 +346,7 @@ RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}"
     ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.longitude_fields = longitude,long,lon" && \
     ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.jinja2_bytecode_cache_dir = /tmp/jinja2_bytecode_cache" && \
     ckan config-tool ${APP_DIR}/production.ini "ckanext.datapusher_plus.auto_unzip_one_file = true" && \
+    ckan config-tool ${APP_DIR}/production.ini "solr_timeout=30" && \
     # Change ownership to app user
     chown -R ckan:ckan /srv/app && \
     # Create log directory for `ckan jobs worker` process
