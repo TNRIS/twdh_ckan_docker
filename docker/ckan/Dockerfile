@@ -130,34 +130,34 @@ ENV CKAN__DEFAULT_VIEWS="image_view \
 
     # check_link, twdh_reports MUST PRECEDE twdh_theme in the CKAN_PLUGINS list as it extends Admin_report
 ENV CKAN__PLUGINS="stats \
-    twdh_theme \
-    twdh_schema \
-    scheming_datasets \
-    scheming_organizations \
-    check_link \
-    twdh_reports \
-    better_stats \
-    collection \
-    activity \
-    security \
-    report \
-    text_view \
-    spatial_metadata \
-    spatial_query \
-    datastore \
-    contact \
-    pages \
-    resource_proxy \
-    geo_view \
-    geojson_view \
-    wmts_view \
-    shp_view \
-    datatablesview_plus \
-    datapusher_plus \
-    openapi_viewer \
-    s3filestore \
-    googleanalytics \
-    ags_fs_view \ 
+#    twdh_theme \
+#    twdh_schema \
+#    scheming_datasets \
+#    scheming_organizations \
+#    check_link \
+#    twdh_reports \
+#    better_stats \
+#    collection \
+#    activity \
+#    security \
+#    report \
+#    text_view \
+#    spatial_metadata \
+#    spatial_query \
+#    datastore \
+#    contact \
+#    pages \
+#    resource_proxy \
+#    geo_view \
+#    geojson_view \
+#    wmts_view \
+#    shp_view \
+#    datatablesview_plus \
+#    datapusher_plus \
+#    openapi_viewer \
+#    s3filestore \
+#    googleanalytics \
+#    ags_fs_view \ 
     envvars" 
     # ^ envvars always needs to be last in the CKAN__PLUGINS list
     # s3filestore MUST PRECEDE googlealanalytics in the CKAN_PLUGINS list
