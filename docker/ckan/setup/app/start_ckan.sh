@@ -35,6 +35,8 @@ fi
 
 UWSGI_OPTS+="--vacuum --harakiri 50 --harakiri-verbose --callable application --single-interpreter --need-app --disable-logging --log-4xx --log-5xx --log-slow 5000 "
 
+UWSGI_OPTS+="--py-tracebacker /tmp/tbsocket. "
+
 if [[ "$UWSGI_STATS" == "true" ]]; then
   UWSGI_OPTS+="--stats 127.0.0.1:${UWSGI_STATS_PORT} --stats-http"
 fi
