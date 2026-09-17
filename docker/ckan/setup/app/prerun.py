@@ -214,8 +214,7 @@ if __name__ == '__main__':
     else:
         check_solr_connection()
         check_db_connection()
-        print('WARNING: Init scripts turned off for testing!!!')
-        #init_db()
-        #if os.environ.get('CKAN_DATASTORE_WRITE_URL'):
-        #    init_datastore()
-        #create_sysadmin()
+        init_db()
+        if os.environ.get('CKAN_DATASTORE_WRITE_URL'):
+            init_datastore()
+        create_sysadmin()
