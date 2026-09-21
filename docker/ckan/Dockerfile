@@ -129,7 +129,7 @@ ENV CKAN__DEFAULT_VIEWS="image_view \
     ags_fs_view" 
 
 # envvars must be last!
-ENV CKAN__PLUGINS="\
+ENV PLUGINS="\
 stats \
 twdh_theme \
 twdh_schema \
@@ -280,7 +280,7 @@ RUN python ${SRC_DIR}/plugins/plugins.py
 
 
 # Configure plugins
-RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}" && \
+RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${PLUGINS}" && \
     # Create the data directory
     mkdir ${DATA_DIR} && \
     # Webassets can't be loaded from env variables at runtime, it needs to be in the config so that it is created
