@@ -128,11 +128,39 @@ ENV CKAN__DEFAULT_VIEWS="image_view \
     datatablesview_plus \ 
     ags_fs_view" 
 
-# ckan.plugins should initially be set to just "envvars" 
-# The full version of ckan.plugins is set as an env variable 
-# pulled from secrets and will override this once the envvars 
-# extension is initially loaded.
-ENV CKAN__PLUGINS="envvars"
+# envvars must be last!
+ENV CKAN__PLUGINS="\
+stats \
+twdh_theme \
+twdh_schema \
+scheming_datasets \
+scheming_organizations \
+check_link \
+twdh_reports \
+better_stats \
+collection \
+activity \
+security \
+report \
+text_view \
+spatial_metadata \
+spatial_query \
+datastore \
+contact \
+pages \
+resource_proxy \
+geo_view \
+geojson_view \
+wmts_view \
+shp_view \
+datatablesview_plus \
+datapusher_plus \
+openapi_viewer \
+s3filestore \
+googleanalytics \
+ags_fs_view \
+envvars \
+"
 
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=twdh-s3filestore
