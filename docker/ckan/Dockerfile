@@ -129,38 +129,39 @@ ENV CKAN__DEFAULT_VIEWS="image_view \
     ags_fs_view" 
 
 # envvars must be last!
-ENV PLUGINS="\
-stats \
-twdh_theme \
-twdh_schema \
-scheming_datasets \
-scheming_organizations \
-check_link \
-twdh_reports \
-better_stats \
-collection \
-activity \
-security \
-report \
-text_view \
-spatial_metadata \
-spatial_query \
-datastore \
-contact \
-pages \
-resource_proxy \
-geo_view \
-geojson_view \
-wmts_view \
-shp_view \
-datatablesview_plus \
-datapusher_plus \
-openapi_viewer \
-s3filestore \
-googleanalytics \
-ags_fs_view \
-envvars \
-"
+ENV PLUGINS=" twdh_schema scheming_datasets scheming_organizations envvars "
+#ENV PLUGINS="\
+#stats \
+#twdh_theme \
+#twdh_schema \
+#scheming_datasets \
+#scheming_organizations \
+#check_link \
+#twdh_reports \
+#better_stats \
+#collection \
+#activity \
+#security \
+#report \
+#text_view \
+#spatial_metadata \
+#spatial_query \
+#datastore \
+#contact \
+#pages \
+#resource_proxy \
+#geo_view \
+#geojson_view \
+#wmts_view \
+#shp_view \
+#datatablesview_plus \
+#datapusher_plus \
+#openapi_viewer \
+#s3filestore \
+#googleanalytics \
+#ags_fs_view \
+#envvars \
+#"
 
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=twdh-s3filestore
