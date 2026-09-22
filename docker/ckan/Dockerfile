@@ -132,7 +132,7 @@ ENV CKAN__DEFAULT_VIEWS="image_view \
 # The full version of ckan.plugins is set as an env variable 
 # pulled from secrets and will override this once the envvars 
 # extension is initially loaded.
-ENV CKAN__PLUGINS="envvars"
+ENV PLUGINS="twdh_schema scheming_datasets scheming_organizations envvars"
 
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=twdh-s3filestore
@@ -252,7 +252,7 @@ RUN python ${SRC_DIR}/plugins/plugins.py
 
 
 # Configure plugins
-RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${CKAN__PLUGINS}" && \
+RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${PLUGINS}" && \
     # Create the data directory
     mkdir ${DATA_DIR} && \
     # Webassets can't be loaded from env variables at runtime, it needs to be in the config so that it is created
