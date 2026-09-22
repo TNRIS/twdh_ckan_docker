@@ -132,7 +132,8 @@ ENV CKAN__DEFAULT_VIEWS="image_view \
 # The full version of ckan.plugins is set as an env variable 
 # pulled from secrets and will override this once the envvars 
 # extension is initially loaded.
-ENV PLUGINS="twdh_schema scheming_datasets scheming_organizations envvars"
+#ENV PLUGINS="twdh_schema scheming_datasets scheming_organizations envvars"
+ENV PLUGINS="envvars"
 
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=twdh-s3filestore
