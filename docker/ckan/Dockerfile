@@ -128,39 +128,38 @@ ENV CKAN__DEFAULT_VIEWS="image_view \
     ags_fs_view" 
 
 # envvars must be last!
-ENV PLUGINS=" twdh_schema scheming_datasets scheming_organizations envvars "
-#ENV PLUGINS="\
-#stats \
-#twdh_theme \
-#twdh_schema \
-#scheming_datasets \
-#scheming_organizations \
-#check_link \
-#twdh_reports \
-#better_stats \
-#collection \
-#activity \
-#security \
-#report \
-#text_view \
-#spatial_metadata \
-#spatial_query \
-#datastore \
-#contact \
-#pages \
-#resource_proxy \
-#geo_view \
-#geojson_view \
-#wmts_view \
-#shp_view \
-#datatablesview_plus \
-#datapusher_plus \
-#openapi_viewer \
-#s3filestore \
-#googleanalytics \
-#ags_fs_view \
-#envvars \
-#"
+ENV TWDH__PLUGINS="\
+  stats \
+  twdh_theme \
+  twdh_schema \
+  scheming_datasets \
+  scheming_organizations \
+  check_link \
+  twdh_reports \
+  better_stats \
+  collection \
+  activity \
+  security \
+  report \
+  text_view \
+  spatial_metadata \
+  spatial_query \
+  datastore \
+  contact \
+  pages \
+  resource_proxy \
+  geo_view \
+  geojson_view \
+  wmts_view \
+  shp_view \
+  datatablesview_plus \
+  datapusher_plus \
+  openapi_viewer \
+  s3filestore \
+  googleanalytics \
+  ags_fs_view \
+  envvars \
+"
 
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=twdh-s3filestore
@@ -280,7 +279,7 @@ RUN python ${SRC_DIR}/plugins/plugins.py
 
 
 # Configure plugins
-RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${PLUGINS}" && \
+RUN ckan config-tool ${APP_DIR}/production.ini "ckan.plugins = ${TWDH__PLUGINS}" && \
     # Create the data directory
     mkdir ${DATA_DIR} && \
     # Webassets can't be loaded from env variables at runtime, it needs to be in the config so that it is created
