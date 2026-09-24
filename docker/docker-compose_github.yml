@@ -126,7 +126,10 @@ services:
   solr:
     container_name: solr
     hostname: solr
-    image: twdh_solr:twdh_schema_20260901
+    #image: twdh_solr:twdh_schema_20260901
+    # Temporarily pointing to this publically available image of SOLR so that the github action will not fail.
+    # Need to set this up so that it can pull the correct image (above) from our AWS ECR
+    image: ckan/ckan-solr:2.10-solr9.8-spatial
     networks:
       - backend
     env_file:
