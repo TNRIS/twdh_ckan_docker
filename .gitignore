@@ -11,3 +11,5 @@ docker/.tmp/*
 .env-ckan.override.env
 
 **/*build.log
+
+**/ssl/*.key

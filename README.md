@@ -34,12 +34,70 @@ flowchart TD
 
 ## Development Use
 
+### Setting up SSL (optional)
+
+- Retrieve the SSL keys from the EnPass card titled "TWDH Local SSL Private Keys" and place them in `twdh_ckan_docker/docker/nginx/ssl`
+
+- Add the following to your `/etc/hosts` file
+  - `127.0.0.1    twdh.local`
+
+- Trust the twdhrootCA Certificate Authority by running the following commands from `twdh_ckan_docker/docker/nginx/ssl`
+
+  ```bash
+    sudo cp twdhrootCA.crt /usr/local/share/ca-certificates/twdh-root-ca.crt
+    sudo update-ca-certificates
+  ```
+
+- Restart the docker container and confirm the cert using curl
+
+  Run this command from `twdh_ckan_docker/docker/nginx/ssl`
+
+  ```bash
+  curl -v --cacert twdhrootCA.crt https://twdh.local:8443/api/action/status_show
+  ```
+
+  A successful curl will include the following in the output near the top of the output
+
+  ```bash
+  *  SSL certificate verify ok.
+  ```
+
+- If you want it to work in Chrome ...
+
+  ```bash
+    sudo apt install libnss3-tools
+  ```
+
+  then
+
+  ```bash
+    certutil -d sql:$HOME/.pki/nssdb \
+    -A \
+    -t "C,," \
+    -n "TWDH Root CA" \
+    -i twdhrootCA.crt
+  ```
+
+  - Restart Chrome and confirm twdh.local SSL
+    - [https://twdh.local:8443](https://twdh.local:8443)
+
+- If you want it to work in Firefox ...
+  - Install the CA for Firefox
+    - Settings → Privacy & Security
+    - Certificates → View Certificates
+    - Select 'Authorities'
+    - Import
+      - Choose twdh_ckan_docker/docker/nginx/ssl/twdhrootCA.crt
+      - Check the box for 'Trust this CA to identify websites'
+
+  - Restart Firefox and confirm twdh.local SSL
+    - [https://twdh.local:8443](https://twdh.local:8443)
+
 ### Running the Docker image locally
 
 - First, build your local image as documented above.
 
 - twdh_ckan_docker offers 3 development modes
-
   - `dev` runs the container normally, the way it will run on DEV/PROD
   - `nockan` starts the container and all of the services but does not start CKAN. In this mode, in order to start CKAN you need to exec into the Docker container and start CKAN like this:
 

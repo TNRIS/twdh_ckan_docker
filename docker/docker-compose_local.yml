@@ -159,6 +159,19 @@ services:
       start_period: 60s
     ports: 
       - "6379:6379"
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      ckan:
+        condition: service_healthy
 
 networks:
   frontend:
