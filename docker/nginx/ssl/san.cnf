@@ -6,6 +6,6 @@ extendedKeyUsage=serverAuth
 subjectAltName=@alt_names
 
 [alt_names]
-DNS.1=twdh.local
+DNS.1=twdh.txgio
 DNS.2=ckan
 IP.1=127.0.0.1
