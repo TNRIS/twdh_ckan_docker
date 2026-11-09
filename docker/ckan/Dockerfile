@@ -156,10 +156,11 @@ ENV TWDH__PLUGINS="\
   datapusher_plus \
   openapi_viewer \
   s3filestore \
-  googleanalytics \
   ags_fs_view \
   envvars \
 "
+# Temporarily removing GA to debug DEV hang issue
+#googleanalytics \
 
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=twdh-s3filestore
