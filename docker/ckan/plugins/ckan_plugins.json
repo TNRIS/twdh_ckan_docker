@@ -183,7 +183,7 @@
     },
     {
       "owner": "TNRIS",
-      "repo": "ckanext-twdh_theme",
+      "repo": "ckanext-twdh_theme-DEBUG",
       "tag": "",
       "branch": "twdh-0.12.0-dev",
       "cmd": [
