@@ -36,7 +36,7 @@ fi
 UWSGI_OPTS+="--vacuum --harakiri 50 --callable application --single-interpreter --need-app --disable-logging --log-4xx --log-5xx --log-slow 5000 "
 
 # Turn this on to get harakiri tracebacks sent to /tmp/tbsocket.1-4 for debugging only
-# UWSGI_OPTS+="--harakiri-verbose --py-tracebacker /tmp/tbsocket. "
+UWSGI_OPTS+="--harakiri-verbose --py-tracebacker /tmp/tbsocket. "
 
 if [[ "$UWSGI_STATS" == "true" ]]; then
   UWSGI_OPTS+="--stats 127.0.0.1:${UWSGI_STATS_PORT} --stats-http"
