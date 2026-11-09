@@ -155,12 +155,11 @@ ENV TWDH__PLUGINS="\
   datatablesview_plus \
   datapusher_plus \
   openapi_viewer \
+  googleanalytics \
   s3filestore \
   ags_fs_view \
   envvars \
 "
-# Temporarily turn off googleanalytics
-#googleanalytics \
 
 # s3filestore env variables
 ENV CKANEXT__S3FILESTORE__AWS_BUCKET_NAME=twdh-s3filestore
