@@ -158,6 +158,7 @@ ENV TWDH__PLUGINS="\
   googleanalytics \
   s3filestore \
   ags_fs_view \
+  tracking \
   envvars \
 "
 
