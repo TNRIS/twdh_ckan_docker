@@ -9,7 +9,8 @@ FROM ubuntu:jammy-20250126 AS ckanbuild
 # Set CKAN version to build
 
 ENV GIT_URL=https://github.com/TNRIS/ckan.git
-ENV GIT_BRANCH=twdh-patches-2.11.4
+#ENV GIT_BRANCH=twdh-patches-2.11.4
+ENV GIT_BRANCH=twdh-patches-2.11.7
 
 # Set timezone
 ENV TZ=UTC
@@ -68,7 +69,10 @@ RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
 
-RUN pip install "setuptools-scm<8" "setuptools>=44.1.0" wheel
+#RUN pip install "setuptools-scm<8" "setuptools>=44.1.0" wheel
+#RUN pip install "packaging>=24.1"
+#RUN pip install "setuptools-scm" "setuptools==81.0.0" wheel
+RUN pip install --upgrade pip setuptools wheel
 
 # Fetch and build CKAN and requirements
 RUN pip install -e git+${GIT_URL}@${GIT_BRANCH}#egg=ckan
@@ -80,13 +84,13 @@ RUN pip list
 
 RUN pip wheel --wheel-dir=${VIRTUAL_ENV}/src -r ckan/requirements.txt
 
-# ┌─────────────────────────────────────────────────────────────┐
-# │                                                             │
-# │ Base image (Production env)                                 │
-# │ ---------------------------                                 │
-# │ This is always built                                        │
-# │                                                             │
-# └─────────────────────────────────────────────────────────────┘
+# ┌───────────────────────────────┐
+# │                                                              │
+# │ Base image (Production env)                                  │
+# │ ---------------------------                                  │
+# │ This is always built                                         │
+# │                                                              │
+# └───────────────────────────────┘
 
 
 FROM ubuntu:jammy-20250126 AS base
@@ -218,7 +222,10 @@ ENV VIRTUAL_ENV=/srv/app/virtualenv
 RUN python3 -m venv ${VIRTUAL_ENV}
 ENV PATH="$PATH:$VIRTUAL_ENV/bin:PATH"
 ENV WHEEL_DIR=${VIRTUAL_ENV}/src 
-RUN pip install "setuptools-scm<8" "setuptools>=44.1.0" wheel
+#RUN pip install "setuptools-scm<8" "setuptools>=44.1.0" wheel
+#RUN pip install "packaging>=24.1"
+#RUN pip install "setuptools-scm" "setuptools==81.0.0" wheel
+RUN pip install --upgrade pip setuptools wheel
 
 # Get artifacts from build stages
 COPY --from=ckanbuild ${VIRTUAL_ENV} ${VIRTUAL_ENV}
@@ -392,13 +399,13 @@ RUN pip list
 CMD ["/srv/app/start_ckan.sh"]
 
 
-# ┌─────────────────────────────────────────────────────────────┐
-# │                                                             │
-# │ Dev image (Development env)                                 │
-# │ ---------------------------                                 │
-# │ This is only built when ENV=dev                             │
-# │                                                             │
-# └─────────────────────────────────────────────────────────────┘
+# ┌──────────────────────────────┐
+# │                                                            │
+# │ Dev image (Development env)                                │
+# │ ---------------------------                                │
+# │ This is only built when ENV=dev                            │
+# │                                                            │
+# └──────────────────────────────┘
 
 
 FROM base AS dev
